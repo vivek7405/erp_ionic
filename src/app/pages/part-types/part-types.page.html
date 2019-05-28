@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Part Types</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-label>Part Type:</ion-label>
+    <ion-input [(ngModel)]="addPartTypeObj.PartTypeName"></ion-input>
+    <ion-button (click)="addPartType()">Add</ion-button>
+  </ion-item>
+
+  <table *ngIf="partTypes && partTypes.length > 0" class="table-margin tbl-border">
+    <tr>
+      <th class="th-td-margin tbl-border">Part Type</th>
+    </tr>
+    <tr *ngFor="let partType of partTypes">
+      <td class="th-td-margin tbl-border">{{partType.PartTypeName}}</td>
+    </tr>
+  </table>
+</ion-content>

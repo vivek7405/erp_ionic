@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Purchase Details</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <table class="table-border table-margin">
+    <tr class="table-border">
+      <th class="table-border">Project Name</th>
+      <th class="table-border">Output Code</th>
+      <th class="table-border">Output Material Desc</th>
+      <th class="table-border">Output Quantity</th>
+      <th class="table-border">Input Code</th>
+      <th class="table-border">Input Material Desc</th>
+      <th class="table-border">Input Quantity</th>
+      <th class="table-border">Part Type</th>
+      <th class="table-border">BASF Challan No</th>
+    </tr>
+    <ng-container class="table-border" *ngFor="let purchaseOrder of purchaseOrders">
+      <tr *ngFor="let inputCode of purchaseOrder.InputCodes; let i = index">
+        <td class="table-border" *ngIf="i === 0">{{purchaseOrder.OutputCode.ProjectName}}</td>
+        <td class="table-border" *ngIf="i === 0">{{purchaseOrder.OutputCode.OutputCodeNo}}</td>
+        <td class="table-border" *ngIf="i === 0">{{purchaseOrder.OutputCode.OutputMaterialDesc}}</td>
+        <td class="table-border" *ngIf="i === 0">{{purchaseOrder.OutputCode.OutputQuantity}}</td>
+        <td class="table-border" *ngIf="i !== 0"></td>
+        <td class="table-border" *ngIf="i !== 0"></td>
+        <td class="table-border" *ngIf="i !== 0"></td>
+        <td class="table-border" *ngIf="i !== 0"></td>
+        <td class="table-border">{{inputCode.InputCodeNo}}</td>
+        <td class="table-border">{{inputCode.InputMaterialDesc}}</td>
+        <td class="table-border">{{inputCode.InputQuantity}}</td>
+        <td class="table-border">{{inputCode.PartTypeName}}</td>
+        <td class="table-border">{{inputCode.BASFChallanNo}}</td>
+      </tr>
+    </ng-container>
+  </table>
+</ion-content>
