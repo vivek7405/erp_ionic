@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Product Details</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-label>Input Code:</ion-label>
+    <ion-input [(ngModel)]="productDetail.InputCode"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label>Product Name:</ion-label>
+    <ion-input [(ngModel)]="productDetail.ProductName"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label>Split Quantity:</ion-label>
+    <ion-input [(ngModel)]="productDetail.SplitQuantity"></ion-input>
+  </ion-item>
+
+  <ion-button class="default-margin" (click)="addOrUpdateProductDetails()">Add Product</ion-button>
+
+  <ion-grid *ngIf="productDetails && productDetails.length > 0" class="table-margin tbl-border">
+    <ion-row>
+      <ion-col class="th-td-margin col-header tbl-border">Input Code</ion-col>
+      <ion-col class="th-td-margin col-header tbl-border">Product Name</ion-col>
+      <ion-col class="th-td-margin col-header tbl-border">Split Quantity</ion-col>
+    </ion-row>
+    <ion-row *ngFor="let productDetail of productDetails">
+      <ion-col class="th-td-margin tbl-border">{{productDetail.InputCode}}</ion-col>
+      <ion-col class="th-td-margin tbl-border">{{productDetail.ProductName}}</ion-col>
+      <ion-col class="th-td-margin tbl-border">{{productDetail.SplitQuantity}}</ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

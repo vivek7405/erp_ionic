@@ -1,0 +1,57 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Add BASF Challan</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label>Challan Number: </ion-label>
+          <ion-input [(ngModel)]="challanDetail.ChallanNo"></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item>
+          <ion-label>Challan Date: </ion-label>
+          <ion-datetime [(ngModel)]="challanDetail.ChallanDate"></ion-datetime>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid>
+    <ion-row *ngFor="let challanProduct of challanProducts">
+      <ion-col>
+        <ion-item>
+          <ion-label>Product Name:</ion-label>
+          <ion-select name="ProductName" [(ngModel)]="challanProduct.ProductId">
+            <ion-select-option *ngFor="let product of productDetails" [value]="product.ProductId">
+              {{product.ProductName}}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item>
+          <ion-label>Quantity: </ion-label>
+          <ion-input [(ngModel)]="challanProduct.InputQuantity"></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-button title="Submit Challan Details" (click)="submitChallanDetails()">Submit
+  </ion-button>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="addChallanProduct()" title="Add Challan Product">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

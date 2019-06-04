@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>BASF Challan Details</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col class="col-header tbl-border">Challan No</ion-col>
+      <ion-col class="col-header tbl-border">Challan Date</ion-col>
+      <ion-col class="col-header tbl-border">Product Name</ion-col>
+      <ion-col class="col-header tbl-border">Input Code</ion-col>
+      <ion-col class="col-header tbl-border">Input Quantity</ion-col>
+      <ion-col class="col-header tbl-border">Split Quantity</ion-col>
+      <ion-col class="col-header tbl-border">Post Split Quantity</ion-col>
+      <ion-col class="col-header tbl-border">Remaining Quantity</ion-col>
+    </ion-row>
+    <ng-container *ngFor="let challanDetail of challanDetails">
+      <ion-row *ngFor="let challanProduct of challanDetail.ChallanProducts; let i = index">
+        <ion-col class="tbl-border" *ngIf="i == 0">{{challanDetail.ChallanDetail.ChallanNo}}</ion-col>
+        <ion-col class="tbl-border" *ngIf="i == 0">{{challanDetail.ChallanDetail.ChallanDate.split('T')[0]}}</ion-col>
+        <ion-col class="tbl-border" *ngIf="i > 0"></ion-col>
+        <ion-col class="tbl-border" *ngIf="i > 0"></ion-col>
+        <ion-col class="tbl-border">{{challanProduct.ProductDetail.ProductName}}</ion-col>
+        <ion-col class="tbl-border">{{challanProduct.ProductDetail.InputCode}}</ion-col>
+        <ion-col class="tbl-border">{{challanProduct.ChallanProduct.InputQuantity}}</ion-col>
+        <ion-col class="tbl-border">{{challanProduct.ProductDetail.SplitQuantity}}</ion-col>
+        <ion-col class="tbl-border">
+          {{challanProduct.ChallanProduct.InputQuantity * challanProduct.ProductDetail.SplitQuantity}}</ion-col>
+        <ion-col class="tbl-border">
+          {{challanProduct.ChallanProduct.InputQuantity * challanProduct.ProductDetail.SplitQuantity}}</ion-col>
+      </ion-row>
+    </ng-container>
+  </ion-grid>
+</ion-content>

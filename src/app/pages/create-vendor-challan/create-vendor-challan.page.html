@@ -1,0 +1,47 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Add Vendor Challan</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label>Challan Date: </ion-label>
+          <ion-datetime></ion-datetime>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngFor="let outStock of vendorChallan.OutStocks">
+      <ion-col>
+        <ion-item>
+          <ion-label>Select Product: </ion-label>
+          <ion-select [(ngModel)]="outStock.ProductId">
+            <ion-select-option *ngFor="let product of productDetails" [value]="product.ProductId">
+              {{product.ProductName}}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+
+      <ion-col>
+        <ion-item>
+          <ion-label>Output Quantity: </ion-label>
+          <ion-input [(ngModel)]="outStock.OutputQuantity"></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="addOutStock()" title="Add Out Stock">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

@@ -15,31 +15,66 @@ export class AppComponent {
       url: '/home',
       icon: 'home'
     },
+    {
+      title: 'Product Details',
+      url: '/product-details',
+      icon: 'list'
+    },
+    {
+      title: 'BASF Challan',
+      children: [
+        {
+          title: 'Add BASF Challan',
+          url: '/challan-details',
+          icon: 'add'
+        },
+        {
+          title: 'BASF Challan Details',
+          url: '/view-challan-details',
+          icon: 'list'
+        },
+      ]
+    },
+    {
+      title: 'Vendor Challan',
+      children: [
+        {
+          title: 'Add Vendor Challan',
+          url: '/create-vendor-challan',
+          icon: 'add'
+        },
+        {
+          title: 'Vendor Challan Details',
+          url: '/view-vendor-challan',
+          icon: 'list'
+        },
+      ]
+    }
     // {
     //   title: 'List',
     //   url: '/list',
     //   icon: 'list'
     // },
-    {
-      title: 'Part Types',
-      url: '/part-types',
-      icon: 'list'
-    },
-    {
-      title: 'Stock Inflow',
-      children: [
-        {
-          title: 'Purchase Order',
-          url: '/purchase-order',
-          icon: 'add'
-        },
-        {
-          title: 'Purchase Details',
-          url: '/purchase-details',
-          icon: 'list'
-        },
-      ]
-    }
+    // {
+    //   title: 'Part Types',
+    //   url: '/part-types',
+    //   icon: 'list'
+    // },
+    // {
+    //   title: 'Stock Inflow',
+    //   children: [
+    //     {
+    //       title: 'Purchase Order',
+    //       url: '/purchase-order',
+    //       icon: 'add'
+    //     },
+    //     {
+    //       title: 'Purchase Details',
+    //       url: '/purchase-details',
+    //       icon: 'list'
+    //     },
+    //   ]
+    // }
   ];
 
   constructor(

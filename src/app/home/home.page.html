@@ -14,7 +14,7 @@
     <ion-img src="/assets/shapes.svg"></ion-img>
     <ion-card-header>
       <ion-card-subtitle>Get Started</ion-card-subtitle>
-      <ion-card-title>Welcome to Vibrant's ERP Solution</ion-card-title>
+      <ion-card-title>Welcome to Vibrant's Challan Management Portal</ion-card-title>
     </ion-card-header>
     <ion-card-content>
       <p>Now that we are up with our app, you'll want to start exploring its features and components. Check out some of
@@ -22,20 +22,25 @@
     </ion-card-content>
   </ion-card>
   <ion-list lines="none">
-    <ion-list-header>
-      <ion-label>Resources</ion-label>
-    </ion-list-header>
-    <ion-item href="/purchase-order">
+    <ion-item href="/product-details">
       <ion-icon slot="start" color="medium" name="build"></ion-icon>
-      <ion-label>Create Purchase Order</ion-label>
+      <ion-label>Add/View Products</ion-label>
     </ion-item>
-    <ion-item href="/purchase-details">
-      <ion-icon slot="start" color="medium" name="grid"></ion-icon>
-      <ion-label>View Purchase Details</ion-label>
+    <ion-item href="/challan-details">
+      <ion-icon slot="start" color="medium" name="add-circle-outline"></ion-icon>
+      <ion-label>Add BASF Challan</ion-label>
     </ion-item>
-    <ion-item href="/part-types">
+    <ion-item href="/view-challan-details">
       <ion-icon slot="start" color="medium" name="book"></ion-icon>
-      <ion-label>Add and View Part Types</ion-label>
+      <ion-label>View BASF Challan</ion-label>
+    </ion-item>
+    <ion-item href="/add-vendor-challan">
+      <ion-icon slot="start" color="medium" name="add-circle-outline"></ion-icon>
+      <ion-label>Add Vendor Challan</ion-label>
+    </ion-item>
+    <ion-item href="/view-vendor-challan">
+      <ion-icon slot="start" color="medium" name="book"></ion-icon>
+      <ion-label>View Vendor Challan</ion-label>
     </ion-item>
   </ion-list>
 </ion-content>
