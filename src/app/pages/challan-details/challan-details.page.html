@@ -32,7 +32,7 @@
           <ion-label>Product Name:</ion-label>
           <ion-select name="ProductName" [(ngModel)]="challanProduct.ProductId">
             <ion-select-option *ngFor="let product of productDetails" [value]="product.ProductId">
-              {{product.ProductName}}
+              {{product.InputMaterialDesc}}
             </ion-select-option>
           </ion-select>
         </ion-item>

@@ -1,0 +1,24 @@
+<ion-label class="header-style">
+  BASF Challan Selections
+</ion-label>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-1 class="grid-header center-align">Selection</ion-col>
+      <ion-col col-5 class="grid-header">Challan No</ion-col>
+      <ion-col col-2 class="grid-header center-align">Total Qty</ion-col>
+      <ion-col col-2 class="grid-header center-align">Challan Date</ion-col>
+      <ion-col col-2 class="grid-header center-align">Remaining Qty</ion-col>
+    </ion-row>
+    <ion-row *ngFor="let basfChallan of basfChallanSelection">
+      <ion-col col-1 class="center-align grid-content">
+        <ion-checkbox disabled [(ngModel)]="basfChallan.IsChecked"></ion-checkbox>
+      </ion-col>
+      <ion-col col-5>{{basfChallan.ChallanDetail.ChallanNo}}</ion-col>
+      <ion-col col-2 class="center-align">{{basfChallan.RemainingQuantity}}</ion-col>
+      <ion-col col-2 class="center-align">{{basfChallan.ChallanDetail.ChallanDate.split('T')[0]}}</ion-col>
+      <ion-col col-2 class="center-align">{{basfChallan.qntAfterDeduction}}</ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

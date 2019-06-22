@@ -8,31 +8,81 @@
 </ion-header>
 
 <ion-content>
-  <ion-item>
-    <ion-label>Input Code:</ion-label>
-    <ion-input [(ngModel)]="productDetail.InputCode"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label>Product Name:</ion-label>
-    <ion-input [(ngModel)]="productDetail.ProductName"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label>Split Quantity:</ion-label>
-    <ion-input [(ngModel)]="productDetail.SplitQuantity"></ion-input>
-  </ion-item>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-item *ngIf="productTypes && productTypes.length > 0">
+          <ion-label>Product Type:</ion-label>
+          <ion-select [(ngModel)]="productDetail.ProductTypeId">
+            <ion-select-option *ngFor="let productType of productTypes" [value]="productType.ProductTypeId">
+              {{productType.ProductTypeName}}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label>Input Code:</ion-label>
+          <ion-input [(ngModel)]="productDetail.InputCode"></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item>
+          <ion-label>Input Material Description:</ion-label>
+          <ion-input [(ngModel)]="productDetail.InputMaterialDesc"></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label>Output Code:</ion-label>
+          <ion-input [(ngModel)]="productDetail.OutputCode"></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item>
+          <ion-label>Output Material Desc:</ion-label>
+          <ion-input [(ngModel)]="productDetail.OutputMaterialDesc"></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label>Project Name:</ion-label>
+          <ion-input [(ngModel)]="productDetail.ProjectName"></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item>
+          <ion-label>Split Ratio:</ion-label>
+          <ion-input [(ngModel)]="productDetail.SplitRatio"></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
   <ion-button class="default-margin" (click)="addOrUpdateProductDetails()">Add Product</ion-button>
 
   <ion-grid *ngIf="productDetails && productDetails.length > 0" class="table-margin tbl-border">
     <ion-row>
       <ion-col class="th-td-margin col-header tbl-border">Input Code</ion-col>
-      <ion-col class="th-td-margin col-header tbl-border">Product Name</ion-col>
-      <ion-col class="th-td-margin col-header tbl-border">Split Quantity</ion-col>
+      <ion-col class="th-td-margin col-header tbl-border">Input Material Description</ion-col>
+      <ion-col class="th-td-margin col-header tbl-border">Output Code</ion-col>
+      <ion-col class="th-td-margin col-header tbl-border">Output Material Description</ion-col>
+      <ion-col class="th-td-margin col-header tbl-border">Project Name</ion-col>
+      <ion-col class="th-td-margin col-header tbl-border">Split Ratio</ion-col>
     </ion-row>
     <ion-row *ngFor="let productDetail of productDetails">
       <ion-col class="th-td-margin tbl-border">{{productDetail.InputCode}}</ion-col>
-      <ion-col class="th-td-margin tbl-border">{{productDetail.ProductName}}</ion-col>
-      <ion-col class="th-td-margin tbl-border">{{productDetail.SplitQuantity}}</ion-col>
+      <ion-col class="th-td-margin tbl-border">{{productDetail.InputMaterialDesc}}</ion-col>
+      <ion-col class="th-td-margin tbl-border">{{productDetail.OutputCode}}</ion-col>
+      <ion-col class="th-td-margin tbl-border">{{productDetail.OutputMaterialDesc}}</ion-col>
+      <ion-col class="th-td-margin tbl-border">{{productDetail.ProjectName}}</ion-col>
+      <ion-col class="th-td-margin tbl-border">{{productDetail.SplitRatio}}</ion-col>
     </ion-row>
   </ion-grid>
 </ion-content>

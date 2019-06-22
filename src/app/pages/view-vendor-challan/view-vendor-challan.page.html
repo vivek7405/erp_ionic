@@ -8,5 +8,18 @@
 </ion-header>
 
 <ion-content>
-
+  <ion-grid>
+    <ion-row>
+      <ion-col class="grid-header grid-border">Vendor Challan No</ion-col>
+      <ion-col class="grid-header grid-border">Vendor Challan Date</ion-col>
+      <ion-col class="grid-header grid-border">Total Stock Out</ion-col>
+      <ion-col class="grid-header grid-border">View Details</ion-col>
+    </ion-row>
+    <ion-row *ngFor="let vendorChallan of vendorChallans">
+      <ion-col class="grid-border">{{vendorChallan.VendorChallanNo}}</ion-col>
+      <ion-col class="grid-border">{{vendorChallan.VendorChallanDate.split('T')[0]}}</ion-col>
+      <ion-col class="grid-border">{{vendorChallan.outputQuantity}}</ion-col>
+      <ion-col class="cursor-pointer grid-border" (click)="showDetails(vendorChallan)">Click here to view details</ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

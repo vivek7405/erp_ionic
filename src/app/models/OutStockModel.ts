@@ -1,5 +1,5 @@
 import { IonDatetime } from '@ionic/angular';
-import { ChallanDeduction } from './ChallanDeduction';
+import { ChallanDeductionModel } from './ChallanDeductionModel';
 
 export class OutStockModel {
     public OutputCode: number;
@@ -8,5 +8,5 @@ export class OutStockModel {
     public CreateDate: IonDatetime;
     public EditDate: IonDatetime;
     public ProductId: number;
-    public ChallanDeductions: ChallanDeduction[];
+    public ChallanDeductions: ChallanDeductionModel[];
 }

@@ -5,13 +5,12 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
-import { CreateVendorChallanPage } from './create-vendor-challan.page';
-import { BasfChallanDeductionModule } from '../basf-challan-deduction/basf-challan-deduction.module';
+import { VendorChallanInfoPage } from './vendor-challan-info.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: CreateVendorChallanPage
+    component: VendorChallanInfoPage
   }
 ];
 
@@ -20,9 +19,8 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
-    BasfChallanDeductionModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [CreateVendorChallanPage]
+  declarations: [VendorChallanInfoPage]
 })
-export class CreateVendorChallanPageModule { }
+export class VendorChallanInfoPageModule {}

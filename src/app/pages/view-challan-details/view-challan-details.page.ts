@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { GeneralService } from 'src/app/services/general/general.service';
 import { ViewChallanDetailModel } from 'src/app/models/ViewChallanDetailModel';
+import { ProductQuantity } from 'src/app/models/ProductQuantity';
 
 @Component({
   selector: 'app-view-challan-details',
@@ -9,6 +10,7 @@ import { ViewChallanDetailModel } from 'src/app/models/ViewChallanDetailModel';
 })
 export class ViewChallanDetailsPage implements OnInit {
   public challanDetails: ViewChallanDetailModel[];
+  public productQnts: ProductQuantity[];
 
   constructor(public generalService: GeneralService) { }
 
@@ -24,7 +26,7 @@ export class ViewChallanDetailsPage implements OnInit {
           this.challanDetails = result;
         },
         error => {
-          alert('Some error occurred while fetching details');
+          alert('Some error occurred while fetching details.');
         }
       );
   }

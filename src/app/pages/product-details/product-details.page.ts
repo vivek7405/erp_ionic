@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { GeneralService } from 'src/app/services/general/general.service';
 import { ProductDetail } from 'src/app/models/ProductDetail';
 import { ToastController } from '@ionic/angular';
+import { ProductType } from 'src/app/models/ProductType';
 
 @Component({
   selector: 'app-product-details',
@@ -10,13 +11,28 @@ import { ToastController } from '@ionic/angular';
 })
 export class ProductDetailsPage implements OnInit {
   public productDetails: ProductDetail[];
+  public productTypes: ProductType[];
   public productDetail: ProductDetail;
 
   constructor(public generalService: GeneralService, public toastCtrl: ToastController) { }
 
   ngOnInit() {
     this.productDetail = new ProductDetail();
+    this.getAllProductTypes();
     this.getAllProductDetails();
+  }
+
+  public getAllProductTypes() {
+    let selfObj = this;
+    this.generalService.getAllProductTypes()
+      .subscribe(
+        result => {
+          selfObj.productTypes = result;
+        },
+        error => {
+          alert(error);
+        }
+      );
   }
 
   public getAllProductDetails() {
@@ -33,7 +49,7 @@ export class ProductDetailsPage implements OnInit {
   }
 
   public addOrUpdateProductDetails() {
-    if (this.productDetail.ProductName.trim() !== '') {
+    if (this.productDetail.InputCode.trim() !== '' && this.productDetail.InputMaterialDesc.trim() !== '' && this.productDetail.OutputCode.trim() !== '' && this.productDetail.OutputMaterialDesc.trim() !== '') {
       this.generalService.addOrUpdateProductDetail(this.productDetail)
         .subscribe(
           result => {

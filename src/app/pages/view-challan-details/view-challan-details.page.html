@@ -15,8 +15,7 @@
       <ion-col class="col-header tbl-border">Product Name</ion-col>
       <ion-col class="col-header tbl-border">Input Code</ion-col>
       <ion-col class="col-header tbl-border">Input Quantity</ion-col>
-      <ion-col class="col-header tbl-border">Split Quantity</ion-col>
-      <ion-col class="col-header tbl-border">Post Split Quantity</ion-col>
+      <ion-col class="col-header tbl-border">Split Ratio</ion-col>
       <ion-col class="col-header tbl-border">Remaining Quantity</ion-col>
     </ion-row>
     <ng-container *ngFor="let challanDetail of challanDetails">
@@ -25,14 +24,11 @@
         <ion-col class="tbl-border" *ngIf="i == 0">{{challanDetail.ChallanDetail.ChallanDate.split('T')[0]}}</ion-col>
         <ion-col class="tbl-border" *ngIf="i > 0"></ion-col>
         <ion-col class="tbl-border" *ngIf="i > 0"></ion-col>
-        <ion-col class="tbl-border">{{challanProduct.ProductDetail.ProductName}}</ion-col>
+        <ion-col class="tbl-border">{{challanProduct.ProductDetail.InputMaterialDesc}}</ion-col>
         <ion-col class="tbl-border">{{challanProduct.ProductDetail.InputCode}}</ion-col>
         <ion-col class="tbl-border">{{challanProduct.ChallanProduct.InputQuantity}}</ion-col>
-        <ion-col class="tbl-border">{{challanProduct.ProductDetail.SplitQuantity}}</ion-col>
-        <ion-col class="tbl-border">
-          {{challanProduct.ChallanProduct.InputQuantity * challanProduct.ProductDetail.SplitQuantity}}</ion-col>
-        <ion-col class="tbl-border">
-          {{challanProduct.ChallanProduct.InputQuantity * challanProduct.ProductDetail.SplitQuantity}}</ion-col>
+        <ion-col class="tbl-border">{{challanProduct.ProductDetail.SplitRatio}}</ion-col>
+        <ion-col class="tbl-border">{{challanProduct.RemainingQuantity}}</ion-col>
       </ion-row>
     </ng-container>
   </ion-grid>

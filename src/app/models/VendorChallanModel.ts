@@ -7,4 +7,6 @@ export class VendorChallanModel {
     public CreateDate: IonDatetime;
     public EditDate: IonDatetime;
     public OutStocks: OutStockModel[];
+
+    public outputQuantity: number;
 }

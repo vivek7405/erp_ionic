@@ -13,7 +13,7 @@
       <ion-col>
         <ion-item>
           <ion-label>Challan Date: </ion-label>
-          <ion-datetime></ion-datetime>
+          <ion-datetime [(ngModel)]="vendorChallan.VendorChallanDate"></ion-datetime>
         </ion-item>
       </ion-col>
     </ion-row>
@@ -23,8 +23,8 @@
         <ion-item>
           <ion-label>Select Product: </ion-label>
           <ion-select [(ngModel)]="outStock.ProductId">
-            <ion-select-option *ngFor="let product of productDetails" [value]="product.ProductId">
-              {{product.ProductName}}
+            <ion-select-option *ngFor="let product of productQnts" [value]="product.ProductId">
+              {{product.ProductName}} - {{product.RemainingQuantity}}
             </ion-select-option>
           </ion-select>
         </ion-item>
@@ -34,10 +34,13 @@
         <ion-item>
           <ion-label>Output Quantity: </ion-label>
           <ion-input [(ngModel)]="outStock.OutputQuantity"></ion-input>
+          <ion-button (click)="viewBASFChallans(outStock)">View BASF Challan Selections</ion-button>
         </ion-item>
       </ion-col>
     </ion-row>
   </ion-grid>
+
+  <ion-button (click)="submit()">Submit</ion-button>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button (click)="addOutStock()" title="Add Out Stock">
