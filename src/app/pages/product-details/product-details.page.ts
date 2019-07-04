@@ -3,6 +3,7 @@ import { GeneralService } from 'src/app/services/general/general.service';
 import { ProductDetail } from 'src/app/models/ProductDetail';
 import { ToastController } from '@ionic/angular';
 import { ProductType } from 'src/app/models/ProductType';
+import { EProductCatagorys } from 'src/app/enums/EProductCatagory';
 
 @Component({
   selector: 'app-product-details',
@@ -49,7 +50,22 @@ export class ProductDetailsPage implements OnInit {
   }
 
   public addOrUpdateProductDetails() {
-    if (this.productDetail.InputCode.trim() !== '' && this.productDetail.InputMaterialDesc.trim() !== '' && this.productDetail.OutputCode.trim() !== '' && this.productDetail.OutputMaterialDesc.trim() !== '') {
+    debugger;
+    let isProductTypeMain: boolean = this.productDetail.ProductTypeId !== undefined && this.isProductCategoryMain();
+    let isInputCodeValid = this.productDetail.InputCode !== undefined && this.productDetail.InputCode.trim() !== '';
+    let isInputMaterialDescValid = this.productDetail.InputMaterialDesc !== undefined && this.productDetail.InputMaterialDesc.trim() !== '';
+    let isOutputCodeValid = this.productDetail.OutputCode !== undefined && this.productDetail.OutputCode.trim() !== '';
+    let isOutputMaterialDescValid = this.productDetail.OutputMaterialDesc !== undefined && this.productDetail.OutputMaterialDesc.trim() !== '';
+    let isProjectNameValid = this.productDetail.ProjectName !== undefined && this.productDetail.ProjectName.trim() !== '';
+    let isSplitRatioValid = this.productDetail.SplitRatio !== undefined && this.productDetail.SplitRatio !== 0;
+
+    if (this.productDetail.ProductTypeId !== undefined && (!isProductTypeMain && isInputCodeValid && isInputMaterialDescValid) || (isProductTypeMain && isInputCodeValid && isInputMaterialDescValid && isOutputCodeValid && isOutputMaterialDescValid && isProjectNameValid && isSplitRatioValid)) {
+      if (!isProductTypeMain) {
+        this.productDetail.OutputCode = undefined;
+        this.productDetail.OutputMaterialDesc = undefined;
+        this.productDetail.ProjectName = undefined;
+        this.productDetail.SplitRatio = 1;
+      }
       this.generalService.addOrUpdateProductDetail(this.productDetail)
         .subscribe(
           result => {
@@ -61,5 +77,16 @@ export class ProductDetailsPage implements OnInit {
           }
         );
     }
+  }
+
+  public isProductCategoryMain() {
+    if (this.productTypes != undefined && this.productTypes != null && this.productDetail != undefined && this.productDetail != null && this.productDetail.ProductTypeId != undefined && this.productDetail.ProductTypeId != null) {
+      let productCategoryId = this.productTypes.find(x => x.ProductTypeId == this.productDetail.ProductTypeId).ProductCategoryId;
+      if (productCategoryId == EProductCatagorys.Main)
+        return true;
+      else
+        return false;
+    } else
+      return true;
   }
 }

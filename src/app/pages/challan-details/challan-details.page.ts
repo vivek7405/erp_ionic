@@ -5,6 +5,7 @@ import { ToastController } from '@ionic/angular';
 import { ProductDetail } from 'src/app/models/ProductDetail';
 import { ChallanDetail } from 'src/app/models/ChallanDetail';
 import { ChallanDetailModel } from 'src/app/models/ChallanDetailModel';
+import { ChallanProductModel } from 'src/app/models/ChallanProductModel';
 
 @Component({
   selector: 'app-challan-details',
@@ -55,5 +56,9 @@ export class ChallanDetailsPage implements OnInit {
 
   public addChallanProduct() {
     this.challanProducts.push(new ChallanProduct());
+  }
+
+  public removeRow(i) {
+    this.challanProducts.splice(i, 1);
   }
 }

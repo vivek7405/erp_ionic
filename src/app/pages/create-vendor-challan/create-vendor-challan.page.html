@@ -4,6 +4,9 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>Add Vendor Challan</ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="solid" color="primary" (click)="submit()" title="Submit Vendor Challan">Submit</ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -18,29 +21,66 @@
       </ion-col>
     </ion-row>
 
-    <ion-row *ngFor="let outStock of vendorChallan.OutStocks">
-      <ion-col>
-        <ion-item>
-          <ion-label>Select Product: </ion-label>
-          <ion-select [(ngModel)]="outStock.ProductId">
-            <ion-select-option *ngFor="let product of productQnts" [value]="product.ProductId">
-              {{product.ProductName}} - {{product.RemainingQuantity}}
-            </ion-select-option>
-          </ion-select>
-        </ion-item>
-      </ion-col>
+    <ion-row class="row-border row-padding-2" *ngFor="let outStock of vendorChallan.OutStocks; let i = index">
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label>Select Product: </ion-label>
+              <ion-select [(ngModel)]="outStock.ProductId">
+                <ion-select-option *ngFor="let product of productQnts" [value]="product.ProductId">
+                  {{product.ProductName}} - {{product.RemainingQuantity}}
+                </ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
 
-      <ion-col>
-        <ion-item>
-          <ion-label>Output Quantity: </ion-label>
-          <ion-input [(ngModel)]="outStock.OutputQuantity"></ion-input>
-          <ion-button (click)="viewBASFChallans(outStock)">View BASF Challan Selections</ion-button>
-        </ion-item>
-      </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-label>Output Quantity: </ion-label>
+              <ion-input [(ngModel)]="outStock.OutputQuantity"></ion-input>
+              <!-- <ion-button class="button-margin" (click)="viewBASFChallans(outStock)">
+            BASF Challan</ion-button> -->
+              <ion-icon class="icon-button" color="tertiary" name="add-circle" title="Add Accessories"
+                (click)="addOutAcc(outStock)"></ion-icon>
+              <ion-icon class="icon-button" *ngIf="i > 0" color="danger" name="close-circle" title="Remove Product"
+                (click)="removeRow(i)">
+              </ion-icon>
+              <ion-icon class="icon-button" color="primary" name="eye" title="View Deductions"
+                (click)="presentPopover($event, outStock, null)"></ion-icon>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row *ngFor="let outAcc of outStock.OutAccs; let j = index">
+          <ion-col>
+            <ion-item>
+              <ion-label>Select Accessory: </ion-label>
+              <ion-select [(ngModel)]="outAcc.ProductId">
+                <ion-select-option *ngFor="let product of productAccQnts" [value]="product.ProductId">
+                  {{product.ProductName}} - {{product.RemainingQuantity}}
+                </ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+
+          <ion-col>
+            <ion-item>
+              <ion-label>Output Quantity: </ion-label>
+              <ion-input [(ngModel)]="outAcc.OutputQuantity"></ion-input>
+              <!-- <ion-button class="button-margin" (click)="viewBASFChallans(outStock)">
+                BASF Challan</ion-button> -->
+              <ion-icon class="icon-button" color="danger" name="close-circle" title="Remove Product"
+                (click)="removeAccRow(j, outStock)">
+              </ion-icon>
+              <ion-icon class="icon-button" color="primary" name="eye" title="View Deductions"
+                (click)="presentPopover($event, outStock, outAcc)"></ion-icon>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
     </ion-row>
   </ion-grid>
-
-  <ion-button (click)="submit()">Submit</ion-button>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button (click)="addOutStock()" title="Add Out Stock">

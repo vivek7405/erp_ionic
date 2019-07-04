@@ -35,7 +35,7 @@
         </ion-item>
       </ion-col>
     </ion-row>
-    <ion-row>
+    <ion-row *ngIf="isProductCategoryMain()">
       <ion-col>
         <ion-item>
           <ion-label>Output Code:</ion-label>
@@ -49,7 +49,7 @@
         </ion-item>
       </ion-col>
     </ion-row>
-    <ion-row>
+    <ion-row *ngIf="isProductCategoryMain()">
       <ion-col>
         <ion-item>
           <ion-label>Project Name:</ion-label>

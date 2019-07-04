@@ -21,60 +21,35 @@ export class AppComponent {
       icon: 'list'
     },
     {
-      title: 'BASF Challan',
+      title: 'BASF Jobwork Challan',
       children: [
         {
-          title: 'Add BASF Challan',
+          title: 'Add Jobwork Challan',
           url: '/challan-details',
           icon: 'add'
         },
         {
-          title: 'BASF Challan Details',
+          title: 'Jobwork Challan Details',
           url: '/view-challan-details',
           icon: 'list'
         },
       ]
     },
     {
-      title: 'Vendor Challan',
+      title: 'Vibrant Challan',
       children: [
         {
-          title: 'Add Vendor Challan',
+          title: 'Add Vibrant Challan',
           url: '/create-vendor-challan',
           icon: 'add'
         },
         {
-          title: 'Vendor Challan Details',
+          title: 'Vibrant Challan Details',
           url: '/view-vendor-challan',
           icon: 'list'
         },
       ]
-    }
-    // {
-    //   title: 'List',
-    //   url: '/list',
-    //   icon: 'list'
-    // },
-    // {
-    //   title: 'Part Types',
-    //   url: '/part-types',
-    //   icon: 'list'
-    // },
-    // {
-    //   title: 'Stock Inflow',
-    //   children: [
-    //     {
-    //       title: 'Purchase Order',
-    //       url: '/purchase-order',
-    //       icon: 'add'
-    //     },
-    //     {
-    //       title: 'Purchase Details',
-    //       url: '/purchase-details',
-    //       icon: 'list'
-    //     },
-    //   ]
-    // }
+    }    
   ];
 
   constructor(

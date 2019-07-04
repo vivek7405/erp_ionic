@@ -5,13 +5,12 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
-import { PartTypesPage } from './part-types.page';
-import { GeneralService } from 'src/app/services/general/general.service';
+import { ViewChallanDetailInfoPage } from './view-challan-detail-info.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: PartTypesPage
+    component: ViewChallanDetailInfoPage
   }
 ];
 
@@ -22,7 +21,6 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [PartTypesPage],
-  providers: [GeneralService]
+  declarations: [ViewChallanDetailInfoPage]
 })
-export class PartTypesPageModule { }
+export class ViewChallanDetailInfoPageModule {}

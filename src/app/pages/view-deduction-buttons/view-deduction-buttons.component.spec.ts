@@ -1,22 +1,22 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PartTypesPage } from './part-types.page';
+import { ViewDeductionButtonsComponent } from './view-deduction-buttons.component';
 
-describe('PartTypesPage', () => {
-  let component: PartTypesPage;
-  let fixture: ComponentFixture<PartTypesPage>;
+describe('ViewDeductionButtonsComponent', () => {
+  let component: ViewDeductionButtonsComponent;
+  let fixture: ComponentFixture<ViewDeductionButtonsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PartTypesPage ],
+      declarations: [ ViewDeductionButtonsComponent ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PartTypesPage);
+    fixture = TestBed.createComponent(ViewDeductionButtonsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

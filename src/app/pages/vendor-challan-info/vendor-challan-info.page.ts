@@ -24,6 +24,10 @@ export class VendorChallanInfoPage implements OnInit {
 
             this.vendorChallan.outputQuantity = 0;
             this.vendorChallan.OutStocks.forEach(outStock => {
+              outStock.inputQntSum = 0;
+              outStock.ChallanDeductions.forEach(challanDeduction => {
+                outStock.inputQntSum += challanDeduction.OutQuantity;
+              });
               this.vendorChallan.outputQuantity += outStock.OutputQuantity;
             });
           },

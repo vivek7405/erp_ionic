@@ -1,8 +1,8 @@
 import { IonDatetime } from '@ionic/angular';
 
-export class ChallanDeduction {
-    public ChallanDeductionId: number;
-    public OutStockId?: number;
+export class AccChallanDeduction {
+    public AccChallanDeductionId: number;
+    public OutAccId?: number;
     public ChallanProductId?: number;
     public OutQuantity?: number;
     public CreateDate: IonDatetime;

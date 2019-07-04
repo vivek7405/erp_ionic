@@ -1,24 +1,44 @@
-<ion-label class="header-style">
-  BASF Challan Selections
-</ion-label>
-
 <ion-content>
+  <ion-list>
+    <ion-item>
+      <ion-label class="header-style">
+        BASF Challan Selections
+      </ion-label>
+      <ion-button (click)="returnValues()" [disabled]="isDoneButtonDisabled()">Done</ion-button>
+    </ion-item>
+    <ion-item>
+      <ion-label>Total Deduction: {{totalDeduction}} | Yet to deduct:
+        {{outputQuantity - totalDeduction}}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-checkbox [(ngModel)]="isManual" (ionChange)="manualSelectionChanged()"></ion-checkbox>
+      <ion-label class="label-margin">Manual Selection</ion-label>
+    </ion-item>
+  </ion-list>
+
   <ion-grid>
     <ion-row>
-      <ion-col col-1 class="grid-header center-align">Selection</ion-col>
-      <ion-col col-5 class="grid-header">Challan No</ion-col>
-      <ion-col col-2 class="grid-header center-align">Total Qty</ion-col>
-      <ion-col col-2 class="grid-header center-align">Challan Date</ion-col>
-      <ion-col col-2 class="grid-header center-align">Remaining Qty</ion-col>
+      <ion-col class="grid-header center-align">Selection</ion-col>
+      <ion-col class="grid-header center-align">Challan No</ion-col>
+      <ion-col class="grid-header center-align">Challan Date</ion-col>
+      <ion-col class="grid-header center-align">Total Qty</ion-col>
+      <ion-col class="grid-header center-align">Deduction</ion-col>
+      <ion-col class="grid-header center-align">Remaining Qty</ion-col>
     </ion-row>
     <ion-row *ngFor="let basfChallan of basfChallanSelection">
-      <ion-col col-1 class="center-align grid-content">
-        <ion-checkbox disabled [(ngModel)]="basfChallan.IsChecked"></ion-checkbox>
+      <ion-col class="center-align padding-10">
+        <ion-checkbox [disabled]="!isManual" [(ngModel)]="basfChallan.IsChecked"
+          (ionChange)="changeTotalDeduction(basfChallan)"></ion-checkbox>
       </ion-col>
-      <ion-col col-5>{{basfChallan.ChallanDetail.ChallanNo}}</ion-col>
-      <ion-col col-2 class="center-align">{{basfChallan.RemainingQuantity}}</ion-col>
-      <ion-col col-2 class="center-align">{{basfChallan.ChallanDetail.ChallanDate.split('T')[0]}}</ion-col>
-      <ion-col col-2 class="center-align">{{basfChallan.qntAfterDeduction}}</ion-col>
+      <ion-col class="center-align padding-10">{{basfChallan.ChallanDetail.ChallanNo}}</ion-col>
+      <ion-col class="center-align padding-10">{{basfChallan.ChallanDetail.ChallanDate.split('T')[0]}}</ion-col>
+      <ion-col class="center-align padding-10">{{basfChallan.RemainingQuantity}}</ion-col>
+      <ion-col class="center-align padding-10" *ngIf="!isManual">{{basfChallan.outQuantity}}</ion-col>
+      <ion-col class="center-align padding-10 margin-padding-0" *ngIf="isManual">
+        <ion-input type="number" [(ngModel)]="basfChallan.outQuantity" (ionChange)="changeTotalDeduction(basfChallan)">
+        </ion-input>
+      </ion-col>
+      <ion-col class="center-align padding-10">{{basfChallan.RemainingQuantity - basfChallan.outQuantity}}</ion-col>
     </ion-row>
   </ion-grid>
 </ion-content>

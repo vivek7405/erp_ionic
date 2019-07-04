@@ -1,20 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonService } from '../common/common.service';
-import { PartType } from 'src/app/models/PartType';
 import { SuccessResponse } from 'src/app/models/SuccessResponse';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { ProductDetail } from 'src/app/models/ProductDetail';
-import { ChallanDetail } from 'src/app/models/ChallanDetail';
-import { ChallanProduct } from 'src/app/models/ChallanProduct';
 import { ChallanDetailModel } from 'src/app/models/ChallanDetailModel';
 import { ViewChallanDetailModel } from 'src/app/models/ViewChallanDetailModel';
 import { ProductQuantity } from 'src/app/models/ProductQuantity';
 import { VendorChallanModel } from 'src/app/models/VendorChallanModel';
-import { ChallanProductModel } from 'src/app/models/ChallanProductModel';
-import { BASFChallanSelection } from 'src/app/models/BASFChallanSelection';
-import { BASFChallanDeduction } from 'src/app/models/BASFChallanDeduction';
 import { ProductIdModel } from 'src/app/models/ProductIdModel';
 import { VendorChallanNoModel } from 'src/app/models/VendorChallanNoModel';
 import { ProductType } from 'src/app/models/ProductType';
@@ -26,14 +20,6 @@ export class GeneralService extends CommonService {
 
   constructor(public http: HttpClient) {
     super();
-  }
-
-  public addOrUpdatePartType(partType: PartType): Observable<SuccessResponse> {
-    return this.http.post<SuccessResponse>(environment.apiBaseUrl + 'general/AddOrUpdatePartType', partType);
-  }
-
-  public getAllPartTypes() {
-    return this.http.get<PartType[]>(environment.apiBaseUrl + 'general/GetAllPartTypes');
   }
 
   public addOrUpdateProductDetail(productDetail: ProductDetail): Observable<SuccessResponse> {
@@ -64,8 +50,12 @@ export class GeneralService extends CommonService {
     return this.http.get<ViewChallanDetailModel[]>(environment.apiBaseUrl + 'general/GetAllChallanDetails');
   }
 
-  public getProductRemainingQuantity() {
-    return this.http.get<ProductQuantity[]>(environment.apiBaseUrl + 'general/GetProductRemainingQuantity');
+  public getMainProductRemainingQuantity() {
+    return this.http.get<ProductQuantity[]>(environment.apiBaseUrl + 'general/GetMainProductRemainingQuantity');
+  }
+
+  public getAccProductRemainingQuantity() {
+    return this.http.get<ProductQuantity[]>(environment.apiBaseUrl + 'general/GetAccProductRemainingQuantity');
   }
 
   public addOrUpdateVendorChallan(vendorChallan: VendorChallanModel) {
@@ -82,5 +72,9 @@ export class GeneralService extends CommonService {
 
   public getVendorChallanByVendorChallanNo(vendorChallanNoModel: VendorChallanNoModel) {
     return this.http.post<VendorChallanModel>(environment.apiBaseUrl + 'general/GetVendorChallanByVendorChallanNo', vendorChallanNoModel);
+  }
+
+  public getBASFChallanByBASFChallanId(vendorChallanNoModel: VendorChallanNoModel) {
+    return this.http.post<ViewChallanDetailModel>(environment.apiBaseUrl + 'general/GetBASFChallanByBASFChallanId', vendorChallanNoModel);
   }
 }

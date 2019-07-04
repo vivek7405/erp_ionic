@@ -3,11 +3,11 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>BASF Challan Details</ion-title>
+    <ion-title>BASF Jobwork Challan Details</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<!-- <ion-content>
   <ion-grid>
     <ion-row>
       <ion-col class="col-header tbl-border">Challan No</ion-col>
@@ -31,5 +31,23 @@
         <ion-col class="tbl-border">{{challanProduct.RemainingQuantity}}</ion-col>
       </ion-row>
     </ng-container>
+  </ion-grid>
+</ion-content> -->
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col class="col-header tbl-border">Challan No</ion-col>
+      <ion-col class="col-header tbl-border">Challan Date</ion-col>
+      <ion-col class="col-header tbl-border">Total Stock In</ion-col>
+      <ion-col class="col-header tbl-border">View Details</ion-col>
+    </ion-row>
+    <ion-row *ngFor="let challanDetail of challanDetails">
+      <ion-col class="tbl-border">{{challanDetail.ChallanDetail.ChallanNo}}</ion-col>
+      <ion-col class="tbl-border">{{challanDetail.ChallanDetail.ChallanDate.split('T')[0]}}</ion-col>
+      <ion-col class="tbl-border">{{challanDetail.totalStockIn}}</ion-col>
+      <ion-col class="cursor-pointer tbl-border" (click)="showDetails(challanDetail)">Click here to view details
+      </ion-col>
+    </ion-row>
   </ion-grid>
 </ion-content>
