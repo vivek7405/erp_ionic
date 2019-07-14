@@ -3,8 +3,11 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>Add BASF Challan</ion-title>
+    <ion-title *ngIf="!isPO">Add BASF Challan</ion-title>
+    <ion-title *ngIf="isPO">Add BASF PO</ion-title>
     <ion-buttons slot="end">
+      <ion-label>BASF PO</ion-label>
+      <ion-toggle [(ngModel)]="isPO"></ion-toggle>
       <ion-button fill="solid" color="primary" title="Submit Challan Details" (click)="submitChallanDetails()">Submit
       </ion-button>
     </ion-buttons>
@@ -16,13 +19,15 @@
     <ion-row>
       <ion-col>
         <ion-item>
-          <ion-label>Challan Number: </ion-label>
+          <ion-label *ngIf="!isPO">Challan Number: </ion-label>
+          <ion-label *ngIf="isPO">PO Number: </ion-label>
           <ion-input [(ngModel)]="challanDetail.ChallanNo"></ion-input>
         </ion-item>
       </ion-col>
       <ion-col>
         <ion-item>
-          <ion-label>Challan Date: </ion-label>
+          <ion-label *ngIf="!isPO">Challan Date: </ion-label>
+          <ion-label *ngIf="isPO">PO Date: </ion-label>
           <ion-datetime [(ngModel)]="challanDetail.ChallanDate"></ion-datetime>
         </ion-item>
       </ion-col>
@@ -44,9 +49,11 @@
       <ion-col>
         <ion-item>
           <ion-label>Quantity: </ion-label>
-          <ion-input [(ngModel)]="challanProduct.InputQuantity"></ion-input>
-          <ion-icon *ngIf="i > 0" color="danger" name="close-circle" class="icon-button" title="Remove Product"
-            (click)="removeRow(i)">
+          <ion-input type="number" min="0" (ionChange)="inputQntChanged(challanProduct)"
+            [disabled]="challanProduct.ProductId == undefined || challanProduct.ProductId == null || challanProduct.ProductId == 0"
+            [(ngModel)]="challanProduct.InputQuantity"></ion-input>
+          <ion-icon *ngIf="i > 0 || challanProducts.length > 1" color="danger" name="close-circle" class="icon-button"
+            title="Remove Product" (click)="removeRow(i)">
           </ion-icon>
         </ion-item>
       </ion-col>

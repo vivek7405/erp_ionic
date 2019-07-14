@@ -3,8 +3,11 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>Add Vendor Challan</ion-title>
+    <ion-title *ngIf="!IsNg">Add Vibrant FG Challan</ion-title>
+    <ion-title *ngIf="IsNg">Add Vibrant NG Challan</ion-title>
     <ion-buttons slot="end">
+      <ion-label>NG Challan</ion-label>
+      <ion-toggle [(ngModel)]="IsNg" (ionChange)="changeToNg()"></ion-toggle>
       <ion-button fill="solid" color="primary" (click)="submit()" title="Submit Vendor Challan">Submit</ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -27,9 +30,9 @@
           <ion-col>
             <ion-item>
               <ion-label>Select Product: </ion-label>
-              <ion-select [(ngModel)]="outStock.ProductId">
+              <ion-select [(ngModel)]="outStock.ProductId" (ionChange)="outStockProductSelected(outStock)">
                 <ion-select-option *ngFor="let product of productQnts" [value]="product.ProductId">
-                  {{product.ProductName}} - {{product.RemainingQuantity}}
+                  {{product.ProductName}} - {{product.RemainingQuantity}} - {{product.RemainingQuantityPO}}
                 </ion-select-option>
               </ion-select>
             </ion-item>
@@ -38,46 +41,99 @@
           <ion-col>
             <ion-item>
               <ion-label>Output Quantity: </ion-label>
-              <ion-input [(ngModel)]="outStock.OutputQuantity"></ion-input>
+              <ion-input
+                [disabled]="outStock.ProductId == undefined || outStock.ProductId == null || outStock.ProductId == 0"
+                type="number" min="0" [(ngModel)]="outStock.OutputQuantity" (ionChange)="mainOutQntChanged(outStock)">
+              </ion-input>
               <!-- <ion-button class="button-margin" (click)="viewBASFChallans(outStock)">
             BASF Challan</ion-button> -->
-              <ion-icon class="icon-button" color="tertiary" name="add-circle" title="Add Accessories"
-                (click)="addOutAcc(outStock)"></ion-icon>
-              <ion-icon class="icon-button" *ngIf="i > 0" color="danger" name="close-circle" title="Remove Product"
-                (click)="removeRow(i)">
+              <ion-icon *ngIf="!IsNg" class="icon-button" color="tertiary" name="add-circle"
+                title="Add Accessory" (click)="addOutAcc(outStock)"></ion-icon>
+              <ion-icon name="eye" title="View Deductions"
+                *ngIf="outStock.OutputQuantity == undefined || outStock.OutputQuantity == null || outStock.OutputQuantity == 0">
               </ion-icon>
               <ion-icon class="icon-button" color="primary" name="eye" title="View Deductions"
-                (click)="presentPopover($event, outStock, null)"></ion-icon>
+                (click)="presentPopover($event, outStock, null, null)"
+                *ngIf="outStock.OutputQuantity != undefined && outStock.OutputQuantity != null && outStock.OutputQuantity != 0">
+              </ion-icon>
+              <ion-icon class="icon-button" *ngIf="i > 0 || vendorChallan.OutStocks.length > 1" color="danger"
+                name="close-circle" title="Remove Product" (click)="removeRow(i)">
+              </ion-icon>
             </ion-item>
           </ion-col>
         </ion-row>
 
-        <ion-row *ngFor="let outAcc of outStock.OutAccs; let j = index">
-          <ion-col>
-            <ion-item>
-              <ion-label>Select Accessory: </ion-label>
-              <ion-select [(ngModel)]="outAcc.ProductId">
-                <ion-select-option *ngFor="let product of productAccQnts" [value]="product.ProductId">
-                  {{product.ProductName}} - {{product.RemainingQuantity}}
-                </ion-select-option>
-              </ion-select>
-            </ion-item>
-          </ion-col>
+        <ng-container *ngIf="!IsNg">
+          <ion-row *ngFor="let outAssembly of outStock.OutAssemblys; let j = index">
+            <ion-col>
+              <ion-item>
+                <ion-label>Select Assembly: </ion-label>
+                <ion-select disabled [(ngModel)]="outAssembly.ProductId">
+                  <ion-select-option *ngFor="let product of productAssemblyQnts" [value]="product.ProductId">
+                    {{product.ProductName}} - {{product.RemainingQuantity}} - {{product.RemainingQuantityPO}}
+                  </ion-select-option>
+                </ion-select>
+              </ion-item>
+            </ion-col>
 
-          <ion-col>
-            <ion-item>
-              <ion-label>Output Quantity: </ion-label>
-              <ion-input [(ngModel)]="outAcc.OutputQuantity"></ion-input>
-              <!-- <ion-button class="button-margin" (click)="viewBASFChallans(outStock)">
+            <ion-col>
+              <ion-item>
+                <ion-label>Output Quantity: </ion-label>
+                <ion-input type="number" min="0" [(ngModel)]="outAssembly.OutputQuantity"
+                  (ionChange)="assemblyOutQntChanged(outAssembly, outStock)"></ion-input>
+                <!-- <ion-button class="button-margin" (click)="viewBASFChallans(outStock)">
                 BASF Challan</ion-button> -->
-              <ion-icon class="icon-button" color="danger" name="close-circle" title="Remove Product"
+                <!-- <ion-icon class="icon-button" color="danger" name="close-circle" title="Remove Product"
                 (click)="removeAccRow(j, outStock)">
+              </ion-icon> -->
+                <!-- <ion-icon name="eye" title="View Deductions"
+                *ngIf="outAssembly.OutputQuantity == undefined || outAssembly.OutputQuantity == null || outAssembly.OutputQuantity == 0">
               </ion-icon>
               <ion-icon class="icon-button" color="primary" name="eye" title="View Deductions"
-                (click)="presentPopover($event, outStock, outAcc)"></ion-icon>
-            </ion-item>
-          </ion-col>
-        </ion-row>
+                (click)="presentPopover($event, outStock, null, outAssembly)"
+                *ngIf="outAssembly.OutputQuantity != undefined && outAssembly.OutputQuantity != null && outAssembly.OutputQuantity != 0">
+              </ion-icon> -->
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ng-container>
+
+        <ng-container *ngIf="!IsNg">
+          <ion-row *ngFor="let outAcc of outStock.OutAccs; let j = index">
+            <ion-col>
+              <ion-item>
+                <ion-label>Select Accessory: </ion-label>
+                <ion-select [(ngModel)]="outAcc.ProductId">
+                  <ion-select-option *ngFor="let product of productAccQnts" [value]="product.ProductId">
+                    {{product.ProductName}} - {{product.RemainingQuantity}} - {{product.RemainingQuantityPO}}
+                  </ion-select-option>
+                </ion-select>
+              </ion-item>
+            </ion-col>
+
+            <ion-col>
+              <ion-item>
+                <ion-label>Output Quantity: </ion-label>
+                <ion-input
+                  [disabled]="outAcc.ProductId == undefined || outAcc.ProductId == null || outAcc.ProductId == 0"
+                  type="number" min="0" [(ngModel)]="outAcc.OutputQuantity" (ionChange)="accOutQntChanged(outAcc)">
+                </ion-input>
+                <!-- <ion-button class="button-margin" (click)="viewBASFChallans(outStock)">
+                BASF Challan</ion-button> -->
+                <!-- <ion-icon name="eye" title="View Deductions"
+                *ngIf="outAcc.OutputQuantity == undefined || outAcc.OutputQuantity == null || outAcc.OutputQuantity == 0">
+              </ion-icon>
+              <ion-icon class="icon-button" color="primary" name="eye" title="View Deductions"
+                (click)="presentPopover($event, outStock, outAcc, null)"
+                *ngIf="outAcc.OutputQuantity != undefined && outAcc.OutputQuantity != null && outAcc.OutputQuantity != 0">
+              </ion-icon> -->
+                <ion-icon class="icon-button" color="danger" name="close-circle" title="Remove Product"
+                  (click)="removeAccRow(j, outStock)">
+                </ion-icon>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ng-container>
       </ion-grid>
     </ion-row>
   </ion-grid>

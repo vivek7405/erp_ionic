@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Product Mappings</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="productDetail">
+  <ion-item>
+    <ion-label>Product Name: {{productDetail.ProductDetail.InputMaterialDesc}}</ion-label>
+  </ion-item>
+  <ion-item>
+    <ion-label>Mappings: </ion-label>
+    <ion-select multiple="true" [(ngModel)]="productMappingValues">
+      <ion-select-option *ngFor="let product of productDetails" [value]="product.ProductId">
+        {{product.InputMaterialDesc}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-button class="default-margin" (click)="saveProductMappings()">Submit</ion-button>
+</ion-content>

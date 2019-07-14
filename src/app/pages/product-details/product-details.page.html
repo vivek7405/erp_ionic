@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>Product Details</ion-title>
+    <ion-title>Product Details</ion-title>    
   </ion-toolbar>
 </ion-header>
 
@@ -59,30 +59,12 @@
       <ion-col>
         <ion-item>
           <ion-label>Split Ratio:</ion-label>
-          <ion-input [(ngModel)]="productDetail.SplitRatio"></ion-input>
+          <ion-input type="number" min="0" [(ngModel)]="productDetail.SplitRatio" (ionChange)="splitRatioChanged()">
+          </ion-input>
         </ion-item>
       </ion-col>
     </ion-row>
   </ion-grid>
 
   <ion-button class="default-margin" (click)="addOrUpdateProductDetails()">Add Product</ion-button>
-
-  <ion-grid *ngIf="productDetails && productDetails.length > 0" class="table-margin tbl-border">
-    <ion-row>
-      <ion-col class="th-td-margin col-header tbl-border">Input Code</ion-col>
-      <ion-col class="th-td-margin col-header tbl-border">Input Material Description</ion-col>
-      <ion-col class="th-td-margin col-header tbl-border">Output Code</ion-col>
-      <ion-col class="th-td-margin col-header tbl-border">Output Material Description</ion-col>
-      <ion-col class="th-td-margin col-header tbl-border">Project Name</ion-col>
-      <ion-col class="th-td-margin col-header tbl-border">Split Ratio</ion-col>
-    </ion-row>
-    <ion-row *ngFor="let productDetail of productDetails">
-      <ion-col class="th-td-margin tbl-border">{{productDetail.InputCode}}</ion-col>
-      <ion-col class="th-td-margin tbl-border">{{productDetail.InputMaterialDesc}}</ion-col>
-      <ion-col class="th-td-margin tbl-border">{{productDetail.OutputCode}}</ion-col>
-      <ion-col class="th-td-margin tbl-border">{{productDetail.OutputMaterialDesc}}</ion-col>
-      <ion-col class="th-td-margin tbl-border">{{productDetail.ProjectName}}</ion-col>
-      <ion-col class="th-td-margin tbl-border">{{productDetail.SplitRatio}}</ion-col>
-    </ion-row>
-  </ion-grid>
 </ion-content>

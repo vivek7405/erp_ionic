@@ -1,8 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { OutStockModel } from 'src/app/models/OutStockModel';
 import { ModalController, PopoverController } from '@ionic/angular';
-import { BasfChallanDeductionComponent } from '../basf-challan-deduction/basf-challan-deduction.component';
-import { ChallanDeductionModel } from 'src/app/models/ChallanDeductionModel';
 
 @Component({
   selector: 'app-view-deduction-buttons',
@@ -17,6 +14,10 @@ export class ViewDeductionButtonsComponent implements OnInit {
 
   public async viewBASFChallans() {
     await this.popoverController.dismiss(true);   //true = BASF Challan   //false = BASF PO
+  }
+
+  public async viewBASFPOs() {
+    await this.popoverController.dismiss(false);   //true = BASF Challan   //false = BASF PO
   }
 
   // async dismissPopover() {

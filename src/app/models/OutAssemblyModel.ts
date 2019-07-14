@@ -1,12 +1,12 @@
 import { IonDatetime } from '@ionic/angular';
 import { OutStockModel } from './OutStockModel';
-import { AccChallanDeductionModel } from './AccChallanDeductionModel';
 import { BASFChallanSelection } from './BASFChallanSelection';
-import { AccPODeductionModel } from './AccPODeductionModel';
+import { AssemblyChallanDeductionModel } from './AssemblyChallanDeductionModel';
+import { AssemblyPODeductionModel } from './AssemblyPODeductionModel';
 import { BASFPOSelection } from './BASFPOSelection';
 
-export class OutAccModel {
-    public OutAccId: number;
+export class OutAssemblyModel {
+    public OutAssemblyId: number;
     public OutStockId: number;
     public OutputQuantity: number;
     public CreateDate: IonDatetime;
@@ -15,8 +15,8 @@ export class OutAccModel {
     public ProductId: number;
 
     public OutStock: OutStockModel;
-    public AccChallanDeductions: AccChallanDeductionModel[];
-    public AccPODeductions: AccPODeductionModel[];
+    public AssemblyChallanDeductions: AssemblyChallanDeductionModel[];
+    public AssemblyPODeductions: AssemblyPODeductionModel[];
 
     public basfChallanSelection: BASFChallanSelection[];
     public basfPOSelection: BASFPOSelection[];

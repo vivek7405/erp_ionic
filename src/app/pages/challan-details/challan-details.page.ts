@@ -17,6 +17,8 @@ export class ChallanDetailsPage implements OnInit {
   public productDetails: ProductDetail[];
   public challanDetail: ChallanDetail;
 
+  public isPO: boolean = false;
+
   constructor(public generalService: GeneralService, public toastCtrl: ToastController) { }
 
   ngOnInit() {
@@ -38,20 +40,97 @@ export class ChallanDetailsPage implements OnInit {
       );
   }
 
+  public inputQntChanged(challanProduct: ChallanProduct) {
+    if (challanProduct.InputQuantity < 0) {
+      setTimeout(x => {
+        challanProduct.InputQuantity = 0;
+      }, 1);
+    }
+  }
+
   public submitChallanDetails() {
     let challanDetailModel: ChallanDetailModel = new ChallanDetailModel();
     challanDetailModel.ChallanDetail = this.challanDetail;
     challanDetailModel.ChallanProducts = this.challanProducts;
 
-    this.generalService.addOrUpdateChallan(challanDetailModel)
-      .subscribe(
-        result => {
-          this.generalService.toast(this.toastCtrl, 'Challan Detail added successfully.');
-        },
-        error => {
-          alert('Something went wrong!');
-        }
-      );
+    if (this.isChallanNoEmpty()) {
+      if (this.isPO)
+        alert('Please enter PO Number.');
+      else
+        alert('Please enter Challan Number.');
+    } else if (this.isChallanDateEmpty()) {
+      if (this.isPO)
+        alert('Please enter PO Date.');
+      else
+        alert('Please enter Challan Date.');
+    } else if (this.isInputQntZero()) {
+      alert('Please enter a valid Input Quantity.');
+    } else if (this.isProductDuplicate()) {
+      alert('There are duplicate products selected!');
+    } else {
+      if (confirm('Are you sure you want to Submit?')) {
+        challanDetailModel.isPO = this.isPO;
+
+        let successMsg = 'BASF Challan added successfully.';
+        if (this.isPO)
+          successMsg = 'BASF PO added successfully.';
+
+        this.generalService.addOrUpdateChallan(challanDetailModel)
+          .subscribe(
+            result => {
+              this.generalService.toast(this.toastCtrl, successMsg);
+            },
+            error => {
+              alert('Something went wrong!');
+            }
+          );
+      }
+    }
+  }
+
+  private isChallanNoEmpty() {
+    debugger;
+    if (this.challanDetail.ChallanNo == undefined || this.challanDetail.ChallanNo == null) {
+      return true;
+    } else if (this.challanDetail.ChallanNo != undefined && this.challanDetail.ChallanNo != null && this.challanDetail.ChallanNo.trim() == "") {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  private isChallanDateEmpty() {
+    if (this.challanDetail.ChallanDate == undefined || this.challanDetail.ChallanDate == null) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  private isInputQntZero() {
+    let isZero = false;
+
+    this.challanProducts.forEach(challanProduct => {
+      if (challanProduct.InputQuantity == undefined || challanProduct.InputQuantity == null || challanProduct.InputQuantity <= 0) {
+        isZero = true;
+      }
+    });
+
+    return isZero;
+  }
+
+  private isProductDuplicate() {
+    let productIds = [];
+    let duplicate = false;
+
+    this.challanProducts.forEach(challanProduct => {
+      if (productIds.indexOf(challanProduct.ProductId) >= 0) {
+        duplicate = true;
+      }
+      productIds.push(challanProduct.ProductId);
+    });
+
+    return duplicate;
   }
 
   public addChallanProduct() {

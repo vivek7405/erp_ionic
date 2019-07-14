@@ -3,7 +3,12 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>BASF Jobwork Challan Details</ion-title>
+    <ion-title *ngIf="!isPO">BASF Jobwork Challan Details</ion-title>
+    <ion-title *ngIf="isPO">BASF PO Details</ion-title>
+    <ion-buttons slot="end">
+      <ion-label>BASF PO</ion-label>
+      <ion-toggle [(ngModel)]="isPO" (ionChange)="poToggle()"></ion-toggle>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -34,8 +39,8 @@
   </ion-grid>
 </ion-content> -->
 
-<ion-content>
-  <ion-grid>
+<ion-content *ngIf="!isPO">
+  <ion-grid *ngIf="challanDetails">
     <ion-row>
       <ion-col class="col-header tbl-border">Challan No</ion-col>
       <ion-col class="col-header tbl-border">Challan Date</ion-col>
@@ -47,6 +52,24 @@
       <ion-col class="tbl-border">{{challanDetail.ChallanDetail.ChallanDate.split('T')[0]}}</ion-col>
       <ion-col class="tbl-border">{{challanDetail.totalStockIn}}</ion-col>
       <ion-col class="cursor-pointer tbl-border" (click)="showDetails(challanDetail)">Click here to view details
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+<ion-content *ngIf="isPO">
+  <ion-grid *ngIf="poDetails">
+    <ion-row>
+      <ion-col class="col-header tbl-border">PO No</ion-col>
+      <ion-col class="col-header tbl-border">PO Date</ion-col>
+      <ion-col class="col-header tbl-border">Total Stock In</ion-col>
+      <ion-col class="col-header tbl-border">View Details</ion-col>
+    </ion-row>
+    <ion-row *ngFor="let poDetail of poDetails">
+      <ion-col class="tbl-border">{{poDetail.PODetail.PONo}}</ion-col>
+      <ion-col class="tbl-border">{{poDetail.PODetail.PODate.split('T')[0]}}</ion-col>
+      <ion-col class="tbl-border">{{poDetail.totalStockIn}}</ion-col>
+      <ion-col class="cursor-pointer tbl-border" (click)="showPODetails(poDetail)">Click here to view details
       </ion-col>
     </ion-row>
   </ion-grid>

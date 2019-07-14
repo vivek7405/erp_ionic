@@ -1,0 +1,44 @@
+<ion-content>
+  <ion-list>
+    <ion-item>
+      <ion-label class="header-style">
+        BASF PO Selections
+      </ion-label>
+      <ion-button (click)="returnValues()" [disabled]="isDoneButtonDisabled()">Done</ion-button>
+    </ion-item>
+    <ion-item>
+      <ion-label>Total Deduction: {{totalDeduction}} | Yet to deduct:
+        {{outputQuantity - totalDeduction}}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-checkbox [(ngModel)]="isManualPO" (ionChange)="manualSelectionChanged()"></ion-checkbox>
+      <ion-label class="label-margin">Manual Selection</ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col class="grid-header center-align">Selection</ion-col>
+      <ion-col class="grid-header center-align">PO No</ion-col>
+      <ion-col class="grid-header center-align">PO Date</ion-col>
+      <ion-col class="grid-header center-align">Total Qty</ion-col>
+      <ion-col class="grid-header center-align">Deduction</ion-col>
+      <ion-col class="grid-header center-align">Remaining Qty</ion-col>
+    </ion-row>
+    <ion-row *ngFor="let basfPO of basfPOSelection">
+      <ion-col class="center-align padding-10">
+        <ion-checkbox [disabled]="!isManualPO" [(ngModel)]="basfPO.IsChecked" (ionChange)="changeTotalDeduction(basfPO)">
+        </ion-checkbox>
+      </ion-col>
+      <ion-col class="center-align padding-10">{{basfPO.PODetail.PONo}}</ion-col>
+      <ion-col class="center-align padding-10">{{basfPO.PODetail.PODate.split('T')[0]}}</ion-col>
+      <ion-col class="center-align padding-10">{{basfPO.RemainingQuantity}}</ion-col>
+      <ion-col class="center-align padding-10" *ngIf="!isManualPO">{{basfPO.outQuantity}}</ion-col>
+      <ion-col class="center-align padding-10 margin-padding-0" *ngIf="isManualPO">
+        <ion-input type="number" [(ngModel)]="basfPO.outQuantity" (ionChange)="changeTotalDeduction(basfPO)">
+        </ion-input>
+      </ion-col>
+      <ion-col class="center-align padding-10">{{basfPO.RemainingQuantity - basfPO.outQuantity}}</ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

@@ -2,6 +2,9 @@ import { IonDatetime } from '@ionic/angular';
 import { ChallanDeductionModel } from './ChallanDeductionModel';
 import { BASFChallanSelection } from './BASFChallanSelection';
 import { OutAccModel } from './OutAccModel';
+import { OutAssemblyModel } from './OutAssemblyModel';
+import { BASFPOSelection } from './BASFPOSelection';
+import { PODeductionModel } from './PODeductionModel';
 
 export class OutStockModel {
   public OutStockId: number;
@@ -11,11 +14,18 @@ export class OutStockModel {
   public EditDate: IonDatetime;
   public ProductId: number;
   public ChallanDeductions: ChallanDeductionModel[];
+  public PODeductions: PODeductionModel[];
 
   public OutAccs: OutAccModel[] = [];
+  public OutAssemblys: OutAssemblyModel[] = [];
 
   public basfChallanSelection: BASFChallanSelection[];
+  public basfPOSelection: BASFPOSelection[];
+  
   public isManual: boolean;
+  public isManualPO: boolean;
 
-  public inputQntSum: number;
+  public mainQntSum: number;
+  public assemblyQntSum: number;
+  public accQntSum: number;
 }

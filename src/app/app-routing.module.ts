@@ -17,7 +17,9 @@ const routes: Routes = [
   { path: 'create-vendor-challan', loadChildren: './pages/create-vendor-challan/create-vendor-challan.module#CreateVendorChallanPageModule' },
   { path: 'view-vendor-challan', loadChildren: './pages/view-vendor-challan/view-vendor-challan.module#ViewVendorChallanPageModule' },
   { path: 'vendor-challan-info', loadChildren: './pages/vendor-challan-info/vendor-challan-info.module#VendorChallanInfoPageModule' },
-  { path: 'view-challan-detail-info', loadChildren: './pages/view-challan-detail-info/view-challan-detail-info.module#ViewChallanDetailInfoPageModule' }
+  { path: 'view-challan-detail-info', loadChildren: './pages/view-challan-detail-info/view-challan-detail-info.module#ViewChallanDetailInfoPageModule' },
+  { path: 'view-product-details', loadChildren: './pages/view-product-details/view-product-details.module#ViewProductDetailsPageModule' },
+  { path: 'product-mappings', loadChildren: './pages/product-mappings/product-mappings.module#ProductMappingsPageModule' }
 ];
 
 @NgModule({

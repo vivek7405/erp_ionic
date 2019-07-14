@@ -21,13 +21,29 @@ export class VendorChallanInfoPage implements OnInit {
         .subscribe(
           result => {
             this.vendorChallan = result;
-
             this.vendorChallan.outputQuantity = 0;
+
             this.vendorChallan.OutStocks.forEach(outStock => {
-              outStock.inputQntSum = 0;
+              outStock.mainQntSum = 0;
+              outStock.assemblyQntSum = 0;
+              outStock.accQntSum = 0;
+
               outStock.ChallanDeductions.forEach(challanDeduction => {
-                outStock.inputQntSum += challanDeduction.OutQuantity;
+                outStock.mainQntSum += challanDeduction.OutQuantity;
               });
+
+              outStock.OutAssemblys.forEach(assembly => {
+                assembly.AssemblyChallanDeductions.forEach(assemblyChallanDeduction => {
+                  outStock.assemblyQntSum += assemblyChallanDeduction.OutQuantity;
+                });
+              });
+
+              outStock.OutAccs.forEach(acc => {
+                acc.AccChallanDeductions.forEach(accChallanDeduction => {
+                  outStock.accQntSum += accChallanDeduction.OutQuantity;
+                });
+              });
+
               this.vendorChallan.outputQuantity += outStock.OutputQuantity;
             });
           },

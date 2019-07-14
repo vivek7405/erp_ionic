@@ -17,39 +17,49 @@ export class AppComponent {
     },
     {
       title: 'Product Details',
-      url: '/product-details',
-      icon: 'list'
-    },
-    {
-      title: 'BASF Jobwork Challan',
       children: [
         {
-          title: 'Add Jobwork Challan',
+          title: 'Add New Product',
+          url: '/product-details',
+          icon: 'add'
+        },
+        {
+          title: 'View Product Details',
+          url: '/view-product-details',
+          icon: 'list'
+        },
+      ]
+    },
+    {
+      title: 'BASF Challan/PO',
+      children: [
+        {
+          title: 'Add BASF Challan/PO',
           url: '/challan-details',
           icon: 'add'
         },
         {
-          title: 'Jobwork Challan Details',
+          title: 'BASF Challan/PO Details',
           url: '/view-challan-details',
           icon: 'list'
         },
       ]
     },
     {
-      title: 'Vibrant Challan',
+      title: 'Vibrant NG/FG Challan',
       children: [
         {
-          title: 'Add Vibrant Challan',
+          title: 'Add Vibrant NG/FG Challan',
           url: '/create-vendor-challan',
           icon: 'add'
         },
         {
-          title: 'Vibrant Challan Details',
+          title: 'Vibrant NG/FG Challan Details',
           url: '/view-vendor-challan',
           icon: 'list'
         },
       ]
-    }    
+    }
   ];
 
   constructor(

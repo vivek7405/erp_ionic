@@ -3,7 +3,12 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>Vibrant Challan Details</ion-title>
+    <ion-title *ngIf="!IsNg">Vibrant FG Challan Details</ion-title>
+    <ion-title *ngIf="IsNg">Vibrant NG Challan Details</ion-title>
+    <ion-buttons slot="end">
+      <ion-label>NG Challans</ion-label>
+      <ion-toggle [(ngModel)]="IsNg" (ionChange)="ngChallansChange()"></ion-toggle>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 

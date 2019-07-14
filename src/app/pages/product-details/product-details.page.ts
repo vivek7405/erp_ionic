@@ -49,6 +49,14 @@ export class ProductDetailsPage implements OnInit {
       );
   }
 
+  public splitRatioChanged() {
+    if (this.productDetail.SplitRatio < 0) {
+      setTimeout(x => {
+        this.productDetail.SplitRatio = 0;
+      }, 1);
+    }
+  }
+
   public addOrUpdateProductDetails() {
     debugger;
     let isProductTypeMain: boolean = this.productDetail.ProductTypeId !== undefined && this.isProductCategoryMain();
@@ -59,23 +67,39 @@ export class ProductDetailsPage implements OnInit {
     let isProjectNameValid = this.productDetail.ProjectName !== undefined && this.productDetail.ProjectName.trim() !== '';
     let isSplitRatioValid = this.productDetail.SplitRatio !== undefined && this.productDetail.SplitRatio !== 0;
 
-    if (this.productDetail.ProductTypeId !== undefined && (!isProductTypeMain && isInputCodeValid && isInputMaterialDescValid) || (isProductTypeMain && isInputCodeValid && isInputMaterialDescValid && isOutputCodeValid && isOutputMaterialDescValid && isProjectNameValid && isSplitRatioValid)) {
-      if (!isProductTypeMain) {
-        this.productDetail.OutputCode = undefined;
-        this.productDetail.OutputMaterialDesc = undefined;
-        this.productDetail.ProjectName = undefined;
-        this.productDetail.SplitRatio = 1;
+    if (this.productDetail.ProductTypeId == undefined || this.productDetail.ProductTypeId == null) {
+      alert('Please select Product Type.');
+    } else if (!isInputCodeValid) {
+      alert('Please enter Input Code.');
+    } else if (!isInputMaterialDescValid) {
+      alert('Please enter Input Material Description.');
+    } else if (isProductTypeMain && !isOutputCodeValid) {
+      alert('Please enter Output Code.');
+    } else if (isProductTypeMain && !isOutputMaterialDescValid) {
+      alert('Please enter Output Material Description.');
+    } else if (isProductTypeMain && !isProjectNameValid) {
+      alert('Please enter Project Name.');
+    } else if (isProductTypeMain && !isSplitRatioValid) {
+      alert('Please enter a valid Split Ratio.');
+    } else {
+      if (confirm('Are you sure you want to add this Product?')) {
+        if (!isProductTypeMain) {
+          this.productDetail.OutputCode = undefined;
+          this.productDetail.OutputMaterialDesc = undefined;
+          this.productDetail.ProjectName = undefined;
+          this.productDetail.SplitRatio = 1;
+        }
+        this.generalService.addOrUpdateProductDetail(this.productDetail)
+          .subscribe(
+            result => {
+              this.generalService.toast(this.toastCtrl, 'Product Details added successfully.');
+              this.getAllProductDetails();
+            },
+            error => {
+              alert(error);
+            }
+          );
       }
-      this.generalService.addOrUpdateProductDetail(this.productDetail)
-        .subscribe(
-          result => {
-            this.generalService.toast(this.toastCtrl, 'Product Details added successfully.');
-            this.getAllProductDetails();
-          },
-          error => {
-            alert(error);
-          }
-        );
     }
   }
 

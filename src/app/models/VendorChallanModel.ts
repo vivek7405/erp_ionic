@@ -9,4 +9,5 @@ export class VendorChallanModel {
     public OutStocks: OutStockModel[];
 
     public outputQuantity: number;
+    public IsNg: boolean;
 }

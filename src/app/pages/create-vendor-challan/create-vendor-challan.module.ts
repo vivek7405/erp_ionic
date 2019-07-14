@@ -8,6 +8,7 @@ import { IonicModule } from '@ionic/angular';
 import { CreateVendorChallanPage } from './create-vendor-challan.page';
 import { BasfChallanDeductionModule } from '../basf-challan-deduction/basf-challan-deduction.module';
 import { ViewDeductionButtonsModule } from '../view-deduction-buttons/view-deduction-buttons.module';
+import { BasfPoDeductionModule } from '../basf-po-deduction/basf-po-deduction.module';
 
 const routes: Routes = [
   {
@@ -22,6 +23,7 @@ const routes: Routes = [
     FormsModule,
     IonicModule,
     BasfChallanDeductionModule,
+    BasfPoDeductionModule,
     ViewDeductionButtonsModule,
     RouterModule.forChild(routes)
   ],

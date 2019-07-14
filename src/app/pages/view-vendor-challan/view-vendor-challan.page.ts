@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 })
 export class ViewVendorChallanPage implements OnInit {
   public vendorChallans: VendorChallanModel[];
+  public IsNg: boolean = false;
 
   constructor(public generalService: GeneralService, public toastCtrl: ToastController, public router: Router) { }
 
@@ -35,6 +36,33 @@ export class ViewVendorChallanPage implements OnInit {
           alert('Some error occurred while fetching details.');
         }
       );
+  }
+
+  public getAllNgVendorChallans() {
+    this.generalService.getAllNgVendorChallans()
+      .subscribe(
+        result => {
+          this.vendorChallans = result;
+
+          this.vendorChallans.forEach(vendorChallan => {
+            vendorChallan.outputQuantity = 0;
+            vendorChallan.OutStocks.forEach(outStock => {
+              vendorChallan.outputQuantity += outStock.OutputQuantity;
+            });
+          });
+        },
+        error => {
+          alert('Some error occurred while fetching details.');
+        }
+      );
+  }
+
+  public ngChallansChange() {
+    if (this.IsNg) {
+      this.getAllNgVendorChallans();
+    } else {
+      this.getAllVendorChallans();
+    }
   }
 
   public showDetails(vendorChallan: VendorChallanModel) {

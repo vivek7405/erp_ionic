@@ -5,6 +5,8 @@ import { BASFChallanSelection } from 'src/app/models/BASFChallanSelection';
 import { ProductIdModel } from 'src/app/models/ProductIdModel';
 import { ModalController } from '@ionic/angular';
 import { OutAccModel } from 'src/app/models/OutAccModel';
+import { OutAssemblyModel } from 'src/app/models/OutAssemblyModel';
+import { BASFPOSelection } from 'src/app/models/BASFPOSelection';
 
 @Component({
   selector: 'app-basf-challan-deduction',
@@ -14,6 +16,8 @@ import { OutAccModel } from 'src/app/models/OutAccModel';
 export class BasfChallanDeductionComponent implements OnInit {
   @Input() public outStock: OutStockModel;
   @Input() public outAcc: OutAccModel;
+  @Input() public outAssembly: OutAssemblyModel;
+
   public basfChallanSelection: BASFChallanSelection[];
   public totalDeduction: number = 0;
   public isManual: boolean;
@@ -24,14 +28,18 @@ export class BasfChallanDeductionComponent implements OnInit {
 
   ngOnInit() {
     debugger;
-    if (this.outAcc == null) {    // Out Stock
+    if (this.outAcc == null && this.outAssembly == null) {    // Out Stock
       this.productId = this.outStock.ProductId;
       this.outputQuantity = this.outStock.OutputQuantity;
       this.initiateOutStockDeductions();
-    } else {    // Out Accessory
+    } else if (this.outAssembly == null) {    // Out Accessory
       this.productId = this.outAcc.ProductId;
       this.outputQuantity = this.outAcc.OutputQuantity;
       this.initiateOutAccDeductions();
+    } else if (this.outAcc == null) {    // Out Assembly
+      this.productId = this.outAssembly.ProductId;
+      this.outputQuantity = this.outAssembly.OutputQuantity;
+      this.initiateOutAssemblyDeductions();
     }
   }
 
@@ -43,7 +51,7 @@ export class BasfChallanDeductionComponent implements OnInit {
           totalOutQty = totalOutQty + challan.outQuantity;
       });
 
-      if (this.outputQuantity == totalOutQty)
+      if (this.outputQuantity == totalOutQty && this.outStock.basfChallanSelection[0].ChallanProduct.ProductId == this.productId)
         this.basfChallanSelection = this.outStock.basfChallanSelection;
       else {
         this.outStock.isManual = false;
@@ -66,7 +74,7 @@ export class BasfChallanDeductionComponent implements OnInit {
           totalOutQty = totalOutQty + challan.outQuantity;
       });
 
-      if (this.outAcc.OutputQuantity == totalOutQty)
+      if (this.outAcc.OutputQuantity == totalOutQty && this.outAcc.basfChallanSelection[0].ChallanProduct.ProductId == this.productId)
         this.basfChallanSelection = this.outAcc.basfChallanSelection;
       else {
         this.outAcc.isManual = false;
@@ -79,6 +87,29 @@ export class BasfChallanDeductionComponent implements OnInit {
 
     this.totalDeduction = this.outAcc.OutputQuantity;
     this.isManual = this.outAcc.isManual;
+  }
+
+  public initiateOutAssemblyDeductions() {
+    if (this.outAssembly.basfChallanSelection != null && this.outAssembly.basfChallanSelection.length > 0) {
+      let totalOutQty = 0;
+      this.outAssembly.basfChallanSelection.forEach(challan => {
+        if (challan.IsChecked)
+          totalOutQty = totalOutQty + challan.outQuantity;
+      });
+
+      if (this.outAssembly.OutputQuantity == totalOutQty && this.outAssembly.basfChallanSelection[0].ChallanProduct.ProductId == this.productId)
+        this.basfChallanSelection = this.outAssembly.basfChallanSelection;
+      else {
+        this.outAssembly.isManual = false;
+        this.getAllBASFChallanByProductIdForViewing(this.outAssembly.ProductId);
+      }
+    } else {
+      this.outAssembly.isManual = false;
+      this.getAllBASFChallanByProductIdForViewing(this.outAssembly.ProductId);
+    }
+
+    this.totalDeduction = this.outAssembly.OutputQuantity;
+    this.isManual = this.outAssembly.isManual;
   }
 
   public getAllBASFChallanByProductIdForViewing(productId: number) {
@@ -167,10 +198,12 @@ export class BasfChallanDeductionComponent implements OnInit {
   }
 
   public returnValues() {
-    if (this.outAcc == null) {    // Out Stock
+    if (this.outAcc == null && this.outAssembly == null) {    // Out Stock
       this.outStock.isManual = this.isManual;
-    } else {    // Out Accessory
+    } else if (this.outAssembly == null) {    // Out Accessory
       this.outAcc.isManual = this.isManual;
+    } else if (this.outAcc == null) {    // Out Assembly
+      this.outAssembly.isManual = this.isManual;
     }
 
     this.modalCtrl.dismiss(this.basfChallanSelection);
