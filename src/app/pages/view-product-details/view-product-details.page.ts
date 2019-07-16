@@ -11,10 +11,31 @@ import { Router } from '@angular/router';
 })
 export class ViewProductDetailsPage implements OnInit {
   public productDetails: ProductDetail[];
+  public columnDefs: any;
+
+  public gridOptions: any;
 
   constructor(public generalService: GeneralService, public toastCtrl: ToastController, public router: Router) { }
 
   ngOnInit() {
+    this.columnDefs = [
+      { headerName: 'Input Code', field: 'InputCode', sortable: true, filter: true },
+      { headerName: 'Input Material Description', field: 'InputMaterialDesc', sortable: true, filter: true },
+      { headerName: 'Output Code', field: 'OutputCode', sortable: true, filter: true },
+      { headerName: 'Output Material Description', field: 'OutputMaterialDesc', sortable: true, filter: true },
+      { headerName: 'Project Name', field: 'ProjectName', sortable: true, filter: true },
+      { headerName: 'Split Ratio', field: 'SplitRatio', sortable: true, filter: true }
+    ];
+
+    this.gridOptions = {
+      defaultColDef: {
+        sortable: true,
+        filter: true
+      },
+      pagination: true,
+      paginationAutoPageSize: true
+    };
+
     this.getAllProductDetails();
   }
 
@@ -31,10 +52,19 @@ export class ViewProductDetailsPage implements OnInit {
       );
   }
 
-  public redirectToProductMappings(productDetail: ProductDetail) {
+  // public redirectToProductMappings(productDetail: ProductDetail) {
+  //   this.router.navigate(['/product-mappings'], {
+  //     queryParams: {
+  //       productId: productDetail.ProductId
+  //     }
+  //   });
+  // }
+
+  public redirectToProductMappings(event: any) {
+    debugger;
     this.router.navigate(['/product-mappings'], {
       queryParams: {
-        productId: productDetail.ProductId
+        productId: event.data.ProductId
       }
     });
   }

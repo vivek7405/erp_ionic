@@ -6,6 +6,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { ViewProductDetailsPage } from './view-product-details.page';
+import { AgGridModule } from 'ag-grid-angular';
 
 const routes: Routes = [
   {
@@ -19,8 +20,9 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    AgGridModule.withComponents([])
   ],
   declarations: [ViewProductDetailsPage]
 })
-export class ViewProductDetailsPageModule {}
+export class ViewProductDetailsPageModule { }

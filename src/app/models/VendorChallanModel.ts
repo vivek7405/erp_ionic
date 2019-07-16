@@ -3,7 +3,7 @@ import { OutStockModel } from './OutStockModel';
 
 export class VendorChallanModel {
     public VendorChallanNo: number;
-    public VendorChallanDate: IonDatetime;
+    public VendorChallanDate: any;
     public CreateDate: IonDatetime;
     public EditDate: IonDatetime;
     public OutStocks: OutStockModel[];

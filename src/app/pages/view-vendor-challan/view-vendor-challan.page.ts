@@ -12,10 +12,27 @@ import { Router } from '@angular/router';
 export class ViewVendorChallanPage implements OnInit {
   public vendorChallans: VendorChallanModel[];
   public IsNg: boolean = false;
+  public columnDefs: any;
+  public gridOptions: any;
 
   constructor(public generalService: GeneralService, public toastCtrl: ToastController, public router: Router) { }
 
   ngOnInit() {
+    this.columnDefs = [
+      { headerName: 'Vibrant Challan No', field: 'VendorChallanNo' },
+      { headerName: 'Vibrant Challan Date', field: 'VendorChallanDate', sortable: true, filter: true },
+      { headerName: 'Total Stock Out', field: 'outputQuantity', sortable: true, filter: true }
+    ];
+
+    this.gridOptions = {
+      defaultColDef: {
+        sortable: true,       
+        filter: true
+      },
+      pagination: true,
+      paginationAutoPageSize: true
+    };
+
     this.getAllVendorChallans();
   }
 
@@ -27,6 +44,7 @@ export class ViewVendorChallanPage implements OnInit {
 
           this.vendorChallans.forEach(vendorChallan => {
             vendorChallan.outputQuantity = 0;
+            vendorChallan.VendorChallanDate = vendorChallan.VendorChallanDate.toString().split('T')[0];
             vendorChallan.OutStocks.forEach(outStock => {
               vendorChallan.outputQuantity += outStock.OutputQuantity;
             });
@@ -46,6 +64,7 @@ export class ViewVendorChallanPage implements OnInit {
 
           this.vendorChallans.forEach(vendorChallan => {
             vendorChallan.outputQuantity = 0;
+            vendorChallan.VendorChallanDate = vendorChallan.VendorChallanDate.toString().split('T')[0];
             vendorChallan.OutStocks.forEach(outStock => {
               vendorChallan.outputQuantity += outStock.OutputQuantity;
             });
@@ -65,10 +84,18 @@ export class ViewVendorChallanPage implements OnInit {
     }
   }
 
-  public showDetails(vendorChallan: VendorChallanModel) {
+  // public showDetails(vendorChallan: VendorChallanModel) {
+  //   this.router.navigate(['/vendor-challan-info'], {
+  //     queryParams: {
+  //       vendorChallanNo: vendorChallan.VendorChallanNo
+  //     }
+  //   });
+  // }
+
+  public showDetails(event) {
     this.router.navigate(['/vendor-challan-info'], {
       queryParams: {
-        vendorChallanNo: vendorChallan.VendorChallanNo
+        vendorChallanNo: event.data.VendorChallanNo
       }
     });
   }

@@ -17,9 +17,35 @@ export class ViewChallanDetailsPage implements OnInit {
 
   public isPO: boolean = false;
 
+  public columnDefsChallan: any;
+  public columnDefsPO: any;
+
+  public gridOptions: any;
+
   constructor(public generalService: GeneralService, public router: Router) { }
 
   ngOnInit() {
+    this.columnDefsChallan = [
+      { headerName: 'Challan No', field: 'ChallanDetail.ChallanNo' },
+      { headerName: 'Challan Date', field: 'ChallanDetail.ChallanDate' },
+      { headerName: 'Total Stock In', field: 'totalStockIn' }
+    ];
+
+    this.columnDefsPO = [
+      { headerName: 'PO No', field: 'PODetail.PONo' },
+      { headerName: 'PO Date', field: 'PODetail.PODate' },
+      { headerName: 'Total Stock In', field: 'totalStockIn' }
+    ];
+
+    this.gridOptions = {
+      defaultColDef: {
+        sortable: true,
+        filter: true
+      },
+      pagination: true,
+      paginationAutoPageSize: true
+    };
+
     this.getAllChallanDetails();
   }
 
@@ -40,6 +66,7 @@ export class ViewChallanDetailsPage implements OnInit {
 
           this.challanDetails.forEach(challanDetail => {
             challanDetail.totalStockIn = 0;
+            challanDetail.ChallanDetail.ChallanDate = challanDetail.ChallanDetail.ChallanDate.toString().split('T')[0];
             challanDetail.ChallanProducts.forEach(challanProduct => {
               challanDetail.totalStockIn += challanProduct.ChallanProduct.InputQuantity;
             });
@@ -60,6 +87,7 @@ export class ViewChallanDetailsPage implements OnInit {
 
           this.poDetails.forEach(poDetail => {
             poDetail.totalStockIn = 0;
+            poDetail.PODetail.PODate = poDetail.PODetail.PODate.toString().split('T')[0];
             poDetail.POProducts.forEach(poProduct => {
               poDetail.totalStockIn += poProduct.POProduct.InputQuantity;
             });
@@ -71,18 +99,35 @@ export class ViewChallanDetailsPage implements OnInit {
       );
   }
 
-  public showDetails(challanDetail: ViewChallanDetailModel) {
+  // public showDetails(challanDetail: ViewChallanDetailModel) {
+  //   this.router.navigate(['/view-challan-detail-info'], {
+  //     queryParams: {
+  //       challanId: challanDetail.ChallanDetail.ChallanId
+  //     }
+  //   });
+  // }
+
+  // public showPODetails(poDetail) {
+  //   this.router.navigate(['/view-challan-detail-info'], {
+  //     queryParams: {
+  //       poId: poDetail.PODetail.POId
+  //     }
+  //   });
+  // }
+
+  public showDetails(event) {
+    debugger;
     this.router.navigate(['/view-challan-detail-info'], {
       queryParams: {
-        challanId: challanDetail.ChallanDetail.ChallanId
+        challanId: event.data.ChallanDetail.ChallanId
       }
     });
   }
 
-  public showPODetails(poDetail) {
+  public showPODetails(event) {
     this.router.navigate(['/view-challan-detail-info'], {
       queryParams: {
-        poId: poDetail.PODetail.POId
+        poId: event.data.PODetail.POId
       }
     });
   }

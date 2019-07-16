@@ -8,7 +8,7 @@
 </ion-header>
 
 <ion-content>
-  <ion-grid *ngIf="productDetails && productDetails.length > 0">
+  <!-- <ion-grid *ngIf="productDetails && productDetails.length > 0">
     <ion-row>
       <ion-col class="th-td-margin col-header tbl-border">Input Code</ion-col>
       <ion-col class="th-td-margin col-header tbl-border">Input Material Description</ion-col>
@@ -25,7 +25,13 @@
       <ion-col class="th-td-margin tbl-border">{{productDetail.OutputMaterialDesc}}</ion-col>
       <ion-col class="th-td-margin tbl-border">{{productDetail.ProjectName}}</ion-col>
       <ion-col class="th-td-margin tbl-border">{{productDetail.SplitRatio}}</ion-col>
-      <ion-col class="th-td-margin tbl-border cursor-pointer" (click)="redirectToProductMappings(productDetail)">Add/View Product Mappings</ion-col>
+      <ion-col class="th-td-margin tbl-border cursor-pointer" (click)="redirectToProductMappings(productDetail)">
+        Add/View Product Mappings</ion-col>
     </ion-row>
-  </ion-grid>
+  </ion-grid> -->
+
+  <ag-grid-angular *ngIf="productDetails && productDetails.length > 0" style="width: 100%; height: 100%;"
+    [gridOptions]="gridOptions" class="ag-theme-balham" [rowData]="productDetails" [columnDefs]="columnDefs"
+    (rowDoubleClicked)="redirectToProductMappings($event)">
+  </ag-grid-angular>
 </ion-content>
