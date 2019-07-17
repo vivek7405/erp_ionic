@@ -13,6 +13,7 @@ export class OutStockModel {
   public CreateDate: IonDatetime;
   public EditDate: IonDatetime;
   public ProductId: number;
+  public SplitRatio: number;
   public ChallanDeductions: ChallanDeductionModel[];
   public PODeductions: PODeductionModel[];
 

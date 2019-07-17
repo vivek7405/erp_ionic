@@ -34,15 +34,15 @@ export class BasfPoDeductionComponent implements OnInit {
     debugger;
     if (this.outAcc == null && this.outAssembly == null) {    // Out Stock
       this.productId = this.outStock.ProductId;
-      this.outputQuantity = this.outStock.OutputQuantity;
+      this.outputQuantity = Math.ceil(this.outStock.OutputQuantity / this.outStock.SplitRatio);
       this.initiateOutStockDeductions();
     } else if (this.outAssembly == null) {    // Out Accessory
       this.productId = this.outAcc.ProductId;
-      this.outputQuantity = this.outAcc.OutputQuantity;
+      this.outputQuantity = Math.ceil(this.outAcc.OutputQuantity / this.outAcc.SplitRatio);
       this.initiateOutAccDeductions();
     } else if (this.outAcc == null) {    // Out Assembly
       this.productId = this.outAssembly.ProductId;
-      this.outputQuantity = this.outAssembly.OutputQuantity;
+      this.outputQuantity = Math.ceil(this.outAssembly.OutputQuantity / this.outAssembly.SplitRatio);
       this.initiateOutAssemblyDeductions();
     }
   }

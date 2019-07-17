@@ -13,6 +13,7 @@ export class OutAccModel {
     public EditDate: IonDatetime;
 
     public ProductId: number;
+    public SplitRatio: number;
 
     public OutStock: OutStockModel;
     public AccChallanDeductions: AccChallanDeductionModel[];
@@ -20,7 +21,7 @@ export class OutAccModel {
 
     public basfChallanSelection: BASFChallanSelection[];
     public basfPOSelection: BASFPOSelection[];
-    
+
     public isManual: boolean;
     public isManualPO: boolean;
 }

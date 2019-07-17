@@ -1,6 +1,7 @@
 export class ProductQuantity {
     public ProductId: number;
     public ProductName: string;
+    public SplitRatio: number;
     public RemainingQuantity: number;
     public RemainingQuantityPO: number;
 

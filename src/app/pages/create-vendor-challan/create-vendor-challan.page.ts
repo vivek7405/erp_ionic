@@ -394,10 +394,19 @@ export class CreateVendorChallanPage implements OnInit {
           .subscribe(
             result => {
               this.generalService.toast(this.toastCtrl, 'Vibrant Challan saved successfully.');
-              this.vendorChallan = new VendorChallanModel();
-              this.vendorChallan.OutStocks = [];
-              this.vendorChallan.OutStocks.push(new OutStockModel());
-              this.getMainProductRemainingQuantity();
+              this.generalService.getMainProductRemainingQuantity()
+                .subscribe(
+                  result => {
+                    debugger;
+                    this.productQnts = result;
+                    this.vendorChallan = new VendorChallanModel();
+                    this.vendorChallan.OutStocks = [];
+                    this.vendorChallan.OutStocks.push(new OutStockModel());
+                  },
+                  error => {
+                    alert('Something went wrong!');
+                  }
+                );
             },
             error => {
               alert('Something went wrong!');
@@ -570,16 +579,22 @@ export class CreateVendorChallanPage implements OnInit {
   public outStockProductSelected(outStock: OutStockModel) {
     debugger;
     outStock.OutAssemblys = [];
-    let productId: number = outStock.ProductId;
-    let productQnt: ProductQuantity = this.productQnts.find(x => x.ProductId == productId);
+    let productQnt: ProductQuantity = this.productQnts.find(x => x.ProductId == outStock.ProductId);
+    outStock.SplitRatio = productQnt.SplitRatio;
 
     productQnt.AssemblyProductQnts.forEach(assemblyProduct => {
       let outAssemblyModel = new OutAssemblyModel();
       outAssemblyModel.ProductId = assemblyProduct.ProductId;
+      outAssemblyModel.SplitRatio = assemblyProduct.SplitRatio;
       outStock.OutAssemblys.push(outAssemblyModel);
     });
 
     this.mainOutQntChanged(outStock);
+  }
+
+  public outAccProductSelected(outAcc: OutAccModel) {
+    let productAccQnt: ProductQuantity = this.productAccQnts.find(x => x.ProductId == outAcc.ProductId);
+    outAcc.SplitRatio = productAccQnt.SplitRatio;
   }
 
   public changeToNg() {

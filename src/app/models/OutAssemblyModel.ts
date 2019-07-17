@@ -13,6 +13,7 @@ export class OutAssemblyModel {
     public EditDate: IonDatetime;
 
     public ProductId: number;
+    public SplitRatio: number;
 
     public OutStock: OutStockModel;
     public AssemblyChallanDeductions: AssemblyChallanDeductionModel[];
@@ -20,7 +21,7 @@ export class OutAssemblyModel {
 
     public basfChallanSelection: BASFChallanSelection[];
     public basfPOSelection: BASFPOSelection[];
-    
+
     public isManual: boolean;
     public isManualPO: boolean;
 }
