@@ -2,14 +2,13 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-
-import { ProductMappingsPage } from './product-mappings.page';
 import { RouterModule, Routes } from '@angular/router';
+import { EditdeleteComponent } from './editdelete.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: ProductMappingsPage
+    component: EditdeleteComponent
   }
 ];
 
@@ -20,6 +19,6 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [ProductMappingsPage]
+  declarations: [EditdeleteComponent]
 })
-export class ProductMappingsPageModule { }
+export class EditdeleteModule { }

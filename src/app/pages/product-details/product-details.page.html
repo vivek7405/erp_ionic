@@ -1,9 +1,16 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
+      <ion-menu-button *ngIf="!isEdit"></ion-menu-button>
+      <ion-back-button *ngIf="isEdit"></ion-back-button>
     </ion-buttons>
-    <ion-title>Product Details</ion-title>    
+    <ion-title *ngIf="!isEdit">Add Product Details</ion-title>
+    <ion-title *ngIf="isEdit">Edit Product Details</ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="solid" color="primary" title="Submit Product Details" (click)="addOrUpdateProductDetails()">
+        Submit
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -13,7 +20,7 @@
       <ion-col>
         <ion-item *ngIf="productTypes && productTypes.length > 0">
           <ion-label>Product Type:</ion-label>
-          <ion-select [(ngModel)]="productDetail.ProductTypeId">
+          <ion-select [disabled]="isEdit" [(ngModel)]="productDetail.ProductTypeId">
             <ion-select-option *ngFor="let productType of productTypes" [value]="productType.ProductTypeId">
               {{productType.ProductTypeName}}
             </ion-select-option>
@@ -66,5 +73,5 @@
     </ion-row>
   </ion-grid>
 
-  <ion-button class="default-margin" (click)="addOrUpdateProductDetails()">Add Product</ion-button>
+  <!-- <ion-button class="default-margin" (click)="addOrUpdateProductDetails()">Add Product</ion-button> -->
 </ion-content>

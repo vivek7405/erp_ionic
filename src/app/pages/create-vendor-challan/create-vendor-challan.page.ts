@@ -37,6 +37,8 @@ export class CreateVendorChallanPage implements OnInit {
   public basfChallanSelection: BASFChallanSelection[];
   private outStockCount = 0;
   public IsNg: boolean = false;
+  public selectProductPlaceholder = "Select Product";
+  public selectAccessoryPlaceholder = "Select Accessory";
 
   constructor(public generalService: GeneralService, public toastCtrl: ToastController, private modalController: ModalController, public popoverController: PopoverController) { }
 
@@ -55,6 +57,9 @@ export class CreateVendorChallanPage implements OnInit {
         result => {
           debugger;
           this.productQnts = result;
+          this.productQnts.forEach(prodQnt => {
+            this.setProdQntDisplayTextWithPOQnt(prodQnt);
+          });
         },
         error => {
           alert('Something went wrong!');
@@ -88,12 +93,58 @@ export class CreateVendorChallanPage implements OnInit {
   }
 
   public addOutStock() {
-    this.vendorChallan.OutStocks.push(new OutStockModel());
+    if (this.vendorChallan.OutStocks.length == this.productQnts.length || this.productQnts.length == 0)
+      alert('No more products available in stock!');
+    else
+      this.vendorChallan.OutStocks.push(new OutStockModel());
   }
 
   public addOutAcc(outStock: OutStockModel) {
     if (this.productAccQnts != undefined && this.productAccQnts != null && this.productAccQnts.length > 0) {
-      outStock.OutAccs.push(new OutAccModel());
+      if (outStock.OutAccs.length == this.productAccQnts.length || this.productAccQnts.length == 0)
+        alert('No more accessories available in stock!');
+      else {
+        debugger;
+        let outAcc = new OutAccModel();
+        outAcc.productAccQnts = [];
+
+        this.productAccQnts.forEach(accQnt => {
+          debugger;
+          let accProdQnt = new ProductQuantity();
+          accProdQnt.ProductId = accQnt.ProductId;
+          accProdQnt.ProductName = accQnt.ProductName;
+          accProdQnt.RemainingQuantity = accQnt.RemainingQuantity;
+          accProdQnt.RemainingQuantityPO = accQnt.RemainingQuantityPO;
+          accProdQnt.SplitRatio = accQnt.SplitRatio;
+          accProdQnt.totalOutQnt = accQnt.totalOutQnt;
+
+          if (this.vendorChallan.OutStocks.length > 1) {
+            let initialRemainingQnt = accQnt.RemainingQuantity;
+            //let initialRemainingQntPO = accQnt.RemainingQuantityPO;
+
+            let totalProductAccOutQnt = 0;
+            this.vendorChallan.OutStocks.forEach(x => {
+              debugger;
+              if (x != outStock) {
+                let xOutAcc = x.OutAccs.find(p => p.ProductId == accQnt.ProductId);
+                if (xOutAcc != undefined && xOutAcc != null) {
+                  if (xOutAcc.OutputQuantity != undefined && xOutAcc.OutputQuantity != null)
+                    totalProductAccOutQnt += xOutAcc.OutputQuantity;
+                }
+              }
+            });
+
+            //let productAccQnt = outAcc.productAccQnts.find(q => q.ProductId == outAcc.ProductId);
+            accProdQnt.RemainingQuantity = initialRemainingQnt - totalProductAccOutQnt;
+            //accProdQnt.RemainingQuantityPO = initialRemainingQntPO - totalProductAccOutQnt;
+          }
+
+          this.setProdQntDisplayTextWithoutPOQnt(accProdQnt);
+          outAcc.productAccQnts.push(accProdQnt);
+        });
+
+        outStock.OutAccs.push(outAcc);
+      }
     } else {
       alert('No accessories available in stock!');
     }
@@ -103,7 +154,7 @@ export class CreateVendorChallanPage implements OnInit {
     debugger;
     const modal = await this.modalController.create({
       component: BasfChallanDeductionComponent,
-      componentProps: { outStock: outStock, outAcc: outAcc, outAssembly: outAssembly },
+      componentProps: { outStock: outStock, outAcc: outAcc, outAssembly: outAssembly, outStocks: this.vendorChallan.OutStocks },
       backdropDismiss: false
     });
 
@@ -162,7 +213,7 @@ export class CreateVendorChallanPage implements OnInit {
     debugger;
     const modal = await this.modalController.create({
       component: BasfPoDeductionComponent,
-      componentProps: { outStock: outStock, outAcc: outAcc, outAssembly: outAssembly },
+      componentProps: { outStock: outStock, outAcc: outAcc, outAssembly: outAssembly, outStocks: this.vendorChallan.OutStocks },
       backdropDismiss: false
     });
 
@@ -222,29 +273,35 @@ export class CreateVendorChallanPage implements OnInit {
     outStock.basfChallanSelection = [];
     outStock.ChallanDeductions = [];
 
+    outStock.basfPOSelection = [];
+    outStock.PODeductions = [];
+
     if (outStock.ProductId != undefined && outStock.ProductId != null && outStock.ProductId != 0) {
       if (outStock.OutputQuantity > 0) {
         let productQnt = this.productQnts.find(x => x.ProductId == outStock.ProductId);
 
         if (productQnt != undefined && productQnt != null && productQnt.RemainingQuantity != undefined && productQnt.RemainingQuantity != null && productQnt.RemainingQuantity > 0) {
-          let leastAssemblyRemainingQnt = 0;
+          let leastAssemblyRemainingQnt = -1;
 
           if (!this.IsNg && outStock.OutAssemblys != undefined && outStock.OutAssemblys != null && outStock.OutAssemblys.length > 0) {
             outStock.OutAssemblys.forEach(assemblyProduct => {
-              debugger;
-              let assemblyProdQnt = this.productAssemblyQnts.find(x => x.ProductId == assemblyProduct.ProductId);
+              let assemblyProdQnt = assemblyProduct.productAssemblyQnts.find(x => x.ProductId == assemblyProduct.ProductId);
 
-              if (assemblyProdQnt != undefined && assemblyProdQnt != null && assemblyProdQnt.RemainingQuantity != undefined && assemblyProdQnt.RemainingQuantity != null && assemblyProdQnt.RemainingQuantity > 0 && assemblyProdQnt.RemainingQuantityPO != null && assemblyProdQnt.RemainingQuantityPO > 0) {
-                if (leastAssemblyRemainingQnt == 0) {
-                  if (assemblyProdQnt.RemainingQuantity < assemblyProdQnt.RemainingQuantityPO)
-                    leastAssemblyRemainingQnt = assemblyProdQnt.RemainingQuantity;
-                  else
-                    leastAssemblyRemainingQnt = assemblyProdQnt.RemainingQuantityPO;
-                } else if (assemblyProdQnt.RemainingQuantity < leastAssemblyRemainingQnt || assemblyProdQnt.RemainingQuantityPO < leastAssemblyRemainingQnt) {
-                  if (assemblyProdQnt.RemainingQuantity < assemblyProdQnt.RemainingQuantityPO)
-                    leastAssemblyRemainingQnt = assemblyProdQnt.RemainingQuantity;
-                  else
-                    leastAssemblyRemainingQnt = assemblyProdQnt.RemainingQuantityPO;
+              if (assemblyProdQnt != undefined && assemblyProdQnt != null && assemblyProdQnt.RemainingQuantity != undefined && assemblyProdQnt.RemainingQuantity != null) {
+                if (leastAssemblyRemainingQnt == -1) {
+                  // if (assemblyProdQnt.RemainingQuantity < assemblyProdQnt.RemainingQuantityPO)
+                  //   leastAssemblyRemainingQnt = assemblyProdQnt.RemainingQuantity;
+                  // else
+                  //   leastAssemblyRemainingQnt = assemblyProdQnt.RemainingQuantityPO;
+
+                  leastAssemblyRemainingQnt = assemblyProdQnt.RemainingQuantity;
+                } else if (assemblyProdQnt.RemainingQuantity < leastAssemblyRemainingQnt) {
+                  // if (assemblyProdQnt.RemainingQuantity < assemblyProdQnt.RemainingQuantityPO)
+                  //   leastAssemblyRemainingQnt = assemblyProdQnt.RemainingQuantity;
+                  // else
+                  //   leastAssemblyRemainingQnt = assemblyProdQnt.RemainingQuantityPO;
+
+                  leastAssemblyRemainingQnt = assemblyProdQnt.RemainingQuantity;
                 }
               }
             });
@@ -253,7 +310,7 @@ export class CreateVendorChallanPage implements OnInit {
 
           let leastAssignableQnt = 0;
 
-          if (leastAssemblyRemainingQnt == 0) {
+          if (leastAssemblyRemainingQnt == -1) {
             if (productQnt.RemainingQuantity < productQnt.RemainingQuantityPO)
               leastAssignableQnt = productQnt.RemainingQuantity;
             else
@@ -271,7 +328,8 @@ export class CreateVendorChallanPage implements OnInit {
 
           if (outStock.OutputQuantity > leastAssignableQnt) {
             setTimeout(x => {
-              outStock.OutputQuantity = leastAssignableQnt;
+              //outStock.OutputQuantity = leastAssignableQnt;
+              outStock.OutputQuantity = 0;
 
               if (outStock.OutAssemblys != undefined && outStock.OutAssemblys != null && outStock.OutAssemblys.length > 0) {
                 outStock.OutAssemblys.forEach(assemblyProduct => {
@@ -289,7 +347,7 @@ export class CreateVendorChallanPage implements OnInit {
             }, 1);
           }
         }
-      } else if (outStock.OutputQuantity < 0) {
+      } else if (outStock.OutputQuantity <= 0) {
         setTimeout(x => {
           outStock.OutputQuantity = 0;
 
@@ -304,8 +362,12 @@ export class CreateVendorChallanPage implements OnInit {
   }
 
   public assemblyOutQntChanged(outAssembly: OutAssemblyModel, outStock: OutStockModel) {
+    debugger;
     outAssembly.basfChallanSelection = [];
     outAssembly.AssemblyChallanDeductions = [];
+
+    outAssembly.basfPOSelection = [];
+    outAssembly.AssemblyPODeductions = [];
 
     if (outAssembly.OutputQuantity > 0) {
       let assemblyProdQnt = this.productAssemblyQnts.find(x => x.ProductId == outAssembly.ProductId);
@@ -314,8 +376,7 @@ export class CreateVendorChallanPage implements OnInit {
         if (outAssembly.OutputQuantity > assemblyProdQnt.RemainingQuantity) {
           setTimeout(x => {
             outAssembly.OutputQuantity = assemblyProdQnt.RemainingQuantity;
-
-            outStock.OutputQuantity = outAssembly.OutputQuantity;
+            // outStock.OutputQuantity = outAssembly.OutputQuantity;
 
             if (outStock.OutAssemblys != undefined && outStock.OutAssemblys != null && outStock.OutAssemblys.length > 0) {
               outStock.OutAssemblys.forEach(assemblyProduct => {
@@ -325,7 +386,7 @@ export class CreateVendorChallanPage implements OnInit {
           }, 1);
         } else {
           setTimeout(x => {
-            outStock.OutputQuantity = outAssembly.OutputQuantity;
+            // outStock.OutputQuantity = outAssembly.OutputQuantity;
 
             if (outStock.OutAssemblys != undefined && outStock.OutAssemblys != null && outStock.OutAssemblys.length > 0) {
               outStock.OutAssemblys.forEach(assemblyProduct => {
@@ -338,7 +399,7 @@ export class CreateVendorChallanPage implements OnInit {
     } else if (outAssembly.OutputQuantity < 0) {
       setTimeout(x => {
         outAssembly.OutputQuantity = 0;
-        outStock.OutputQuantity = outAssembly.OutputQuantity;
+        // outStock.OutputQuantity = outAssembly.OutputQuantity;
 
         if (outStock.OutAssemblys != undefined && outStock.OutAssemblys != null && outStock.OutAssemblys.length > 0) {
           outStock.OutAssemblys.forEach(assemblyProduct => {
@@ -347,30 +408,81 @@ export class CreateVendorChallanPage implements OnInit {
         }
       }, 1);
     }
+
+
+    // let outStockIndex = this.vendorChallan.OutStocks.findIndex(x => x.ProductId == outStock.ProductId);
+    // let loopIndex = 0;
+    // this.vendorChallan.OutStocks.forEach(x => {
+    //   if (loopIndex > outStockIndex) {
+    //     let prevOutAssembly = this.vendorChallan.OutStocks[loopIndex - 1].OutAssemblys.find(p => p.OutAssemblyId == outAssembly.OutAssemblyId);
+    //     let prevProductAssemblyQnt = prevOutAssembly.productAssemblyQnts.find(k => k.ProductId == prevOutAssembly.ProductId);
+
+    //     let curOutAssembly = x.OutAssemblys.find(p => p.OutAssemblyId == outAssembly.OutAssemblyId);
+    //     if (curOutAssembly != undefined && curOutAssembly != null) {
+    //       let curProductAssemblyQnt = curOutAssembly.productAssemblyQnts.find(k => k.ProductId == curOutAssembly.ProductId);
+
+    //       curProductAssemblyQnt.RemainingQuantity = prevProductAssemblyQnt.RemainingQuantity - prevOutAssembly.OutputQuantity;
+    //       curProductAssemblyQnt.RemainingQuantityPO = prevProductAssemblyQnt.RemainingQuantityPO - prevOutAssembly.OutputQuantity;
+
+    //       x.OutputQuantity = 0;
+    //       curOutAssembly.OutputQuantity = 0;
+
+    //       setTimeout(t1 => {
+    //         curOutAssembly.ProductId = 0;
+
+    //         setTimeout(t2 => {
+    //           curOutAssembly.ProductId = outAssembly.ProductId;
+    //         }, 1);
+    //       }, 1);
+    //     }
+    //   }
+
+    //   loopIndex++;
+    // });
+
+    let outStockIndex = this.vendorChallan.OutStocks.findIndex(x => x.ProductId == outStock.ProductId);
+    this.reCalculateAssemblyRemainingQnts(outStockIndex);
   }
 
-  public accOutQntChanged(outAcc: OutAccModel) {
+  public accOutQntChanged(outAcc: OutAccModel, outStockIndex: number) {
+    debugger;
     outAcc.basfChallanSelection = [];
     outAcc.AccChallanDeductions = [];
 
-    if (outAcc.OutputQuantity > 0) {
-      let accProdQnt = this.productAccQnts.find(x => x.ProductId == outAcc.ProductId);
+    outAcc.basfPOSelection = [];
+    outAcc.AccPODeductions = [];
 
-      if (accProdQnt != undefined && accProdQnt != null && accProdQnt.RemainingQuantity != undefined && accProdQnt.RemainingQuantity != null && accProdQnt.RemainingQuantity > 0 && accProdQnt.RemainingQuantityPO != null && accProdQnt.RemainingQuantityPO > 0) {
-        if (outAcc.OutputQuantity > accProdQnt.RemainingQuantity || outAcc.OutputQuantity > accProdQnt.RemainingQuantityPO) {
+    if (outAcc.OutputQuantity > 0) {
+      let accProdQnt = outAcc.productAccQnts.find(x => x.ProductId == outAcc.ProductId);
+
+      if (accProdQnt != undefined && accProdQnt != null && accProdQnt.RemainingQuantity != undefined && accProdQnt.RemainingQuantity != null) {
+        if (outAcc.OutputQuantity > accProdQnt.RemainingQuantity) {
           setTimeout(x => {
-            if (accProdQnt.RemainingQuantity < accProdQnt.RemainingQuantityPO)
-              outAcc.OutputQuantity = accProdQnt.RemainingQuantity;
-            else
-              outAcc.OutputQuantity = accProdQnt.RemainingQuantityPO;
+            // if (accProdQnt.RemainingQuantity < accProdQnt.RemainingQuantityPO)
+            //   outAcc.OutputQuantity = accProdQnt.RemainingQuantity;
+            // else
+            //   outAcc.OutputQuantity = accProdQnt.RemainingQuantityPO;
+
+            outAcc.OutputQuantity = 0;
           }, 1);
         }
       }
-    } else if (outAcc.OutputQuantity < 0) {
+    } else if (outAcc.OutputQuantity <= 0) {
       setTimeout(x => {
         outAcc.OutputQuantity = 0;
       }, 1);
     }
+
+    this.reCalculateAccRemainingQnts(outStockIndex);
+  }
+
+  public basfChallanOrPOSelectionDone(obj) {
+    //return ((obj.basfChallanSelection != undefined && obj.basfChallanSelection != null && obj.basfChallanSelection.length > 0 && obj.isManual) || (obj.basfPOSelection != undefined && obj.basfPOSelection != null && obj.basfPOSelection.length > 0 && obj.isManualPO));
+    return (obj.isManual || obj.isManualPO);
+  }
+
+  public basfChallanAndPOSelectionDone(obj) {
+    return ((obj.basfChallanSelection != undefined && obj.basfChallanSelection != null && obj.basfChallanSelection.length > 0) && (obj.basfPOSelection != undefined && obj.basfPOSelection != null && obj.basfPOSelection.length > 0));
   }
 
   public submit() {
@@ -499,7 +611,7 @@ export class CreateVendorChallanPage implements OnInit {
       });
 
       this.productAssemblyQnts.forEach(assemblyQnt => {
-        if (assemblyQnt.totalOutQnt > assemblyQnt.RemainingQuantity || assemblyQnt.totalOutQnt > assemblyQnt.RemainingQuantityPO) {
+        if (assemblyQnt.totalOutQnt > assemblyQnt.RemainingQuantity) {
           exceeds = true;
         }
       });
@@ -522,13 +634,13 @@ export class CreateVendorChallanPage implements OnInit {
       });
 
       this.productAssemblyQnts.forEach(assemblyQnt => {
-        if (assemblyQnt.totalOutQnt > assemblyQnt.RemainingQuantity || assemblyQnt.totalOutQnt > assemblyQnt.RemainingQuantityPO) {
+        if (assemblyQnt.totalOutQnt > assemblyQnt.RemainingQuantity) {
           exceeds = true;
         }
       });
 
       this.productAccQnts.forEach(accQnt => {
-        if (accQnt.totalOutQnt > accQnt.RemainingQuantity || accQnt.totalOutQnt > accQnt.RemainingQuantityPO) {
+        if (accQnt.totalOutQnt > accQnt.RemainingQuantity) {
           exceeds = true;
         }
       });
@@ -548,53 +660,367 @@ export class CreateVendorChallanPage implements OnInit {
     popover.onDidDismiss()
       .then(data => {
         debugger;
-        let isBASFChallan: boolean = data['data'];
-        if (isBASFChallan)
+        let selection: string = data['data'];
+        if (selection == 'Challan')
           this.viewBASFChallans(outStock, outAcc, outAssembly);
-        else
+        else if (selection == 'PO')
           this.viewBASFPOs(outStock, outAcc, outAssembly);
       });
 
     return await popover.present();
   }
 
-  public removeRow(i) {
+  public removeRow(i: number) {
     debugger;
     if ((this.vendorChallan.OutStocks[i].ProductId == undefined || this.vendorChallan.OutStocks[i].ProductId == 0) && (this.vendorChallan.OutStocks[i].OutputQuantity == undefined || this.vendorChallan.OutStocks[i].OutputQuantity == 0)) {
       this.vendorChallan.OutStocks.splice(i, 1);
+      this.reCalculateAssemblyRemainingQnts(i);
+      this.reCalculateAccRemainingQnts(i);
     } else
-      if (confirm('Are you sure you want to remove this product?'))
+      if (confirm('Are you sure you want to remove this product?')) {
         this.vendorChallan.OutStocks.splice(i, 1);
+        this.reCalculateAssemblyRemainingQnts(i);
+        this.reCalculateAccRemainingQnts(i);
+      }
   }
+
+  public reCalculateAssemblyRemainingQnts(i) {
+    let outStockIndex = 0;
+    this.vendorChallan.OutStocks.forEach(outStock => {
+      outStock.OutAssemblys.forEach(outAssembly => {
+        let initialProductAssemblyQnt = this.productAssemblyQnts.find(k => k.ProductId == outAssembly.ProductId);
+        if (initialProductAssemblyQnt != undefined && initialProductAssemblyQnt != null) {
+          let initialRemainingQnt = initialProductAssemblyQnt.RemainingQuantity;
+          //let initialRemainingQntPO = initialProductAssemblyQnt.RemainingQuantityPO;
+
+          let xIndex = 0;
+          let totalProductAssemblyOutQnt = 0;
+          this.vendorChallan.OutStocks.forEach(x => {
+            if (xIndex < outStockIndex) {
+              let xOutAssembly = x.OutAssemblys.find(p => p.ProductId == outAssembly.ProductId);
+              if (xOutAssembly != undefined && xOutAssembly != null) {
+                if (xOutAssembly.OutputQuantity != undefined && xOutAssembly.OutputQuantity != null)
+                  totalProductAssemblyOutQnt += xOutAssembly.OutputQuantity;
+              }
+            }
+
+            xIndex++;
+          });
+
+          let productAssemblyQnt = outAssembly.productAssemblyQnts.find(q => q.ProductId == outAssembly.ProductId);
+          if (productAssemblyQnt != undefined && productAssemblyQnt != null) {
+            let prevProdAssemblyRemainingQuantity = productAssemblyQnt.RemainingQuantity;
+            //let prevProdAssemblyRemainingQuantityPO = productAssemblyQnt.RemainingQuantityPO;
+
+            productAssemblyQnt.RemainingQuantity = initialRemainingQnt - totalProductAssemblyOutQnt;
+            //productAssemblyQnt.RemainingQuantityPO = initialRemainingQntPO - totalProductAssemblyOutQnt;
+            this.setProdQntDisplayTextWithoutPOQnt(productAssemblyQnt);
+
+            //if (prevProdAssemblyRemainingQuantity != productAssemblyQnt.RemainingQuantity || prevProdAssemblyRemainingQuantityPO != productAssemblyQnt.RemainingQuantityPO) {
+            if (prevProdAssemblyRemainingQuantity != productAssemblyQnt.RemainingQuantity) {
+              outStock.OutputQuantity = 0;
+              outStock.basfChallanSelection = [];
+              outStock.basfPOSelection = [];
+
+              outAssembly.OutputQuantity = 0;
+              outAssembly.basfChallanSelection = [];
+              outAssembly.basfPOSelection = [];
+            }
+
+            // let prodId = outAssembly.ProductId;
+            // setTimeout(t1 => {
+            //   outAssembly.ProductId = 0;
+
+            //   setTimeout(t2 => {
+            //     outAssembly.ProductId = prodId;
+            //   }, 1);
+            // }, 1);
+          }
+        }
+      });
+
+      outStockIndex++;
+    });
+  }
+
+  public reCalculateAccRemainingQnts(i) {
+    debugger;
+    let outStockIndex = 0;
+    this.vendorChallan.OutStocks.forEach(outStock => {
+      outStock.OutAccs.forEach(outAcc => {
+        let initialProductAccQnt = this.productAccQnts.find(k => k.ProductId == outAcc.ProductId);
+        if (initialProductAccQnt != undefined && initialProductAccQnt != null) {
+          let initialRemainingQnt = initialProductAccQnt.RemainingQuantity;
+          //let initialRemainingQntPO = initialProductAccQnt.RemainingQuantityPO;
+
+          let xIndex = 0;
+          let totalProductAccOutQnt = 0;
+          this.vendorChallan.OutStocks.forEach(x => {
+            if (xIndex < outStockIndex) {
+              let xOutAcc = x.OutAccs.find(p => p.ProductId == outAcc.ProductId);
+              if (xOutAcc != undefined && xOutAcc != null) {
+                if (xOutAcc.OutputQuantity != undefined && xOutAcc.OutputQuantity != null)
+                  totalProductAccOutQnt += xOutAcc.OutputQuantity;
+              }
+            }
+
+            xIndex++;
+          });
+
+          let productAccQnt = outAcc.productAccQnts.find(q => q.ProductId == outAcc.ProductId);
+          if (productAccQnt != undefined && productAccQnt != null) {
+            let prevProdAccRemainingQuantity = productAccQnt.RemainingQuantity;
+            //let prevProdAccRemainingQuantityPO = productAccQnt.RemainingQuantityPO;
+
+            productAccQnt.RemainingQuantity = initialRemainingQnt - totalProductAccOutQnt;
+            //productAccQnt.RemainingQuantityPO = initialRemainingQntPO - totalProductAccOutQnt;
+            this.setProdQntDisplayTextWithoutPOQnt(productAccQnt);
+
+            //if (prevProdAccRemainingQuantity != productAccQnt.RemainingQuantity || prevProdAccRemainingQuantityPO != productAccQnt.RemainingQuantityPO) {
+            if (prevProdAccRemainingQuantity != productAccQnt.RemainingQuantity) {
+              outAcc.OutputQuantity = 0;
+              outAcc.basfChallanSelection = [];
+              outAcc.basfPOSelection = [];
+            }
+
+            // let prodId = outAcc.ProductId;
+            // let selectedProductAccQnt = outAcc.selectedProductAccQnt;
+            // let outAccProductAccQnts = outAcc.productAccQnts;
+            // setTimeout(t1 => {
+            //   outAcc.ProductId = 0;
+            //   outAcc.productAccQnts = null;
+            //   outAcc.selectedProductAccQnt = null;
+
+            //   setTimeout(t2 => {
+            //     outAcc.ProductId = prodId;
+            //     outAcc.productAccQnts = outAccProductAccQnts;
+            //     outAcc.selectedProductAccQnt = selectedProductAccQnt;
+            //   }, 100);
+            // }, 100);
+          }
+        }
+      });
+
+      outStockIndex++;
+    });
+  }
+
+  public setProdQntDisplayTextWithoutPOQnt(prodQnt: ProductQuantity) {
+    prodQnt.displayText = prodQnt.ProductName + ' - ' + prodQnt.RemainingQuantity;
+  }
+
+  public setProdQntDisplayTextWithPOQnt(prodQnt: ProductQuantity) {
+    prodQnt.displayText = prodQnt.ProductName + ' - ' + prodQnt.RemainingQuantity + ' - ' + prodQnt.RemainingQuantityPO;
+  }
+
+  // public reCalculateAssemblyRemainingQntsPrev(i: number) {
+  //   debugger;
+  //   let loopIndex = 0;
+  //   this.vendorChallan.OutStocks.forEach(x => {
+  //     debugger;
+  //     if (loopIndex > i) {
+  //       x.OutAssemblys.forEach(outAssembly => {
+  //         debugger;
+  //         let prevOutAssembly = this.vendorChallan.OutStocks[loopIndex - 1].OutAssemblys.find(p => p.OutAssemblyId == outAssembly.OutAssemblyId);
+  //         if (prevOutAssembly != undefined && prevOutAssembly != null) {
+  //           let prevProductAssemblyQnt = prevOutAssembly.productAssemblyQnts.find(k => k.ProductId == prevOutAssembly.ProductId);
+
+  //           let curProductAssemblyQnt = outAssembly.productAssemblyQnts.find(k => k.ProductId == outAssembly.ProductId);
+
+  //           if (curProductAssemblyQnt != undefined && curProductAssemblyQnt != null) {
+  //             curProductAssemblyQnt.RemainingQuantity = prevProductAssemblyQnt.RemainingQuantity - prevOutAssembly.OutputQuantity;
+  //             curProductAssemblyQnt.RemainingQuantityPO = prevProductAssemblyQnt.RemainingQuantityPO - prevOutAssembly.OutputQuantity;
+
+  //             x.OutputQuantity = 0;
+  //             x.basfChallanSelection = [];
+
+  //             outAssembly.OutputQuantity = 0;
+  //             outAssembly.basfChallanSelection = [];
+
+  //             let prodId = outAssembly.ProductId;
+  //             setTimeout(t1 => {
+  //               outAssembly.ProductId = 0;
+
+  //               setTimeout(t2 => {
+  //                 outAssembly.ProductId = prodId;
+  //               }, 1);
+  //             }, 1);
+  //           }
+  //         }
+  //       });
+  //     }
+
+  //     loopIndex++;
+  //   });
+
+  //   if (this.vendorChallan.OutStocks.length == 1) {
+  //     this.vendorChallan.OutStocks[0].OutAssemblys.forEach(outAssembly => {
+  //       let initialProductAssemblyQnt = this.productAssemblyQnts.find(p => p.ProductId == outAssembly.ProductId);
+  //       let productAssemblyQnt = outAssembly.productAssemblyQnts.find(q => q.ProductId == outAssembly.ProductId);
+
+  //       if (productAssemblyQnt != undefined && productAssemblyQnt != null) {
+  //         productAssemblyQnt.RemainingQuantity = initialProductAssemblyQnt.RemainingQuantity;
+  //         productAssemblyQnt.RemainingQuantityPO = initialProductAssemblyQnt.RemainingQuantityPO;
+
+  //         this.vendorChallan.OutStocks[0].OutputQuantity = 0;
+  //         this.vendorChallan.OutStocks[0].basfChallanSelection = [];
+
+  //         outAssembly.OutputQuantity = 0;
+  //         outAssembly.basfChallanSelection = [];
+
+  //         let prodId = outAssembly.ProductId;
+  //         setTimeout(t1 => {
+  //           outAssembly.ProductId = 0;
+
+  //           setTimeout(t2 => {
+  //             outAssembly.ProductId = prodId;
+  //           }, 1);
+  //         }, 1);
+  //       }
+  //     });
+  //   }
+  // }
 
   public removeAccRow(j, outStock: OutStockModel) {
     debugger;
     if ((outStock.OutAccs[j].ProductId == undefined || outStock.OutAccs[j].ProductId == 0) && (outStock.OutAccs[j].OutputQuantity == undefined || outStock.OutAccs[j].OutputQuantity == 0)) {
       outStock.OutAccs.splice(j, 1);
+      this.reCalculateAccRemainingQnts(j);
     } else
-      if (confirm('Are you sure you want to remove this product?'))
+      if (confirm('Are you sure you want to remove this product?')) {
         outStock.OutAccs.splice(j, 1);
+        this.reCalculateAccRemainingQnts(j);
+      }
   }
 
   public outStockProductSelected(outStock: OutStockModel) {
     debugger;
     outStock.OutAssemblys = [];
-    let productQnt: ProductQuantity = this.productQnts.find(x => x.ProductId == outStock.ProductId);
-    outStock.SplitRatio = productQnt.SplitRatio;
+    outStock.ProductId = outStock.selectedProductQnt.ProductId;
+    //let productQnt: ProductQuantity = outStock.selectedProductQnt; //this.productQnts.find(x => x.ProductId == outStock.ProductId);
+    outStock.SplitRatio = outStock.selectedProductQnt.SplitRatio;
 
-    productQnt.AssemblyProductQnts.forEach(assemblyProduct => {
+    outStock.selectedProductQnt.AssemblyProductQnts.forEach(assemblyProduct => {
+      debugger;
       let outAssemblyModel = new OutAssemblyModel();
       outAssemblyModel.ProductId = assemblyProduct.ProductId;
       outAssemblyModel.SplitRatio = assemblyProduct.SplitRatio;
+      outAssemblyModel.productAssemblyQnts = [];
+
+      this.productAssemblyQnts.forEach(assemblyQnt => {
+        let assemblyProdQnt = new ProductQuantity();
+        assemblyProdQnt.ProductId = assemblyQnt.ProductId;
+        assemblyProdQnt.ProductName = assemblyQnt.ProductName;
+        assemblyProdQnt.RemainingQuantity = assemblyQnt.RemainingQuantity;
+        assemblyProdQnt.RemainingQuantityPO = assemblyQnt.RemainingQuantityPO;
+        assemblyProdQnt.SplitRatio = assemblyQnt.SplitRatio;
+        assemblyProdQnt.totalOutQnt = assemblyQnt.totalOutQnt;
+        this.setProdQntDisplayTextWithoutPOQnt(assemblyProdQnt);
+        outAssemblyModel.productAssemblyQnts.push(assemblyProdQnt);
+      });
+
+      let productAssemblyQnt = outAssemblyModel.productAssemblyQnts.find(q => q.ProductId == assemblyProduct.ProductId);
+      if (this.vendorChallan.OutStocks.length > 1) {
+        let initialProductAssemblyQnt = this.productAssemblyQnts.find(k => k.ProductId == assemblyProduct.ProductId);
+        let initialRemainingQnt = initialProductAssemblyQnt.RemainingQuantity;
+        //let initialRemainingQntPO = initialProductAssemblyQnt.RemainingQuantityPO;
+
+        let totalProductAssemblyOutQnt = 0;
+        this.vendorChallan.OutStocks.forEach(x => {
+          debugger;
+          if (x != outStock) {
+            let xOutAssembly = x.OutAssemblys.find(p => p.ProductId == assemblyProduct.ProductId);
+            if (xOutAssembly != undefined && xOutAssembly != null) {
+              if (xOutAssembly.OutputQuantity != undefined && xOutAssembly.OutputQuantity != null)
+                totalProductAssemblyOutQnt += xOutAssembly.OutputQuantity;
+            }
+          }
+        });
+
+        productAssemblyQnt.RemainingQuantity = initialRemainingQnt - totalProductAssemblyOutQnt;
+        //productAssemblyQnt.RemainingQuantityPO = initialRemainingQntPO - totalProductAssemblyOutQnt;
+        this.setProdQntDisplayTextWithoutPOQnt(productAssemblyQnt);
+      }
+
+      outAssemblyModel.selectedProductAssemblyQnt = productAssemblyQnt;
       outStock.OutAssemblys.push(outAssemblyModel);
     });
 
-    this.mainOutQntChanged(outStock);
+    this.vendorChallan.OutStocks.forEach(x => {
+      if (x.ProductId != undefined && x.ProductId != null) {
+        if (x.ProductId == outStock.ProductId && x != outStock) {
+          x.ProductId = 0;
+          x.selectedProductQnt = null;
+          x.OutputQuantity = 0;
+
+          x.OutAssemblys = [];
+          x.OutAccs = [];
+        }
+      }
+    });
+
+    outStock.OutAccs = [];
+
+    outStock.OutputQuantity = 0;
   }
 
-  public outAccProductSelected(outAcc: OutAccModel) {
-    let productAccQnt: ProductQuantity = this.productAccQnts.find(x => x.ProductId == outAcc.ProductId);
-    outAcc.SplitRatio = productAccQnt.SplitRatio;
+  public outStockProductNotSelectedElsewhere(product: ProductQuantity, outStock: OutStockModel) {
+    let notSelected = true;
+
+    this.vendorChallan.OutStocks.forEach(x => {
+      if (x.ProductId == product.ProductId && x.ProductId != outStock.ProductId)
+        notSelected = false;
+    });
+
+    return notSelected;
+  }
+
+  public outAccProductSelected(outAcc: OutAccModel, outStock: OutStockModel) {
+    debugger;
+    outAcc.ProductId = outAcc.selectedProductAccQnt.ProductId;
+    //let productAccQnt: ProductQuantity = outAcc.selectedProductAccQnt; //this.productAccQnts.find(x => x.ProductId == outAcc.ProductId);
+    //if (outAcc.selectedProductAccQnt != undefined && outAcc.selectedProductAccQnt != null) {
+    outAcc.SplitRatio = outAcc.selectedProductAccQnt.SplitRatio;
+
+    outStock.OutAccs.forEach(x => {
+      if (x.ProductId == outAcc.ProductId && x != outAcc) {
+        x.ProductId = 0;
+        x.selectedProductAccQnt = null;
+        x.OutputQuantity = 0;
+      }
+    });
+
+    outAcc.OutputQuantity = 0;
+  }
+
+  // public outAssemblyProductSelected(outAssembly: OutAssemblyModel, outStock: OutStockModel) {
+  //   debugger;
+  //   outAssembly.ProductId = outAssembly.selectedProductAssemblyQnt.ProductId;
+  //   let productAccQnt: ProductQuantity = this.productAccQnts.find(x => x.ProductId == outAssembly.ProductId);
+  //   if (productAccQnt != undefined && productAccQnt != null) {
+  //     outAssembly.SplitRatio = productAccQnt.SplitRatio;
+
+  //     outStock.OutAssemblys.forEach(x => {
+  //       if (x.ProductId == outAssembly.ProductId && x != outAssembly) {
+  //         x.ProductId = 0;
+  //         x.selectedProductAssemblyQnt = null;
+  //         x.OutputQuantity = 0;
+  //       }
+  //     });
+
+  //     outAssembly.OutputQuantity = 0;
+  //   }
+  // }
+
+  public outAccProductNotSelectedElsewhere(product: ProductQuantity, outAcc: OutAccModel, outStock: OutStockModel) {
+    let notSelected = true;
+
+    outStock.OutAccs.forEach(x => {
+      if (x.ProductId == product.ProductId && x.ProductId != outAcc.ProductId)
+        notSelected = false;
+    });
+
+    return notSelected;
   }
 
   public changeToNg() {

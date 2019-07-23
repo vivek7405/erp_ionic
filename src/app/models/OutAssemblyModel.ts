@@ -4,6 +4,7 @@ import { BASFChallanSelection } from './BASFChallanSelection';
 import { AssemblyChallanDeductionModel } from './AssemblyChallanDeductionModel';
 import { AssemblyPODeductionModel } from './AssemblyPODeductionModel';
 import { BASFPOSelection } from './BASFPOSelection';
+import { ProductQuantity } from './ProductQuantity';
 
 export class OutAssemblyModel {
     public OutAssemblyId: number;
@@ -24,4 +25,7 @@ export class OutAssemblyModel {
 
     public isManual: boolean;
     public isManualPO: boolean;
+
+    public productAssemblyQnts: ProductQuantity[];
+    public selectedProductAssemblyQnt: ProductQuantity;
 }

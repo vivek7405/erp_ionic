@@ -4,6 +4,7 @@ import { ViewChallanDetailModel } from 'src/app/models/ViewChallanDetailModel';
 import { ProductQuantity } from 'src/app/models/ProductQuantity';
 import { Router } from '@angular/router';
 import { ViewPODetailModel } from 'src/app/models/ViewPODetailModel';
+import { EditdeleteComponent } from '../editdelete/editdelete.component';
 
 @Component({
   selector: 'app-view-challan-details',
@@ -21,6 +22,8 @@ export class ViewChallanDetailsPage implements OnInit {
   public columnDefsPO: any;
 
   public gridOptions: any;
+  public frameworkComponents: any;
+  public context: any;
 
   constructor(public generalService: GeneralService, public router: Router) { }
 
@@ -28,23 +31,34 @@ export class ViewChallanDetailsPage implements OnInit {
     this.columnDefsChallan = [
       { headerName: 'Challan No', field: 'ChallanDetail.ChallanNo' },
       { headerName: 'Challan Date', field: 'ChallanDetail.ChallanDate' },
-      { headerName: 'Total Stock In', field: 'totalStockIn' }
+      { headerName: 'Total Stock In', field: 'totalStockIn' },
+      { headerName: 'Create Date', field: 'ChallanDetail.CreateDate' },
+      { headerName: 'Edit Date', field: 'ChallanDetail.EditDate' },
+      { headerName: 'Actions', cellRenderer: 'editdelete' }
     ];
 
     this.columnDefsPO = [
       { headerName: 'PO No', field: 'PODetail.PONo' },
       { headerName: 'PO Date', field: 'PODetail.PODate' },
-      { headerName: 'Total Stock In', field: 'totalStockIn' }
+      { headerName: 'Total Stock In', field: 'totalStockIn' },
+      { headerName: 'Actions', cellRenderer: 'editdelete' }
     ];
 
     this.gridOptions = {
       defaultColDef: {
         sortable: true,
-        filter: true
+        filter: true,
+        resizable: true
       },
       pagination: true,
       paginationAutoPageSize: true
     };
+
+    this.frameworkComponents = {
+      editdelete: EditdeleteComponent
+    };
+
+    this.context = this;
 
     this.getAllChallanDetails();
   }
@@ -67,6 +81,8 @@ export class ViewChallanDetailsPage implements OnInit {
           this.challanDetails.forEach(challanDetail => {
             challanDetail.totalStockIn = 0;
             challanDetail.ChallanDetail.ChallanDate = challanDetail.ChallanDetail.ChallanDate.toString().split('T')[0];
+            challanDetail.ChallanDetail.CreateDate = challanDetail.ChallanDetail.CreateDate.toString().split('T')[0];
+            challanDetail.ChallanDetail.EditDate = challanDetail.ChallanDetail.EditDate.toString().split('T')[0];
             challanDetail.ChallanProducts.forEach(challanProduct => {
               challanDetail.totalStockIn += challanProduct.ChallanProduct.InputQuantity;
             });
@@ -130,5 +146,25 @@ export class ViewChallanDetailsPage implements OnInit {
         poId: event.data.PODetail.POId
       }
     });
+  }
+
+  public editRowAg(rowdata) {
+    debugger;
+    let id = 0;
+    if (this.isPO)
+      id = rowdata.PODetail.POId;
+    else
+      id = rowdata.ChallanDetail.ChallanId;
+
+    this.router.navigate(['/challan-details'], {
+      queryParams: {
+        challanId: id,
+        isPO: this.isPO
+      }
+    });
+  }
+
+  public deleteRowAg(rowdata) {
+    debugger;
   }
 }

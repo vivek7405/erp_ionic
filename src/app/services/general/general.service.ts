@@ -33,6 +33,10 @@ export class GeneralService extends CommonService {
     return this.http.get<ProductDetail[]>(environment.apiBaseUrl + 'general/GetAllProductDetails');
   }
 
+  public getAllProductDetailsForPO() {
+    return this.http.get<ProductDetail[]>(environment.apiBaseUrl + 'general/GetAllProductDetailsForPO');
+  }
+
   public getAllProductTypes() {
     return this.http.get<ProductType[]>(environment.apiBaseUrl + 'general/GetAllProductTypes');
   }
@@ -91,6 +95,10 @@ export class GeneralService extends CommonService {
 
   public getVendorChallanByVendorChallanNo(vendorChallanNoModel: VendorChallanNoModel) {
     return this.http.post<VendorChallanModel>(environment.apiBaseUrl + 'general/GetVendorChallanByVendorChallanNo', vendorChallanNoModel);
+  }
+
+  public printVendorChallanByVendorChallanNo(vendorChallanNoModel: VendorChallanNoModel) {
+    return this.http.post(environment.apiBaseUrl + 'general/PrintVendorChallanByVendorChallanNo', vendorChallanNoModel, { responseType: 'arraybuffer' });
   }
 
   public getBASFChallanByBASFChallanId(vendorChallanNoModel: VendorChallanNoModel) {

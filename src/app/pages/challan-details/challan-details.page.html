@@ -1,13 +1,18 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
+      <ion-menu-button *ngIf="!isEdit"></ion-menu-button>
+      <ion-back-button *ngIf="isEdit"></ion-back-button>
     </ion-buttons>
-    <ion-title *ngIf="!isPO">Add BASF Challan</ion-title>
-    <ion-title *ngIf="isPO">Add BASF PO</ion-title>
+    <ion-title *ngIf="!isPO && !isEdit">Add BASF Challan</ion-title>
+    <ion-title *ngIf="!isPO && isEdit">Edit BASF Challan</ion-title>
+
+    <ion-title *ngIf="isPO && !isEdit">Add BASF PO</ion-title>
+    <ion-title *ngIf="isPO && isEdit">Edit BASF PO</ion-title>
+
     <ion-buttons slot="end">
       <ion-label>BASF PO</ion-label>
-      <ion-toggle [(ngModel)]="isPO"></ion-toggle>
+      <ion-toggle [disabled]="isEdit" [(ngModel)]="isPO" (click)="poSwitched()"></ion-toggle>
       <ion-button fill="solid" color="primary" title="Submit Challan Details" (click)="submitChallanDetails()">Submit
       </ion-button>
     </ion-buttons>
@@ -15,7 +20,7 @@
 </ion-header>
 
 <ion-content>
-  <ion-grid>
+  <ion-grid *ngIf="challanDetail">
     <ion-row>
       <ion-col>
         <ion-item>
@@ -34,12 +39,13 @@
     </ion-row>
   </ion-grid>
 
-  <ion-grid>
+  <ion-grid *ngIf="challanProducts">
     <ion-row class="row-border row-padding" *ngFor="let challanProduct of challanProducts; let i = index">
       <ion-col>
         <ion-item>
-          <ion-label>Product Name:</ion-label>
-          <ion-select name="ProductName" [(ngModel)]="challanProduct.ProductId">
+          <ion-label>Product Name: </ion-label>
+          <ion-select [disabled]="challanProduct.ChallanProductId && challanProduct.ChallanProductId != 0"
+            name="ProductName" [(ngModel)]="challanProduct.ProductId">
             <ion-select-option *ngFor="let product of productDetails" [value]="product.ProductId">
               {{product.InputMaterialDesc}}
             </ion-select-option>
@@ -50,10 +56,12 @@
         <ion-item>
           <ion-label>Quantity: </ion-label>
           <ion-input type="number" min="0" (ionChange)="inputQntChanged(challanProduct)"
-            [disabled]="challanProduct.ProductId == undefined || challanProduct.ProductId == null || challanProduct.ProductId == 0"
-            [(ngModel)]="challanProduct.InputQuantity"></ion-input>
-          <ion-icon *ngIf="i > 0 || challanProducts.length > 1" color="danger" name="close-circle" class="icon-button"
-            title="Remove Product" (click)="removeRow(i)">
+            [disabled]="(challanProduct.ProductId == undefined || challanProduct.ProductId == null || challanProduct.ProductId == 0) || (challanProduct.ChallanProductId && challanProduct.ChallanProductId != 0)"
+            [(ngModel)]="challanProduct.InputQuantity">
+          </ion-input>
+          <ion-icon
+            *ngIf="(i > 0 || challanProducts.length > 1) && !(challanProduct.ChallanProductId && challanProduct.ChallanProductId != 0)"
+            color="danger" name="close-circle" class="icon-button" title="Remove Product" (click)="removeRow(i)">
           </ion-icon>
         </ion-item>
       </ion-col>

@@ -4,6 +4,6 @@ export class ChallanDetail {
     public ChallanId: number;
     public ChallanNo: string;
     public ChallanDate: any;
-    public CreateDate: IonDatetime;
-    public EditDate: IonDatetime;
+    public CreateDate: any;
+    public EditDate: any;
 }

@@ -7,6 +7,8 @@ import { IonicModule } from '@ionic/angular';
 
 import { ViewProductDetailsPage } from './view-product-details.page';
 import { AgGridModule } from 'ag-grid-angular';
+import { ProductmappingsComponent } from '../productmappings/productmappings.component';
+import { ProductmappingsModule } from '../productmappings/productmappings.module';
 
 const routes: Routes = [
   {
@@ -20,6 +22,7 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
+    ProductmappingsModule,
     RouterModule.forChild(routes),
     AgGridModule.withComponents([])
   ],

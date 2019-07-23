@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { GeneralService } from 'src/app/services/general/general.service';
-import { ToastController } from '@ionic/angular';
+import { ToastController, ModalController } from '@ionic/angular';
 import { ProductDetail } from 'src/app/models/ProductDetail';
 import { Router } from '@angular/router';
+import { EditdeletemapComponent } from '../editdeletemap/editdeletemap.component';
+import { ProductmappingsComponent } from '../productmappings/productmappings.component';
 
 @Component({
   selector: 'app-view-product-details',
@@ -12,42 +14,67 @@ import { Router } from '@angular/router';
 export class ViewProductDetailsPage implements OnInit {
   public productDetails: ProductDetail[];
   public columnDefs: any;
-
   public gridOptions: any;
+  public frameworkComponents: any;
+  public context: any;
 
-  constructor(public generalService: GeneralService, public toastCtrl: ToastController, public router: Router) { }
+  constructor(public generalService: GeneralService, public toastCtrl: ToastController, public router: Router, private modalController: ModalController) { }
 
   ngOnInit() {
     this.columnDefs = [
-      { headerName: 'Input Code', field: 'InputCode', sortable: true, filter: true },
-      { headerName: 'Input Material Description', field: 'InputMaterialDesc', sortable: true, filter: true },
-      { headerName: 'Output Code', field: 'OutputCode', sortable: true, filter: true },
-      { headerName: 'Output Material Description', field: 'OutputMaterialDesc', sortable: true, filter: true },
-      { headerName: 'Project Name', field: 'ProjectName', sortable: true, filter: true },
-      { headerName: 'Split Ratio', field: 'SplitRatio', sortable: true, filter: true }
+      { headerName: 'Input Code', field: 'InputCode' },
+      { headerName: 'Input Material Description', field: 'InputMaterialDesc' },
+      { headerName: 'Output Code', field: 'OutputCode' },
+      { headerName: 'Output Material Description', field: 'OutputMaterialDesc' },
+      { headerName: 'Project Name', field: 'ProjectName' },
+      { headerName: 'Split Ratio', field: 'SplitRatio' },
+      { headerName: 'Create Date', field: 'CreateDate' },
+      { headerName: 'Edit Date', field: 'EditDate' },
+      { headerName: 'Actions', cellRenderer: 'editdeletemap', pinned: 'right' }
     ];
 
     this.gridOptions = {
       defaultColDef: {
         sortable: true,
-        filter: true
+        filter: true,
+        resizable: true
       },
       pagination: true,
       paginationAutoPageSize: true
     };
 
+    this.frameworkComponents = {
+      editdeletemap: EditdeletemapComponent
+    };
+
+    this.context = this;
+
     this.getAllProductDetails();
   }
 
+  public onGridReady(event) {
+    debugger;
+    // var allColumnIds = [];
+    // event.columnApi.getAllColumns().forEach(function (column) {
+    //   allColumnIds.push(column.colId);
+    // });
+    // event.columnApi.autoSizeColumns(allColumnIds);
+    // event.columnApi.autoSizeColumns(allColumnIds);
+  }
+
   public getAllProductDetails() {
-    let selfObj = this;
     this.generalService.getAllProductDetails()
       .subscribe(
         result => {
-          selfObj.productDetails = result;
+          this.productDetails = result;
+
+          this.productDetails.forEach(product => {
+            product.CreateDate = product.CreateDate.toString().split('T')[0];
+            product.EditDate = product.EditDate.toString().split('T')[0];
+          });
         },
         error => {
-          alert(error);
+          alert('Some error occurred!');
         }
       );
   }
@@ -67,5 +94,34 @@ export class ViewProductDetailsPage implements OnInit {
         productId: event.data.ProductId
       }
     });
+  }
+
+  editRowAg(rowdata) {
+    debugger;
+    this.router.navigate(['/product-details'], {
+      queryParams: {
+        productId: rowdata.ProductId
+      }
+    });
+  }
+
+  deleteRowAg(rowdata) {
+    debugger;
+  }
+
+  async mapRowAg(rowdata) {
+    debugger;
+    const modal = await this.modalController.create({
+      component: ProductmappingsComponent,
+      componentProps: { productId: rowdata.ProductId }
+      //backdropDismiss: false
+    });
+
+    modal.onDidDismiss()
+      .then(data => {
+
+      });
+
+    await modal.present();
   }
 }

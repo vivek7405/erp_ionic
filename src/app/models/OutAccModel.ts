@@ -4,6 +4,7 @@ import { AccChallanDeductionModel } from './AccChallanDeductionModel';
 import { BASFChallanSelection } from './BASFChallanSelection';
 import { AccPODeductionModel } from './AccPODeductionModel';
 import { BASFPOSelection } from './BASFPOSelection';
+import { ProductQuantity } from './ProductQuantity';
 
 export class OutAccModel {
     public OutAccId: number;
@@ -24,4 +25,7 @@ export class OutAccModel {
 
     public isManual: boolean;
     public isManualPO: boolean;
+
+    public productAccQnts: ProductQuantity[];
+    public selectedProductAccQnt: ProductQuantity;
 }

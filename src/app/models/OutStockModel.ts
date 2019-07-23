@@ -5,6 +5,7 @@ import { OutAccModel } from './OutAccModel';
 import { OutAssemblyModel } from './OutAssemblyModel';
 import { BASFPOSelection } from './BASFPOSelection';
 import { PODeductionModel } from './PODeductionModel';
+import { ProductQuantity } from './ProductQuantity';
 
 export class OutStockModel {
   public OutStockId: number;
@@ -22,11 +23,13 @@ export class OutStockModel {
 
   public basfChallanSelection: BASFChallanSelection[];
   public basfPOSelection: BASFPOSelection[];
-  
+
   public isManual: boolean;
   public isManualPO: boolean;
 
   public mainQntSum: number;
   public assemblyQntSum: number;
   public accQntSum: number;
+
+  public selectedProductQnt: ProductQuantity;
 }

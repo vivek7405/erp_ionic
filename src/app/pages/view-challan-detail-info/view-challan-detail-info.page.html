@@ -8,74 +8,74 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content *ngIf="!isPO">
-  <ion-grid *ngIf="challanDetail">
-    <ion-row class="grid-border">
-      <ion-col>
-        <ion-label class="bold-font">BASF Challan No: </ion-label>
-        <ion-label>{{challanDetail.ChallanDetail.ChallanNo}}</ion-label>
-      </ion-col>
-      <ion-col>
-        <ion-label class="bold-font">BASF Challan Date: </ion-label>
-        <ion-label>{{challanDetail.ChallanDetail.ChallanDate.split('T')[0]}}</ion-label>
-      </ion-col>
-      <ion-col>
-        <ion-label class="bold-font">Total Stock In: </ion-label>
-        <ion-label>{{challanDetail.totalStockIn}}</ion-label>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+<ion-content>
+  <div id="content-div">
+    <ion-grid *ngIf="!isPO && challanDetail">
+      <ion-row class="grid-border">
+        <ion-col>
+          <ion-label class="bold-font">BASF Challan No: </ion-label>
+          <ion-label>{{challanDetail.ChallanDetail.ChallanNo}}</ion-label>
+        </ion-col>
+        <ion-col>
+          <ion-label class="bold-font">BASF Challan Date: </ion-label>
+          <ion-label>{{challanDetail.ChallanDetail.ChallanDate.split('T')[0]}}</ion-label>
+        </ion-col>
+        <ion-col>
+          <ion-label class="bold-font">Total Stock In: </ion-label>
+          <ion-label>{{challanDetail.totalStockIn}}</ion-label>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
 
-  <ion-grid *ngIf="challanDetail">
-    <ion-row>
-      <ion-col class="bold-font grid-border">Input Code</ion-col>
-      <ion-col class="bold-font grid-border">Input Material Desc</ion-col>
-      <ion-col class="bold-font grid-border">Input Quantity</ion-col>
-      <ion-col class="bold-font grid-border">Split Ratio</ion-col>
-      <ion-col class="bold-font grid-border">Remaining Quantity</ion-col>
-    </ion-row>
-    <ion-row *ngFor="let challanProduct of challanDetail.ChallanProducts; let i = index">
-      <ion-col class="grid-border">{{challanProduct.ProductDetail.InputCode}}</ion-col>
-      <ion-col class="grid-border">{{challanProduct.ProductDetail.InputMaterialDesc}}</ion-col>
-      <ion-col class="grid-border">{{challanProduct.ChallanProduct.InputQuantity}}</ion-col>
-      <ion-col class="grid-border">{{challanProduct.ProductDetail.SplitRatio}}</ion-col>
-      <ion-col class="grid-border">{{challanProduct.RemainingQuantity}}</ion-col>
-    </ion-row>
-  </ion-grid>
-</ion-content>
+    <ion-grid *ngIf="!isPO && challanDetail">
+      <ion-row>
+        <ion-col class="bold-font grid-border">Input Code</ion-col>
+        <ion-col class="bold-font grid-border">Input Material Desc</ion-col>
+        <ion-col class="bold-font grid-border">Input Quantity</ion-col>
+        <ion-col class="bold-font grid-border">Split Ratio</ion-col>
+        <ion-col class="bold-font grid-border">Remaining Quantity</ion-col>
+      </ion-row>
+      <ion-row *ngFor="let challanProduct of challanDetail.ChallanProducts; let i = index">
+        <ion-col class="grid-border">{{challanProduct.ProductDetail.InputCode}}</ion-col>
+        <ion-col class="grid-border">{{challanProduct.ProductDetail.InputMaterialDesc}}</ion-col>
+        <ion-col class="grid-border">{{challanProduct.ChallanProduct.InputQuantity}}</ion-col>
+        <ion-col class="grid-border">{{challanProduct.ProductDetail.SplitRatio}}</ion-col>
+        <ion-col class="grid-border">{{challanProduct.RemainingQuantity}}</ion-col>
+      </ion-row>
+    </ion-grid>
 
-<ion-content *ngIf="isPO">
-  <ion-grid *ngIf="poDetail">
-    <ion-row class="grid-border">
-      <ion-col>
-        <ion-label class="bold-font">BASF PO No: </ion-label>
-        <ion-label>{{poDetail.PODetail.PONo}}</ion-label>
-      </ion-col>
-      <ion-col>
-        <ion-label class="bold-font">BASF PO Date: </ion-label>
-        <ion-label>{{poDetail.PODetail.PODate.split('T')[0]}}</ion-label>
-      </ion-col>
-      <ion-col>
-        <ion-label class="bold-font">Total Stock In: </ion-label>
-        <ion-label>{{poDetail.totalStockIn}}</ion-label>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+    <ion-grid *ngIf="isPO && poDetail">
+      <ion-row class="grid-border">
+        <ion-col>
+          <ion-label class="bold-font">BASF PO No: </ion-label>
+          <ion-label>{{poDetail.PODetail.PONo}}</ion-label>
+        </ion-col>
+        <ion-col>
+          <ion-label class="bold-font">BASF PO Date: </ion-label>
+          <ion-label>{{poDetail.PODetail.PODate.split('T')[0]}}</ion-label>
+        </ion-col>
+        <ion-col>
+          <ion-label class="bold-font">Total Stock In: </ion-label>
+          <ion-label>{{poDetail.totalStockIn}}</ion-label>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
 
-  <ion-grid *ngIf="poDetail">
-    <ion-row>
-      <ion-col class="bold-font grid-border">Input Code</ion-col>
-      <ion-col class="bold-font grid-border">Input Material Desc</ion-col>
-      <ion-col class="bold-font grid-border">Input Quantity</ion-col>
-      <ion-col class="bold-font grid-border">Split Ratio</ion-col>
-      <ion-col class="bold-font grid-border">Remaining Quantity</ion-col>
-    </ion-row>
-    <ion-row *ngFor="let poProduct of poDetail.POProducts; let i = index">
-      <ion-col class="grid-border">{{poProduct.ProductDetail.InputCode}}</ion-col>
-      <ion-col class="grid-border">{{poProduct.ProductDetail.InputMaterialDesc}}</ion-col>
-      <ion-col class="grid-border">{{poProduct.POProduct.InputQuantity}}</ion-col>
-      <ion-col class="grid-border">{{poProduct.ProductDetail.SplitRatio}}</ion-col>
-      <ion-col class="grid-border">{{poProduct.RemainingQuantity}}</ion-col>
-    </ion-row>
-  </ion-grid>
+    <ion-grid *ngIf="isPO && poDetail">
+      <ion-row>
+        <ion-col class="bold-font grid-border">Input Code</ion-col>
+        <ion-col class="bold-font grid-border">Input Material Desc</ion-col>
+        <ion-col class="bold-font grid-border">Input Quantity</ion-col>
+        <ion-col class="bold-font grid-border">Split Ratio</ion-col>
+        <ion-col class="bold-font grid-border">Remaining Quantity</ion-col>
+      </ion-row>
+      <ion-row *ngFor="let poProduct of poDetail.POProducts; let i = index">
+        <ion-col class="grid-border">{{poProduct.ProductDetail.InputCode}}</ion-col>
+        <ion-col class="grid-border">{{poProduct.ProductDetail.InputMaterialDesc}}</ion-col>
+        <ion-col class="grid-border">{{poProduct.POProduct.InputQuantity}}</ion-col>
+        <ion-col class="grid-border">{{poProduct.ProductDetail.SplitRatio}}</ion-col>
+        <ion-col class="grid-border">{{poProduct.RemainingQuantity}}</ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
 </ion-content>

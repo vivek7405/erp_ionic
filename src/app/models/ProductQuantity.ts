@@ -7,5 +7,6 @@ export class ProductQuantity {
 
     public totalOutQnt: number;     // Used for checking if out quantity exceeds remaining quantity
 
-    public AssemblyProductQnts: ProductQuantity[];    
+    public AssemblyProductQnts: ProductQuantity[];
+    public displayText: string;
 }

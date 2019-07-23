@@ -8,7 +8,7 @@
     <ion-buttons slot="end">
       <ion-label>NG Challan</ion-label>
       <ion-toggle [(ngModel)]="IsNg" (ionChange)="changeToNg()"></ion-toggle>
-      <ion-button fill="solid" color="primary" (click)="submit()" title="Submit Vendor Challan">Submit</ion-button>
+      <ion-button fill="solid" color="primary" (click)="submit()" title="Submit Vibrant Challan">Submit</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -30,11 +30,18 @@
           <ion-col>
             <ion-item>
               <ion-label>Select Product: </ion-label>
-              <ion-select [(ngModel)]="outStock.ProductId" (ionChange)="outStockProductSelected(outStock)">
-                <ion-select-option *ngFor="let product of productQnts" [value]="product.ProductId">
-                  {{product.ProductName}} - {{product.RemainingQuantity}} - {{product.RemainingQuantityPO}}                  
-                </ion-select-option>
-              </ion-select>
+              <!-- <ion-select [(ngModel)]="outStock.ProductId" (ionChange)="outStockProductSelected(outStock)">
+                <ng-container *ngFor="let product of productQnts">
+                  <ion-select-option [value]="product.ProductId"
+                    *ngIf="outStockProductNotSelectedElsewhere(product, outStock)">
+                    {{product.ProductName}} - {{product.RemainingQuantity}} - {{product.RemainingQuantityPO}}
+                  </ion-select-option>
+                </ng-container>
+              </ion-select> -->
+              <ionic-selectable (onChange)="outStockProductSelected(outStock)" [(ngModel)]="outStock.selectedProductQnt"
+                [items]="productQnts" itemValueField="ProductId" itemTextField="displayText"
+                [placeholder]="selectProductPlaceholder">
+              </ionic-selectable>
             </ion-item>
           </ion-col>
 
@@ -45,54 +52,55 @@
                 [disabled]="outStock.ProductId == undefined || outStock.ProductId == null || outStock.ProductId == 0"
                 type="number" min="0" [(ngModel)]="outStock.OutputQuantity" (ionChange)="mainOutQntChanged(outStock)">
               </ion-input>
-              <!-- <ion-button class="button-margin" (click)="viewBASFChallans(outStock)">
-            BASF Challan</ion-button> -->
               <ion-icon *ngIf="!IsNg" class="icon-button" color="tertiary" name="add-circle" title="Add Accessory"
-                (click)="addOutAcc(outStock)"></ion-icon>
-              <ion-icon name="eye" title="View Deductions"
-                *ngIf="outStock.OutputQuantity == undefined || outStock.OutputQuantity == null || outStock.OutputQuantity == 0">
-              </ion-icon>
-              <ion-icon class="icon-button" color="primary" name="eye" title="View Deductions"
-                (click)="presentPopover($event, outStock, null, null)"
-                *ngIf="outStock.OutputQuantity != undefined && outStock.OutputQuantity != null && outStock.OutputQuantity != 0">
+                (click)="addOutAcc(outStock)">
               </ion-icon>
               <ion-icon class="icon-button" *ngIf="i > 0 || vendorChallan.OutStocks.length > 1" color="danger"
                 name="close-circle" title="Remove Product" (click)="removeRow(i)">
+              </ion-icon>
+              <ion-icon class="icon-disabled-button" name="eye" title="View Deductions"
+                *ngIf="outStock.OutputQuantity == undefined || outStock.OutputQuantity == null || outStock.OutputQuantity == 0">
+              </ion-icon>
+              <ion-icon class="icon-button" color="success" name="eye" title="View Deductions"
+                (click)="presentPopover($event, outStock, null, null)"
+                *ngIf="outStock.OutputQuantity != undefined && outStock.OutputQuantity != null && outStock.OutputQuantity != 0 && !basfChallanOrPOSelectionDone(outStock)">
+              </ion-icon>              
+              <ion-icon class="icon-button" color="warning" name="eye" title="View Deductions"
+                (click)="presentPopover($event, outStock, null, null)"
+                *ngIf="outStock.OutputQuantity != undefined && outStock.OutputQuantity != null && outStock.OutputQuantity != 0 && basfChallanOrPOSelectionDone(outStock)">
               </ion-icon>
             </ion-item>
           </ion-col>
         </ion-row>
 
         <ng-container *ngIf="!IsNg">
-          <ion-row *ngFor="let outAssembly of outStock.OutAssemblys; let j = index">
+          <ion-row *ngFor="let outAssembly of outStock.OutAssemblys">
             <ion-col>
               <ion-item>
                 <ion-label>Select Assembly: </ion-label>
-                <ion-select disabled [(ngModel)]="outAssembly.ProductId">
-                  <ion-select-option *ngFor="let product of productAssemblyQnts" [value]="product.ProductId">
-                    {{product.ProductName}} - {{product.RemainingQuantity}} - {{product.RemainingQuantityPO}}
-                  </ion-select-option>
-                </ion-select>
+                <ionic-selectable disabled [(ngModel)]="outAssembly.selectedProductAssemblyQnt"
+                  [items]="outAssembly.productAssemblyQnts" itemValueField="ProductId" itemTextField="displayText">
+                </ionic-selectable>
               </ion-item>
             </ion-col>
 
             <ion-col>
               <ion-item>
                 <ion-label>Output Quantity: </ion-label>
-                <ion-input type="number" min="0" [(ngModel)]="outAssembly.OutputQuantity"
-                  (ionChange)="assemblyOutQntChanged(outAssembly, outStock)"></ion-input>
-                <!-- <ion-button class="button-margin" (click)="viewBASFChallans(outStock)">
-                BASF Challan</ion-button> -->
-                <!-- <ion-icon class="icon-button" color="danger" name="close-circle" title="Remove Product"
-                (click)="removeAccRow(j, outStock)">
-              </ion-icon> -->
-                <!-- <ion-icon name="eye" title="View Deductions"
-                *ngIf="outAssembly.OutputQuantity == undefined || outAssembly.OutputQuantity == null || outAssembly.OutputQuantity == 0">
-              </ion-icon>
-              <ion-icon class="icon-button" color="primary" name="eye" title="View Deductions"
-                (click)="presentPopover($event, outStock, null, outAssembly)"
-                *ngIf="outAssembly.OutputQuantity != undefined && outAssembly.OutputQuantity != null && outAssembly.OutputQuantity != 0">
-              </ion-icon> -->
+                <ion-input disabled type="number" min="0" [(ngModel)]="outAssembly.OutputQuantity"
+                  (ionChange)="assemblyOutQntChanged(outAssembly, outStock)">
+                </ion-input>
+                <ion-icon class="icon-disabled-button" name="eye" title="View Deductions"
+                  *ngIf="outAssembly.OutputQuantity == undefined || outAssembly.OutputQuantity == null || outAssembly.OutputQuantity == 0">
+                </ion-icon>
+                <ion-icon class="icon-button" color="success" name="eye" title="View Deductions"
+                  (click)="viewBASFChallans(outStock, null, outAssembly)"
+                  *ngIf="outAssembly.OutputQuantity != undefined && outAssembly.OutputQuantity != null && outAssembly.OutputQuantity != 0 && !basfChallanOrPOSelectionDone(outAssembly)">
+                </ion-icon>                
+                <ion-icon class="icon-button" color="warning" name="eye" title="View Deductions"
+                  (click)="viewBASFChallans(outStock, null, outAssembly)"
+                  *ngIf="outAssembly.OutputQuantity != undefined && outAssembly.OutputQuantity != null && outAssembly.OutputQuantity != 0 && basfChallanOrPOSelectionDone(outAssembly)">
+                </ion-icon>
               </ion-item>
             </ion-col>
           </ion-row>
@@ -103,11 +111,10 @@
             <ion-col>
               <ion-item>
                 <ion-label>Select Accessory: </ion-label>
-                <ion-select [(ngModel)]="outAcc.ProductId" (ionChange)="outAccProductSelected(outAcc)">
-                  <ion-select-option *ngFor="let product of productAccQnts" [value]="product.ProductId">
-                    {{product.ProductName}} - {{product.RemainingQuantity}} - {{product.RemainingQuantityPO}}
-                  </ion-select-option>
-                </ion-select>
+                <ionic-selectable (onChange)="outAccProductSelected(outAcc, outStock)"
+                  [(ngModel)]="outAcc.selectedProductAccQnt" [items]="outAcc.productAccQnts" itemValueField="ProductId"
+                  itemTextField="displayText" [placeholder]="selectAccessoryPlaceholder">
+                </ionic-selectable>
               </ion-item>
             </ion-col>
 
@@ -116,19 +123,21 @@
                 <ion-label>Output Quantity: </ion-label>
                 <ion-input
                   [disabled]="outAcc.ProductId == undefined || outAcc.ProductId == null || outAcc.ProductId == 0"
-                  type="number" min="0" [(ngModel)]="outAcc.OutputQuantity" (ionChange)="accOutQntChanged(outAcc)">
+                  type="number" min="0" [(ngModel)]="outAcc.OutputQuantity" (ionChange)="accOutQntChanged(outAcc, i)">
                 </ion-input>
-                <!-- <ion-button class="button-margin" (click)="viewBASFChallans(outStock)">
-                BASF Challan</ion-button> -->
-                <!-- <ion-icon name="eye" title="View Deductions"
-                *ngIf="outAcc.OutputQuantity == undefined || outAcc.OutputQuantity == null || outAcc.OutputQuantity == 0">
-              </ion-icon>
-              <ion-icon class="icon-button" color="primary" name="eye" title="View Deductions"
-                (click)="presentPopover($event, outStock, outAcc, null)"
-                *ngIf="outAcc.OutputQuantity != undefined && outAcc.OutputQuantity != null && outAcc.OutputQuantity != 0">
-              </ion-icon> -->
                 <ion-icon class="icon-button" color="danger" name="close-circle" title="Remove Product"
                   (click)="removeAccRow(j, outStock)">
+                </ion-icon>
+                <ion-icon class="icon-disabled-button" name="eye" title="View Deductions"
+                  *ngIf="outAcc.OutputQuantity == undefined || outAcc.OutputQuantity == null || outAcc.OutputQuantity == 0">
+                </ion-icon>
+                <ion-icon class="icon-button" color="success" name="eye" title="View Deductions"
+                  (click)="viewBASFChallans(outStock, outAcc, null)"
+                  *ngIf="outAcc.OutputQuantity != undefined && outAcc.OutputQuantity != null && outAcc.OutputQuantity != 0 && !basfChallanOrPOSelectionDone(outAcc)">
+                </ion-icon>
+                <ion-icon class="icon-button" color="warning" name="eye" title="View Deductions"
+                  (click)="viewBASFChallans(outStock, outAcc, null)"
+                  *ngIf="outAcc.OutputQuantity != undefined && outAcc.OutputQuantity != null && outAcc.OutputQuantity != 0 && basfChallanOrPOSelectionDone(outAcc)">
                 </ion-icon>
               </ion-item>
             </ion-col>

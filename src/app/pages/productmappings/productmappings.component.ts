@@ -1,32 +1,55 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { GeneralService } from 'src/app/services/general/general.service';
-import { ProductIdModel } from 'src/app/models/ProductIdModel';
 import { ProductDetailModel } from 'src/app/models/ProductDetailModel';
 import { ProductDetail } from 'src/app/models/ProductDetail';
-import { ActivatedRoute } from '@angular/router';
+import { ProductIdModel } from 'src/app/models/ProductIdModel';
+import { GeneralService } from 'src/app/services/general/general.service';
+import { ToastController, ModalController } from '@ionic/angular';
 import { ProductMapping } from 'src/app/models/ProductMapping';
-import { ToastController } from '@ionic/angular';
+import { ProductType } from 'src/app/models/ProductType';
+import { EProductCatagorys } from 'src/app/enums/EProductCatagory';
 
 @Component({
-  selector: 'app-product-mappings',
-  templateUrl: './product-mappings.page.html',
-  styleUrls: ['./product-mappings.page.scss'],
+  selector: 'app-productmappings',
+  templateUrl: './productmappings.component.html',
+  styleUrls: ['./productmappings.component.scss'],
 })
-export class ProductMappingsPage implements OnInit {
-  public productId: number;
+export class ProductmappingsComponent implements OnInit {
+  @Input() productId: number;
   public productDetail: ProductDetailModel;
   public productDetails: ProductDetail[];
   public productMappingValues = [];
+  public productTypes: ProductType[];
 
-  constructor(public generalService: GeneralService, public activatedRoute: ActivatedRoute, public toastCtrl: ToastController) { }
+  constructor(public generalService: GeneralService, public toastCtrl: ToastController, public modalCtrl: ModalController) { }
 
   ngOnInit() {
-    debugger;
-    this.activatedRoute.queryParams.subscribe((params) => {
-      debugger;
-      this.productId = params.productId;
+    if (this.productId != undefined && this.productId != null && this.productId > 0) {
       this.getAllAssemblyProducts();
-    });
+      this.getAllProductTypes();
+    }
+  }
+
+  public getAllProductTypes() {
+    this.generalService.getAllProductTypes()
+      .subscribe(
+        result => {
+          this.productTypes = result;
+        },
+        error => {
+
+        }
+      );
+  }
+
+  public isProductCategoryMain() {
+    if (this.productTypes != undefined && this.productTypes != null && this.productDetail != undefined && this.productDetail != null && this.productDetail.ProductDetail != undefined && this.productDetail.ProductDetail != null && this.productDetail.ProductDetail.ProductTypeId != undefined && this.productDetail.ProductDetail.ProductTypeId != null) {
+      let productCategoryId = this.productTypes.find(x => x.ProductTypeId == this.productDetail.ProductDetail.ProductTypeId).ProductCategoryId;
+      if (productCategoryId == EProductCatagorys.Main)
+        return true;
+      else
+        return false;
+    } else
+      return true;
   }
 
   public getProductDetailsByProductId() {
@@ -84,9 +107,11 @@ export class ProductMappingsPage implements OnInit {
       .subscribe(
         result => {
           this.generalService.toast(this.toastCtrl, 'Product Mappings saved successfully.');
+          this.modalCtrl.dismiss();
         },
         error => {
           this.generalService.toast(this.toastCtrl, 'Something went wrong while saving Product Mappings.');
+          this.modalCtrl.dismiss();
         });
   }
 }

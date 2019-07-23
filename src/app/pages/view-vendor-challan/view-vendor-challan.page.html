@@ -29,7 +29,8 @@
     </ion-row>
   </ion-grid> -->
 
-  <ag-grid-angular *ngIf="vendorChallans" style="width: 100%; height: 100%;" class="ag-theme-balham" [gridOptions]="gridOptions"
-    [rowData]="vendorChallans" [columnDefs]="columnDefs" (rowDoubleClicked)="showDetails($event)">
+  <ag-grid-angular *ngIf="vendorChallans" style="width: 100%; height: 100%;" class="ag-theme-balham"
+    [gridOptions]="gridOptions" [rowData]="vendorChallans" [columnDefs]="columnDefs"
+    [frameworkComponents]="frameworkComponents" [context]="context" (rowDoubleClicked)="showDetails($event)">
   </ag-grid-angular>
 </ion-content>

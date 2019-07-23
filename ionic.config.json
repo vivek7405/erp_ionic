@@ -1,5 +1,7 @@
 {
   "name": "erp",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }

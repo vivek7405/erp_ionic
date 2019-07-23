@@ -13,11 +13,11 @@ export class ViewDeductionButtonsComponent implements OnInit {
   ngOnInit() { }
 
   public async viewBASFChallans() {
-    await this.popoverController.dismiss(true);   //true = BASF Challan   //false = BASF PO
+    await this.popoverController.dismiss('Challan');
   }
 
   public async viewBASFPOs() {
-    await this.popoverController.dismiss(false);   //true = BASF Challan   //false = BASF PO
+    await this.popoverController.dismiss('PO');
   }
 
   // async dismissPopover() {
