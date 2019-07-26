@@ -59,6 +59,7 @@ export class ChallanDetailsPage implements OnInit {
                         challanProd.EditDate = poProduct.POProduct.EditDate;
                         challanProd.InputQuantity = poProduct.POProduct.InputQuantity;
                         challanProd.ProductId = poProduct.POProduct.ProductId;
+                        challanProd.CanDelete = poProduct.CanDelete;
 
                         this.challanProducts.push(challanProd);
                       });
@@ -91,6 +92,7 @@ export class ChallanDetailsPage implements OnInit {
                         challanProd.EditDate = challanProduct.ChallanProduct.EditDate;
                         challanProd.InputQuantity = challanProduct.ChallanProduct.InputQuantity;
                         challanProd.ProductId = challanProduct.ChallanProduct.ProductId;
+                        challanProd.CanDelete = challanProduct.CanDelete;
 
                         this.challanProducts.push(challanProd);
                       });
@@ -217,11 +219,13 @@ export class ChallanDetailsPage implements OnInit {
               this.challanProducts = [];
               this.challanProducts.push(new ChallanProduct());
 
-              if (this.isEdit)
+              if (this.isEdit) {
                 this.location.back();
+              }
             },
             error => {
-              alert('Something went wrong!');
+              debugger;
+              alert(error.error.ExceptionMessage);
             }
           );
       }

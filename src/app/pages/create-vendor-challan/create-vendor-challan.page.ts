@@ -38,6 +38,7 @@ export class CreateVendorChallanPage implements OnInit {
   private outStockCount = 0;
   public IsNg: boolean = false;
   public selectProductPlaceholder = "Select Product";
+  public selectAssemblyProductPlaceholder = "Select Assembly Product";
   public selectAccessoryPlaceholder = "Select Accessory";
 
   constructor(public generalService: GeneralService, public toastCtrl: ToastController, private modalController: ModalController, public popoverController: PopoverController) { }
@@ -511,6 +512,9 @@ export class CreateVendorChallanPage implements OnInit {
                   result => {
                     debugger;
                     this.productQnts = result;
+                    this.productQnts.forEach(prodQnt => {
+                      this.setProdQntDisplayTextWithPOQnt(prodQnt);
+                    });
                     this.vendorChallan = new VendorChallanModel();
                     this.vendorChallan.OutStocks = [];
                     this.vendorChallan.OutStocks.push(new OutStockModel());

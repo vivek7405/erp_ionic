@@ -1,0 +1,76 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Add BASF Invoice</ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="solid" color="primary" (click)="submit()" title="Submit BASF Invoice">Submit</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label>Invoice Number: </ion-label>
+          <ion-datetime [(ngModel)]="basfInvoice.BASFInvoiceNo"></ion-datetime>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item>
+          <ion-label>Invoice Date: </ion-label>
+          <ion-datetime [(ngModel)]="basfInvoice.BASFInvoiceDate"></ion-datetime>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="row-border row-padding-2" *ngFor="let outStock of basfInvoice.InvoiceOutStocks; let i = index">
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label>Select Product: </ion-label>
+              <ionic-selectable (onChange)="outStockProductSelected(outStock)" [(ngModel)]="outStock.selectedProductQnt"
+                [items]="productQnts" itemValueField="ProductId" itemTextField="displayText"
+                [placeholder]="selectProductPlaceholder">
+              </ionic-selectable>
+            </ion-item>
+          </ion-col>
+
+          <ion-col>
+            <ion-item>
+              <ion-label>Output Quantity: </ion-label>
+              <ion-input
+                [disabled]="outStock.ProductId == undefined || outStock.ProductId == null || outStock.ProductId == 0"
+                type="number" min="0" [(ngModel)]="outStock.OutputQuantity" (ionChange)="mainOutQntChanged(outStock)">
+              </ion-input>
+              <ion-icon class="icon-button" *ngIf="i > 0 || basfInvoice.InvoiceOutStocks.length > 1" color="danger"
+                name="close-circle" title="Remove Product" (click)="removeRow(i)">
+              </ion-icon>
+              <!-- <ion-icon class="icon-disabled-button" name="eye" title="View Deductions"
+                *ngIf="outStock.OutputQuantity == undefined || outStock.OutputQuantity == null || outStock.OutputQuantity == 0">
+              </ion-icon>
+              <ion-icon class="icon-button" color="success" name="eye" title="View Deductions"
+                (click)="viewBASFChallans(outStock)"
+                *ngIf="outStock.OutputQuantity != undefined && outStock.OutputQuantity != null && outStock.OutputQuantity != 0 && !basfChallanSelectionDone(outStock)">
+              </ion-icon>
+              <ion-icon class="icon-button" color="warning" name="eye" title="View Deductions"
+                (click)="viewBASFChallans(outStock)"
+                *ngIf="outStock.OutputQuantity != undefined && outStock.OutputQuantity != null && outStock.OutputQuantity != 0 && basfChallanSelectionDone(outStock)">
+              </ion-icon> -->
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-row>
+  </ion-grid>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="addOutStock()" title="Add Out Stock">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

@@ -56,12 +56,11 @@
         <ion-item>
           <ion-label>Quantity: </ion-label>
           <ion-input type="number" min="0" (ionChange)="inputQntChanged(challanProduct)"
-            [disabled]="(challanProduct.ProductId == undefined || challanProduct.ProductId == null || challanProduct.ProductId == 0) || (challanProduct.ChallanProductId && challanProduct.ChallanProductId != 0)"
+            [disabled]="(challanProduct.ProductId == undefined || challanProduct.ProductId == null || challanProduct.ProductId == 0)"
             [(ngModel)]="challanProduct.InputQuantity">
           </ion-input>
-          <ion-icon
-            *ngIf="(i > 0 || challanProducts.length > 1) && !(challanProduct.ChallanProductId && challanProduct.ChallanProductId != 0)"
-            color="danger" name="close-circle" class="icon-button" title="Remove Product" (click)="removeRow(i)">
+          <ion-icon *ngIf="(i > 0 || challanProducts.length > 1) || (isEdit && challanProduct.CanDelete)" color="danger"
+            name="close-circle" class="icon-button" title="Remove Product" (click)="removeRow(i)">
           </ion-icon>
         </ion-item>
       </ion-col>

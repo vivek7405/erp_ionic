@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { GeneralService } from 'src/app/services/general/general.service';
 import { ToastController, ModalController } from '@ionic/angular';
 import { ProductDetail } from 'src/app/models/ProductDetail';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { EditdeletemapComponent } from '../editdeletemap/editdeletemap.component';
 import { ProductmappingsComponent } from '../productmappings/productmappings.component';
+import { VendorChallanNoModel } from 'src/app/models/VendorChallanNoModel';
 
 @Component({
   selector: 'app-view-product-details',
@@ -18,9 +19,13 @@ export class ViewProductDetailsPage implements OnInit {
   public frameworkComponents: any;
   public context: any;
 
-  constructor(public generalService: GeneralService, public toastCtrl: ToastController, public router: Router, private modalController: ModalController) { }
+  constructor(public generalService: GeneralService, public toastCtrl: ToastController, public router: Router, private modalController: ModalController, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
+    this.activatedRoute.queryParams.subscribe((params) => {
+      this.getAllProductDetails();
+    });
+
     this.columnDefs = [
       { headerName: 'Input Code', field: 'InputCode' },
       { headerName: 'Input Material Description', field: 'InputMaterialDesc' },
@@ -107,6 +112,33 @@ export class ViewProductDetailsPage implements OnInit {
 
   deleteRowAg(rowdata) {
     debugger;
+    if (confirm('Are you sure you want to Delete?')) {
+      let vendorChallanNoModel = new VendorChallanNoModel();
+      vendorChallanNoModel.VendorChallanNo = rowdata.ProductId;
+      this.generalService.deleteProductByProductId(vendorChallanNoModel)
+        .subscribe(
+          result => {
+            this.generalService.toast(this.toastCtrl, 'Product deleted successfully.');
+            this.getAllProductDetails();
+          },
+          error => {
+            if (confirm(error.error.ExceptionMessage)) {
+              if (confirm('Are you sure you want to Delete the product and all its references? Once deleted, you will not be able to undo!')) {
+                this.generalService.forceDeleteProductByProductId(vendorChallanNoModel)
+                  .subscribe(
+                    result => {
+                      this.generalService.toast(this.toastCtrl, 'Product and all its references deleted successfully.');
+                      this.getAllProductDetails();
+                    },
+                    error => {
+                      alert('Something went wrong!');
+                    }
+                  );
+              }
+            }
+          }
+        );
+    }
   }
 
   async mapRowAg(rowdata) {

@@ -7,4 +7,6 @@ export class ChallanProduct {
     public InputQuantity: number;
     public CreateDate: IonDatetime;
     public EditDate: IonDatetime;
+
+    public CanDelete: boolean;
 }

@@ -19,12 +19,15 @@ const routes: Routes = [
   { path: 'vendor-challan-info', loadChildren: './pages/vendor-challan-info/vendor-challan-info.module#VendorChallanInfoPageModule' },
   { path: 'view-challan-detail-info', loadChildren: './pages/view-challan-detail-info/view-challan-detail-info.module#ViewChallanDetailInfoPageModule' },
   { path: 'view-product-details', loadChildren: './pages/view-product-details/view-product-details.module#ViewProductDetailsPageModule' },
-  { path: 'product-mappings', loadChildren: './pages/product-mappings/product-mappings.module#ProductMappingsPageModule' }
+  { path: 'product-mappings', loadChildren: './pages/product-mappings/product-mappings.module#ProductMappingsPageModule' },
+  { path: 'create-basf-invoice', loadChildren: './pages/create-basf-invoice/create-basf-invoice.module#CreateBasfInvoicePageModule' },
+  { path: 'view-basf-invoice', loadChildren: './pages/view-basf-invoice/view-basf-invoice.module#ViewBasfInvoicePageModule' },
+  { path: 'basf-invoice-info', loadChildren: './pages/basf-invoice-info/basf-invoice-info.module#BasfInvoiceInfoPageModule' }
 ];
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
+    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules, onSameUrlNavigation: 'reload' })
   ],
   exports: [RouterModule]
 })

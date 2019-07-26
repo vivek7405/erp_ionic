@@ -13,4 +13,5 @@ export class ChallanProductModel {
     public AccChallanDeductions: AccChallanDeduction[];
     public AssemblyChallanDeductions: AssemblyChallanDeduction[];
     public RemainingQuantity: number;
+    public CanDelete: boolean;
 }

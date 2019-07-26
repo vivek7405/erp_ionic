@@ -13,4 +13,5 @@ export class POProductModel {
     public AccPODeductions: AccPODeduction[];
     public AssemblyPODeductions: AssemblyPODeduction[];
     public RemainingQuantity: number;
+    public CanDelete: boolean;
 }

@@ -15,6 +15,7 @@ import { ProductType } from 'src/app/models/ProductType';
 import { ProductDetailModel } from 'src/app/models/ProductDetailModel';
 import { ProductMapping } from 'src/app/models/ProductMapping';
 import { ViewPODetailModel } from 'src/app/models/ViewPODetailModel';
+import { BASFInvoiceModel } from 'src/app/models/BASFInvoiceModel';
 
 @Injectable({
   providedIn: 'root'
@@ -119,5 +120,41 @@ export class GeneralService extends CommonService {
 
   public addOrUpdateProductMappings(productMappings: ProductMapping[]) {
     return this.http.post<any>(environment.apiBaseUrl + 'general/AddOrUpdateProductMappings', productMappings);
+  }
+
+  public deleteProductByProductId(vendorChallanNoModel: VendorChallanNoModel) {
+    return this.http.post<any>(environment.apiBaseUrl + 'general/DeleteProductByProductId', vendorChallanNoModel);
+  }
+
+  public deleteBASFChallanByChallanId(vendorChallanNoModel: VendorChallanNoModel) {
+    return this.http.post<any>(environment.apiBaseUrl + 'general/DeleteBASFChallanByChallanId', vendorChallanNoModel);
+  }
+
+  public deleteBASFPOByPOId(vendorChallanNoModel: VendorChallanNoModel) {
+    return this.http.post<any>(environment.apiBaseUrl + 'general/DeleteBASFPOByPOId', vendorChallanNoModel);
+  }
+
+  public deleteVendorChallanByVendorChallanNo(vendorChallanNoModel: VendorChallanNoModel) {
+    return this.http.post<any>(environment.apiBaseUrl + 'general/DeleteVendorChallanByVendorChallanNo', vendorChallanNoModel);
+  }
+
+  public forceDeleteProductByProductId(vendorChallanNoModel: VendorChallanNoModel) {
+    return this.http.post<any>(environment.apiBaseUrl + 'general/ForceDeleteProductByProductId', vendorChallanNoModel);
+  }
+
+  public forceDeleteBASFChallanByChallanId(vendorChallanNoModel: VendorChallanNoModel) {
+    return this.http.post<any>(environment.apiBaseUrl + 'general/ForceDeleteBASFChallanByChallanId', vendorChallanNoModel);
+  }
+
+  public forceDeleteBASFPOByPOId(vendorChallanNoModel: VendorChallanNoModel) {
+    return this.http.post<any>(environment.apiBaseUrl + 'general/ForceDeleteBASFPOByPOId', vendorChallanNoModel);
+  }
+
+  public getMainProductRemainingQuantityBASFInvoice() {
+    return this.http.get<ProductQuantity[]>(environment.apiBaseUrl + 'general/GetMainProductRemainingQuantityBASFInvoice');
+  }
+
+  public addOrUpdateBASFInvoice(basfInvoice: BASFInvoiceModel) {
+    return this.http.post<SuccessResponse>(environment.apiBaseUrl + 'general/AddOrUpdateBASFInvoice', basfInvoice);
   }
 }

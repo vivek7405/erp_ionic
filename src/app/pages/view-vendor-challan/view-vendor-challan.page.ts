@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { GeneralService } from 'src/app/services/general/general.service';
 import { ToastController } from '@ionic/angular';
 import { VendorChallanModel } from 'src/app/models/VendorChallanModel';
-import { Router } from '@angular/router';
-import { EditdeleteComponent } from '../editdelete/editdelete.component';
+import { Router, ActivatedRoute } from '@angular/router';
+import { VendorChallanNoModel } from 'src/app/models/VendorChallanNoModel';
+import { DeleteComponent } from '../delete/delete.component';
 
 @Component({
   selector: 'app-view-vendor-challan',
@@ -18,17 +19,20 @@ export class ViewVendorChallanPage implements OnInit {
   public frameworkComponents: any;
   public context: any;
 
-  constructor(public generalService: GeneralService, public toastCtrl: ToastController, public router: Router) { }
+  constructor(public generalService: GeneralService, public toastCtrl: ToastController, public router: Router, public activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
+    this.activatedRoute.queryParams.subscribe(params => {
+      this.getAllVendorChallans();
+    });
+
     this.columnDefs = [
       { headerName: 'Vibrant Challan No', field: 'VendorChallanNo' },
       { headerName: 'Vibrant Challan Date', field: 'VendorChallanDate' },
       { headerName: 'Total Stock Out', field: 'outputQuantity' },
       { headerName: 'Create Date', field: 'CreateDate' },
       { headerName: 'Edit Date', field: 'EditDate' },
-      { headerName: 'Actions', cellRenderer: 'editdelete' }
-
+      { headerName: 'Actions', cellRenderer: 'delete' }
     ];
 
     this.gridOptions = {
@@ -42,7 +46,7 @@ export class ViewVendorChallanPage implements OnInit {
     };
 
     this.frameworkComponents = {
-      editdelete: EditdeleteComponent
+      delete: DeleteComponent
     };
 
     this.context = this;
@@ -81,6 +85,8 @@ export class ViewVendorChallanPage implements OnInit {
           this.vendorChallans.forEach(vendorChallan => {
             vendorChallan.outputQuantity = 0;
             vendorChallan.VendorChallanDate = vendorChallan.VendorChallanDate.toString().split('T')[0];
+            vendorChallan.CreateDate = vendorChallan.CreateDate.toString().split('T')[0];
+            vendorChallan.EditDate = vendorChallan.EditDate.toString().split('T')[0];
             vendorChallan.OutStocks.forEach(outStock => {
               vendorChallan.outputQuantity += outStock.OutputQuantity;
             });
@@ -120,12 +126,27 @@ export class ViewVendorChallanPage implements OnInit {
     debugger;
     this.router.navigate(['/create-vendor-challan'], {
       queryParams: {
-        challanId: rowdata.VendorChallanNo
+        vendorChallanNo: rowdata.VendorChallanNo
       }
     });
   }
 
   public deleteRowAg(rowdata) {
     debugger;
+    if (confirm('Are you sure you wnat to Delete?')) {
+      let vendorChallanNoModel = new VendorChallanNoModel();
+      vendorChallanNoModel.VendorChallanNo = rowdata.VendorChallanNo;
+
+      this.generalService.deleteVendorChallanByVendorChallanNo(vendorChallanNoModel)
+        .subscribe(
+          result => {
+            this.generalService.toast(this.toastCtrl, 'Vendor Challan deleted successfully.');
+            this.getAllVendorChallans();
+          },
+          error => {
+            alert('Something went wrong!');
+          }
+        );
+    }
   }
 }

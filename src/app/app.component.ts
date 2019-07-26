@@ -59,6 +59,21 @@ export class AppComponent {
           icon: 'list'
         },
       ]
+    },
+    {
+      title: 'BASF Invoice',
+      children: [
+        {
+          title: 'Add BASF Invoice',
+          url: '/create-basf-invoice',
+          icon: 'add'
+        },
+        {
+          title: 'BASF Invoice Details',
+          url: '/view-basf-invoice',
+          icon: 'list'
+        },
+      ]
     }
   ];
 

@@ -16,15 +16,18 @@ import { EditdeleteComponent } from './pages/editdelete/editdelete.component';
 import { EditdeleteModule } from './pages/editdelete/editdelete.module';
 import { EditdeletemapComponent } from './pages/editdeletemap/editdeletemap.component';
 import { EditdeletemapModule } from './pages/editdeletemap/editdeletemap.module';
+import { DeleteModule } from './pages/delete/delete.module';
+import { DeleteComponent } from './pages/delete/delete.component';
 
 @NgModule({
   declarations: [AppComponent],
-  entryComponents: [EditdeleteComponent, EditdeletemapComponent],
+  entryComponents: [DeleteComponent, EditdeleteComponent, EditdeletemapComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
     IonicModule.forRoot(),
     AppRoutingModule,
+    DeleteModule,
     EditdeleteModule,
     EditdeletemapModule,
     AgGridModule.withComponents([])

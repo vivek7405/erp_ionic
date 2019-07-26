@@ -64,7 +64,7 @@
               <ion-icon class="icon-button" color="success" name="eye" title="View Deductions"
                 (click)="presentPopover($event, outStock, null, null)"
                 *ngIf="outStock.OutputQuantity != undefined && outStock.OutputQuantity != null && outStock.OutputQuantity != 0 && !basfChallanOrPOSelectionDone(outStock)">
-              </ion-icon>              
+              </ion-icon>
               <ion-icon class="icon-button" color="warning" name="eye" title="View Deductions"
                 (click)="presentPopover($event, outStock, null, null)"
                 *ngIf="outStock.OutputQuantity != undefined && outStock.OutputQuantity != null && outStock.OutputQuantity != 0 && basfChallanOrPOSelectionDone(outStock)">
@@ -79,7 +79,8 @@
               <ion-item>
                 <ion-label>Select Assembly: </ion-label>
                 <ionic-selectable disabled [(ngModel)]="outAssembly.selectedProductAssemblyQnt"
-                  [items]="outAssembly.productAssemblyQnts" itemValueField="ProductId" itemTextField="displayText">
+                  [items]="outAssembly.productAssemblyQnts" itemValueField="ProductId" itemTextField="displayText"
+                  [placeholder]="selectAssemblyProductPlaceholder">
                 </ionic-selectable>
               </ion-item>
             </ion-col>
@@ -96,7 +97,7 @@
                 <ion-icon class="icon-button" color="success" name="eye" title="View Deductions"
                   (click)="viewBASFChallans(outStock, null, outAssembly)"
                   *ngIf="outAssembly.OutputQuantity != undefined && outAssembly.OutputQuantity != null && outAssembly.OutputQuantity != 0 && !basfChallanOrPOSelectionDone(outAssembly)">
-                </ion-icon>                
+                </ion-icon>
                 <ion-icon class="icon-button" color="warning" name="eye" title="View Deductions"
                   (click)="viewBASFChallans(outStock, null, outAssembly)"
                   *ngIf="outAssembly.OutputQuantity != undefined && outAssembly.OutputQuantity != null && outAssembly.OutputQuantity != 0 && basfChallanOrPOSelectionDone(outAssembly)">

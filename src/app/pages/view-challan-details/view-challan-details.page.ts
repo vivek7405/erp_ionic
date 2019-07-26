@@ -2,9 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { GeneralService } from 'src/app/services/general/general.service';
 import { ViewChallanDetailModel } from 'src/app/models/ViewChallanDetailModel';
 import { ProductQuantity } from 'src/app/models/ProductQuantity';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ViewPODetailModel } from 'src/app/models/ViewPODetailModel';
 import { EditdeleteComponent } from '../editdelete/editdelete.component';
+import { Location } from '@angular/common';
+import { VendorChallanNoModel } from 'src/app/models/VendorChallanNoModel';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-view-challan-details',
@@ -25,9 +28,13 @@ export class ViewChallanDetailsPage implements OnInit {
   public frameworkComponents: any;
   public context: any;
 
-  constructor(public generalService: GeneralService, public router: Router) { }
+  constructor(public generalService: GeneralService, public router: Router, public activatedRoute: ActivatedRoute, public location: Location, public toastCtrl: ToastController) { }
 
   ngOnInit() {
+    this.activatedRoute.queryParams.subscribe(params => {
+      this.getAllChallanDetails();
+    });
+
     this.columnDefsChallan = [
       { headerName: 'Challan No', field: 'ChallanDetail.ChallanNo' },
       { headerName: 'Challan Date', field: 'ChallanDetail.ChallanDate' },
@@ -166,5 +173,63 @@ export class ViewChallanDetailsPage implements OnInit {
 
   public deleteRowAg(rowdata) {
     debugger;
+    if (confirm('Are you sure you want to Delete?')) {
+      debugger;
+      let vendorChallanNoModel = new VendorChallanNoModel();
+      if (this.isPO)
+        vendorChallanNoModel.VendorChallanNo = rowdata.PODetail.POId;
+      else
+        vendorChallanNoModel.VendorChallanNo = rowdata.ChallanDetail.ChallanId;
+
+      if (this.isPO) {
+        this.generalService.deleteBASFPOByPOId(vendorChallanNoModel)
+          .subscribe(
+            result => {
+              this.generalService.toast(this.toastCtrl, 'BASF PO deleted successfully.');
+              this.getAllPODetails();
+            },
+            error => {
+              if (confirm(error.error.ExceptionMessage)) {
+                if (confirm('Are you sure you want to Delete the PO and all its references? Once deleted, you will not be able to undo!')) {
+                  this.generalService.forceDeleteBASFPOByPOId(vendorChallanNoModel)
+                    .subscribe(
+                      result => {
+                        this.generalService.toast(this.toastCtrl, 'BASF PO and all its references deleted successfully.');
+                        this.getAllPODetails();
+                      },
+                      error => {
+                        alert('Something went wrong!');
+                      }
+                    );
+                }
+              }
+            }
+          );
+      } else {
+        this.generalService.deleteBASFChallanByChallanId(vendorChallanNoModel)
+          .subscribe(
+            result => {
+              this.generalService.toast(this.toastCtrl, 'BASF Challan deleted successfully.');
+              this.getAllChallanDetails();
+            },
+            error => {
+              if (confirm(error.error.ExceptionMessage)) {
+                if (confirm('Are you sure you want to Delete the Challan and all its references? Once deleted, you will not be able to undo!')) {
+                  this.generalService.forceDeleteBASFChallanByChallanId(vendorChallanNoModel)
+                    .subscribe(
+                      result => {
+                        this.generalService.toast(this.toastCtrl, 'BASF Challan and all its references deleted successfully.');
+                        this.getAllChallanDetails();
+                      },
+                      error => {
+                        alert('Something went wrong!');
+                      }
+                    );
+                }
+              }
+            }
+          );
+      }
+    }
   }
 }
