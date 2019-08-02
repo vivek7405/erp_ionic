@@ -28,8 +28,6 @@ export class OutStockModel {
   public isManualPO: boolean;
 
   public mainQntSum: number;
-  public assemblyQntSum: number;
-  public accQntSum: number;
 
   public selectedProductQnt: ProductQuantity;
 }

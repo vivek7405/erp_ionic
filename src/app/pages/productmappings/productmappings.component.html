@@ -30,7 +30,7 @@
     <ion-label>Mappings: </ion-label>
     <ion-select multiple="true" [(ngModel)]="productMappingValues">
       <ion-select-option *ngFor="let product of productDetails" [value]="product.ProductId">
-        {{product.InputMaterialDesc}}</ion-select-option>
+        {{product.InputCode}} - {{product.InputMaterialDesc}}</ion-select-option>
     </ion-select>
   </ion-item>
 

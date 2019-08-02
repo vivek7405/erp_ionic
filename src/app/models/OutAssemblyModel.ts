@@ -28,4 +28,6 @@ export class OutAssemblyModel {
 
     public productAssemblyQnts: ProductQuantity[];
     public selectedProductAssemblyQnt: ProductQuantity;
+
+    public assemblyQntSum: number;
 }

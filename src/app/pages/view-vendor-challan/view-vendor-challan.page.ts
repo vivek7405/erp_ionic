@@ -22,10 +22,6 @@ export class ViewVendorChallanPage implements OnInit {
   constructor(public generalService: GeneralService, public toastCtrl: ToastController, public router: Router, public activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
-    this.activatedRoute.queryParams.subscribe(params => {
-      this.getAllVendorChallans();
-    });
-
     this.columnDefs = [
       { headerName: 'Vibrant Challan No', field: 'VendorChallanNo' },
       { headerName: 'Vibrant Challan Date', field: 'VendorChallanDate' },
@@ -51,7 +47,10 @@ export class ViewVendorChallanPage implements OnInit {
 
     this.context = this;
 
-    this.getAllVendorChallans();
+    this.activatedRoute.queryParams.subscribe(params => {
+      this.getAllVendorChallans();
+    });
+    //this.getAllVendorChallans();
   }
 
   public getAllVendorChallans() {

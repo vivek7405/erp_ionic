@@ -18,7 +18,7 @@ export class ProductmappingsComponent implements OnInit {
   public productDetail: ProductDetailModel;
   public productDetails: ProductDetail[];
   public productMappingValues = [];
-  public productTypes: ProductType[];
+  public productTypes: ProductType[];  
 
   constructor(public generalService: GeneralService, public toastCtrl: ToastController, public modalCtrl: ModalController) { }
 

@@ -71,7 +71,7 @@
               <ion-col class="grid-border">{{challanDeduction.ChallanProduct.ProductDetail.InputCode}}</ion-col>
               <ion-col class="grid-border">{{challanDeduction.ChallanProduct.ProductDetail.InputMaterialDesc}}</ion-col>
               <ion-col class="grid-border">{{challanDeduction.OutQuantity}}</ion-col>
-              <ion-col class="grid-border">{{challanDeduction.ChallanProduct.ProductDetail.ProductTypeId}}</ion-col>
+              <ion-col class="grid-border">{{challanDeduction.ChallanProduct.ProductDetail.ProductTypeName}}</ion-col>
               <ion-col class="grid-border">{{challanDeduction.ChallanProduct.ChallanDetail.ChallanNo}}</ion-col>
               <ion-col class="grid-border">{{challanDeduction.ChallanProduct.RemainingQuantity}}</ion-col>
             </ion-row>
@@ -100,57 +100,58 @@
                 <ion-col class="grid-border">{{assemblyChallanDeduction.ChallanProduct.ProductDetail.InputMaterialDesc}}
                 </ion-col>
                 <ion-col class="grid-border">{{assemblyChallanDeduction.OutQuantity}}</ion-col>
-                <ion-col class="grid-border">{{assemblyChallanDeduction.ChallanProduct.ProductDetail.ProductTypeId}}
+                <ion-col class="grid-border">{{assemblyChallanDeduction.ChallanProduct.ProductDetail.ProductTypeName}}
                 </ion-col>
                 <ion-col class="grid-border">{{assemblyChallanDeduction.ChallanProduct.ChallanDetail.ChallanNo}}
                 </ion-col>
                 <ion-col class="grid-border">{{assemblyChallanDeduction.ChallanProduct.RemainingQuantity}}</ion-col>
               </ion-row>
-            </ng-container>
-
-            <ion-row *ngIf="outStock.assemblyQntSum > 0">
-              <ion-col class="grid-border"></ion-col>
-              <ion-col class="grid-border"></ion-col>
-              <ion-col class="grid-border"></ion-col>
-              <ion-col class="grid-border"></ion-col>
-              <ion-col class="grid-border"></ion-col>
-              <ion-col class="grid-border sub-total">SUBTOTAL</ion-col>
-              <ion-col class="grid-border sub-total">{{outStock.assemblyQntSum}}</ion-col>
-              <ion-col class="grid-border"></ion-col>
-              <ion-col class="grid-border"></ion-col>
-              <ion-col class="grid-border"></ion-col>
-            </ion-row>
-
-            <ng-container *ngFor="let outAcc of outStock.OutAccs">
-              <ion-row *ngFor="let accChallanDeduction of outAcc.AccChallanDeductions">
+              <ion-row *ngIf="outAssembly.assemblyQntSum > 0">
                 <ion-col class="grid-border"></ion-col>
                 <ion-col class="grid-border"></ion-col>
                 <ion-col class="grid-border"></ion-col>
                 <ion-col class="grid-border"></ion-col>
-                <ion-col class="grid-border">{{accChallanDeduction.ChallanProduct.ProductDetail.InputCode}}</ion-col>
-                <ion-col class="grid-border">{{accChallanDeduction.ChallanProduct.ProductDetail.InputMaterialDesc}}
-                </ion-col>
-                <ion-col class="grid-border">{{accChallanDeduction.OutQuantity}}</ion-col>
-                <ion-col class="grid-border">{{accChallanDeduction.ChallanProduct.ProductDetail.ProductTypeId}}
-                </ion-col>
-                <ion-col class="grid-border">{{accChallanDeduction.ChallanProduct.ChallanDetail.ChallanNo}}</ion-col>
-                <ion-col class="grid-border">{{accChallanDeduction.ChallanProduct.RemainingQuantity}}</ion-col>
+                <ion-col class="grid-border"></ion-col>
+                <ion-col class="grid-border sub-total">SUBTOTAL</ion-col>
+                <ion-col class="grid-border sub-total">{{outAssembly.assemblyQntSum}}</ion-col>
+                <ion-col class="grid-border"></ion-col>
+                <ion-col class="grid-border"></ion-col>
+                <ion-col class="grid-border"></ion-col>
               </ion-row>
             </ng-container>
 
-            <ion-row *ngIf="outStock.accQntSum > 0">
-              <ion-col class="grid-border"></ion-col>
-              <ion-col class="grid-border"></ion-col>
-              <ion-col class="grid-border"></ion-col>
-              <ion-col class="grid-border"></ion-col>
-              <ion-col class="grid-border"></ion-col>
-              <ion-col class="grid-border sub-total">SUBTOTAL</ion-col>
-              <ion-col class="grid-border sub-total">{{outStock.accQntSum}}</ion-col>
-              <ion-col class="grid-border"></ion-col>
-              <ion-col class="grid-border"></ion-col>
-              <ion-col class="grid-border"></ion-col>
-            </ion-row>
+            <ng-container *ngFor="let outAcc of outStock.OutAccs">
+              <ion-row *ngFor="let accChallanDeduction of outAcc.AccChallanDeductions; let j = index">
+                <ion-col class="grid-border"></ion-col>
+                <ion-col class="grid-border"></ion-col>
+                <ion-col class="grid-border"></ion-col>
+                <ion-col class="grid-border"></ion-col>
+                <ion-col class="grid-border">{{accChallanDeduction.ChallanProduct.ProductDetail.InputCode}}
+                </ion-col>
+                <ion-col class="grid-border">{{accChallanDeduction.ChallanProduct.ProductDetail.InputMaterialDesc}}
+                </ion-col>
+                <ion-col class="grid-border">{{accChallanDeduction.OutQuantity}}</ion-col>
+                <ion-col class="grid-border">{{accChallanDeduction.ChallanProduct.ProductDetail.ProductTypeName}}
+                </ion-col>
+                <ion-col class="grid-border">{{accChallanDeduction.ChallanProduct.ChallanDetail.ChallanNo}}
+                </ion-col>
+                <ion-col class="grid-border">{{accChallanDeduction.ChallanProduct.RemainingQuantity}}</ion-col>
+              </ion-row>
+              <ion-row *ngIf="outAcc.accQntSum > 0">
+                <ion-col class="grid-border"></ion-col>
+                <ion-col class="grid-border"></ion-col>
+                <ion-col class="grid-border"></ion-col>
+                <ion-col class="grid-border"></ion-col>
+                <ion-col class="grid-border"></ion-col>
+                <ion-col class="grid-border sub-total">SUBTOTAL</ion-col>
+                <ion-col class="grid-border sub-total">{{outAcc.accQntSum}}</ion-col>
+                <ion-col class="grid-border"></ion-col>
+                <ion-col class="grid-border"></ion-col>
+                <ion-col class="grid-border"></ion-col>
+              </ion-row>
+            </ng-container>
           </ion-col>
+
           <ion-col size="1" class="grid-border">
             <ion-row class="height-100">
               <ion-col class="height-100 padding-0">

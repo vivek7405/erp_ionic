@@ -22,10 +22,6 @@ export class ViewProductDetailsPage implements OnInit {
   constructor(public generalService: GeneralService, public toastCtrl: ToastController, public router: Router, private modalController: ModalController, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
-    this.activatedRoute.queryParams.subscribe((params) => {
-      this.getAllProductDetails();
-    });
-
     this.columnDefs = [
       { headerName: 'Input Code', field: 'InputCode' },
       { headerName: 'Input Material Description', field: 'InputMaterialDesc' },
@@ -54,7 +50,10 @@ export class ViewProductDetailsPage implements OnInit {
 
     this.context = this;
 
-    this.getAllProductDetails();
+    this.activatedRoute.queryParams.subscribe((params) => {
+      this.getAllProductDetails();
+    });
+    //this.getAllProductDetails();
   }
 
   public onGridReady(event) {

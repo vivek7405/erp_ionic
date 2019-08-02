@@ -44,12 +44,17 @@
       <ion-col>
         <ion-item>
           <ion-label>Product Name: </ion-label>
-          <ion-select [disabled]="challanProduct.ChallanProductId && challanProduct.ChallanProductId != 0"
+          <!-- <ion-select [disabled]="challanProduct.ChallanProductId && challanProduct.ChallanProductId != 0"
             name="ProductName" [(ngModel)]="challanProduct.ProductId">
             <ion-select-option *ngFor="let product of productDetails" [value]="product.ProductId">
               {{product.InputMaterialDesc}}
             </ion-select-option>
-          </ion-select>
+          </ion-select> -->
+          <ionic-selectable [disabled]="challanProduct.ChallanProductId && challanProduct.ChallanProductId != 0"
+            [(ngModel)]="challanProduct.selectedProductDetail" [items]="productDetails"
+            (onChange)="productSelected(challanProduct)" itemValueField="ProductId" itemTextField="InputMaterialDesc"
+            [placeholder]="selectProduct" [canSearch]="true">
+          </ionic-selectable>
         </ion-item>
       </ion-col>
       <ion-col>

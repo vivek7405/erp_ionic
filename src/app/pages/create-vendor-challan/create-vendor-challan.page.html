@@ -40,7 +40,7 @@
               </ion-select> -->
               <ionic-selectable (onChange)="outStockProductSelected(outStock)" [(ngModel)]="outStock.selectedProductQnt"
                 [items]="productQnts" itemValueField="ProductId" itemTextField="displayText"
-                [placeholder]="selectProductPlaceholder">
+                [placeholder]="selectProductPlaceholder" [canSearch]="true">
               </ionic-selectable>
             </ion-item>
           </ion-col>
@@ -80,7 +80,7 @@
                 <ion-label>Select Assembly: </ion-label>
                 <ionic-selectable disabled [(ngModel)]="outAssembly.selectedProductAssemblyQnt"
                   [items]="outAssembly.productAssemblyQnts" itemValueField="ProductId" itemTextField="displayText"
-                  [placeholder]="selectAssemblyProductPlaceholder">
+                  [placeholder]="selectAssemblyProductPlaceholder" [canSearch]="true">
                 </ionic-selectable>
               </ion-item>
             </ion-col>
@@ -114,7 +114,7 @@
                 <ion-label>Select Accessory: </ion-label>
                 <ionic-selectable (onChange)="outAccProductSelected(outAcc, outStock)"
                   [(ngModel)]="outAcc.selectedProductAccQnt" [items]="outAcc.productAccQnts" itemValueField="ProductId"
-                  itemTextField="displayText" [placeholder]="selectAccessoryPlaceholder">
+                  itemTextField="displayText" [placeholder]="selectAccessoryPlaceholder" [canSearch]="true">
                 </ionic-selectable>
               </ion-item>
             </ion-col>

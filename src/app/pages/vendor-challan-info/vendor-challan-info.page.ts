@@ -18,6 +18,10 @@ export class VendorChallanInfoPage implements OnInit {
   public window: any;
 
   constructor(public activatedRoute: ActivatedRoute, public generalService: GeneralService, public printer: Printer, public toastCtrl: ToastController, public windowRef: WindowRefService) {
+
+  }
+
+  ngOnInit() {
     this.window = this.windowRef.nativeWindow;
     this.activatedRoute.queryParams.subscribe((result) => {
       debugger;
@@ -31,22 +35,22 @@ export class VendorChallanInfoPage implements OnInit {
 
             this.vendorChallan.OutStocks.forEach(outStock => {
               outStock.mainQntSum = 0;
-              outStock.assemblyQntSum = 0;
-              outStock.accQntSum = 0;
 
               outStock.ChallanDeductions.forEach(challanDeduction => {
                 outStock.mainQntSum += challanDeduction.OutQuantity;
               });
 
               outStock.OutAssemblys.forEach(assembly => {
+                assembly.assemblyQntSum = 0;
                 assembly.AssemblyChallanDeductions.forEach(assemblyChallanDeduction => {
-                  outStock.assemblyQntSum += assemblyChallanDeduction.OutQuantity;
+                  assembly.assemblyQntSum += assemblyChallanDeduction.OutQuantity;
                 });
               });
 
               outStock.OutAccs.forEach(acc => {
+                acc.accQntSum = 0;
                 acc.AccChallanDeductions.forEach(accChallanDeduction => {
-                  outStock.accQntSum += accChallanDeduction.OutQuantity;
+                  acc.accQntSum += accChallanDeduction.OutQuantity;
                 });
               });
 
@@ -58,9 +62,6 @@ export class VendorChallanInfoPage implements OnInit {
           }
         );
     });
-  }
-
-  ngOnInit() {
   }
 
   print() {

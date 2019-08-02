@@ -16,7 +16,7 @@
       <ion-col>
         <ion-item>
           <ion-label>Invoice Number: </ion-label>
-          <ion-datetime [(ngModel)]="basfInvoice.BASFInvoiceNo"></ion-datetime>
+          <ion-input [(ngModel)]="basfInvoice.BASFInvoiceNo"></ion-input>
         </ion-item>
       </ion-col>
       <ion-col>
@@ -35,7 +35,7 @@
               <ion-label>Select Product: </ion-label>
               <ionic-selectable (onChange)="outStockProductSelected(outStock)" [(ngModel)]="outStock.selectedProductQnt"
                 [items]="productQnts" itemValueField="ProductId" itemTextField="displayText"
-                [placeholder]="selectProductPlaceholder">
+                [placeholder]="selectProductPlaceholder" [canSearch]="true">
               </ionic-selectable>
             </ion-item>
           </ion-col>

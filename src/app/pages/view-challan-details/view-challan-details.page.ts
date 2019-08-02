@@ -31,10 +31,6 @@ export class ViewChallanDetailsPage implements OnInit {
   constructor(public generalService: GeneralService, public router: Router, public activatedRoute: ActivatedRoute, public location: Location, public toastCtrl: ToastController) { }
 
   ngOnInit() {
-    this.activatedRoute.queryParams.subscribe(params => {
-      this.getAllChallanDetails();
-    });
-
     this.columnDefsChallan = [
       { headerName: 'Challan No', field: 'ChallanDetail.ChallanNo' },
       { headerName: 'Challan Date', field: 'ChallanDetail.ChallanDate' },
@@ -67,7 +63,13 @@ export class ViewChallanDetailsPage implements OnInit {
 
     this.context = this;
 
-    this.getAllChallanDetails();
+    this.activatedRoute.queryParams.subscribe(params => {
+      if (this.isPO)
+        this.getAllPODetails();
+      else
+        this.getAllChallanDetails();
+    });
+    //this.getAllChallanDetails();
   }
 
   public poToggle() {

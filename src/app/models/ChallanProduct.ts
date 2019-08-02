@@ -1,4 +1,5 @@
 import { IonDatetime } from '@ionic/angular';
+import { ProductDetail } from './ProductDetail';
 
 export class ChallanProduct {
     public ChallanProductId: number;
@@ -9,4 +10,5 @@ export class ChallanProduct {
     public EditDate: IonDatetime;
 
     public CanDelete: boolean;
+    public selectedProductDetail: ProductDetail;
 }

@@ -157,4 +157,16 @@ export class GeneralService extends CommonService {
   public addOrUpdateBASFInvoice(basfInvoice: BASFInvoiceModel) {
     return this.http.post<SuccessResponse>(environment.apiBaseUrl + 'general/AddOrUpdateBASFInvoice', basfInvoice);
   }
+
+  public getAllBASFInvoices() {
+    return this.http.get<BASFInvoiceModel[]>(environment.apiBaseUrl + 'general/GetAllBASFInvoices');
+  }
+
+  public deleteBASFInvoiceByBASFInvoiceId(vendorChallanNoModel: VendorChallanNoModel) {
+    return this.http.post<any>(environment.apiBaseUrl + 'general/DeleteBASFInvoiceByBASFInvoiceId', vendorChallanNoModel);
+  }
+
+  public getBASFInvoiceByBASFInvoiceId(vendorChallanNoModel: VendorChallanNoModel) {
+    return this.http.post<BASFInvoiceModel>(environment.apiBaseUrl + 'general/GetBASFInvoiceByBASFInvoiceId', vendorChallanNoModel);
+  }
 }

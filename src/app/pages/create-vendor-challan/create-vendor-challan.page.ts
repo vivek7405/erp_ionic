@@ -810,11 +810,11 @@ export class CreateVendorChallanPage implements OnInit {
   }
 
   public setProdQntDisplayTextWithoutPOQnt(prodQnt: ProductQuantity) {
-    prodQnt.displayText = prodQnt.ProductName + ' - ' + prodQnt.RemainingQuantity;
+    prodQnt.displayText = prodQnt.ProductName + ' | ' + prodQnt.RemainingQuantity;
   }
 
   public setProdQntDisplayTextWithPOQnt(prodQnt: ProductQuantity) {
-    prodQnt.displayText = prodQnt.ProductName + ' - ' + prodQnt.RemainingQuantity + ' - ' + prodQnt.RemainingQuantityPO;
+    prodQnt.displayText = prodQnt.ProductName + ' | ' + prodQnt.RemainingQuantity + ' | ' + prodQnt.RemainingQuantityPO;
   }
 
   // public reCalculateAssemblyRemainingQntsPrev(i: number) {

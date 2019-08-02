@@ -1,13 +1,13 @@
 import { ChallanProduct } from './ChallanProduct';
-import { ProductDetail } from './ProductDetail';
 import { ChallanDeduction } from './ChallanDeduction';
 import { ChallanDetail } from './ChallanDetail';
 import { AccChallanDeduction } from './AccChallanDeduction';
 import { AssemblyChallanDeduction } from './AssemblyChallanDeduction';
+import { ProductDetailWithProductType } from './ProductDetailWithProductType';
 
 export class ChallanProductModel {
     public ChallanProduct: ChallanProduct;
-    public ProductDetail: ProductDetail;
+    public ProductDetail: ProductDetailWithProductType;
     public ChallanDetail: ChallanDetail;
     public ChallanDeductions: ChallanDeduction[];
     public AccChallanDeductions: AccChallanDeduction[];

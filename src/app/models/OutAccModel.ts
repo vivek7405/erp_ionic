@@ -28,4 +28,6 @@ export class OutAccModel {
 
     public productAccQnts: ProductQuantity[];
     public selectedProductAccQnt: ProductQuantity;
+
+    public accQntSum: number;
 }

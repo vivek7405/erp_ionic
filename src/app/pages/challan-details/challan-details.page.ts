@@ -19,6 +19,7 @@ export class ChallanDetailsPage implements OnInit {
   public challanProducts: ChallanProduct[] = [];
   public productDetails: ProductDetail[];
   public challanDetail: ChallanDetail;
+  public selectProduct = "Select Product";
 
   public isEdit: boolean;
 
@@ -174,6 +175,13 @@ export class ChallanDetailsPage implements OnInit {
     }
   }
 
+  public productSelected(challanProduct: ChallanProduct) {
+    debugger;
+    if (challanProduct.selectedProductDetail) {
+      challanProduct.ProductId = challanProduct.selectedProductDetail.ProductId;
+    }
+  }
+
   public submitChallanDetails() {
     let challanDetailModel: ChallanDetailModel = new ChallanDetailModel();
     challanDetailModel.ChallanDetail = this.challanDetail;
@@ -210,6 +218,7 @@ export class ChallanDetailsPage implements OnInit {
             successMsg = 'BASF Challan updated successfully.';
         }
 
+        debugger;
         this.generalService.addOrUpdateChallan(challanDetailModel)
           .subscribe(
             result => {

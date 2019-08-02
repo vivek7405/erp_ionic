@@ -52,7 +52,7 @@ export class CreateBasfInvoicePage implements OnInit {
   }
 
   public setProdQntDisplayTextWithoutPOQnt(prodQnt: ProductQuantity) {
-    prodQnt.displayText = prodQnt.ProductName + ' - ' + prodQnt.RemainingQuantity;
+    prodQnt.displayText = prodQnt.ProductName + ' | ' + prodQnt.RemainingQuantity;
   }
 
   public addOutStock() {
@@ -144,7 +144,9 @@ export class CreateBasfInvoicePage implements OnInit {
     //   this.challanDeductionAndSave(outStock);
     // });
 
-    if (this.basfInvoice.BASFInvoiceDate == undefined || this.basfInvoice.BASFInvoiceDate == null) {
+    if (this.basfInvoice.BASFInvoiceNo == undefined || this.basfInvoice.BASFInvoiceNo == null) {
+      alert('Please enter Invoice Number.');
+    } else if (this.basfInvoice.BASFInvoiceDate == undefined || this.basfInvoice.BASFInvoiceDate == null) {
       alert('Please enter Invoice Date.');
     } else if (this.isOutQntZero()) {
       alert('Please enter a valid Output Quantity.');
