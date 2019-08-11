@@ -23,11 +23,11 @@ export class ViewVendorChallanPage implements OnInit {
 
   ngOnInit() {
     this.columnDefs = [
-      { headerName: 'Vibrant Challan No', field: 'VendorChallanNo' },
-      { headerName: 'Vibrant Challan Date', field: 'VendorChallanDate' },
-      { headerName: 'Total Stock Out', field: 'outputQuantity' },
-      { headerName: 'Create Date', field: 'CreateDate' },
-      { headerName: 'Edit Date', field: 'EditDate' },
+      { headerName: 'Vibrant Challan No', field: 'VendorChallanNo', colId: 'VendorChallanNo' },
+      { headerName: 'Vibrant Challan Date', field: 'VendorChallanDate', colId: 'VendorChallanDate' },
+      { headerName: 'Total Stock Out', field: 'outputQuantity', colId: 'outputQuantity' },
+      { headerName: 'Create Date', field: 'CreateDate', colId: 'CreateDate' },
+      { headerName: 'Edit Date', field: 'EditDate', colId: 'EditDate' },
       { headerName: 'Actions', cellRenderer: 'delete' }
     ];
 
@@ -147,5 +147,13 @@ export class ViewVendorChallanPage implements OnInit {
           }
         );
     }
+  }
+
+  public export() {
+    var params = {
+      columnKeys: ['VendorChallanNo', 'VendorChallanDate', 'outputQuantity', 'CreateDate', 'EditDate']
+    };
+
+    this.gridOptions.api.exportDataAsCsv(params);
   }
 }

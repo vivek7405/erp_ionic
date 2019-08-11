@@ -52,7 +52,7 @@
           </ion-select> -->
           <ionic-selectable [disabled]="challanProduct.ChallanProductId && challanProduct.ChallanProductId != 0"
             [(ngModel)]="challanProduct.selectedProductDetail" [items]="productDetails"
-            (onChange)="productSelected(challanProduct)" itemValueField="ProductId" itemTextField="InputMaterialDesc"
+            (onChange)="productSelected(challanProduct)" itemValueField="ProductId" itemTextField="displayText"
             [placeholder]="selectProduct" [canSearch]="true">
           </ionic-selectable>
         </ion-item>

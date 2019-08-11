@@ -22,7 +22,11 @@ const routes: Routes = [
   { path: 'product-mappings', loadChildren: './pages/product-mappings/product-mappings.module#ProductMappingsPageModule' },
   { path: 'create-basf-invoice', loadChildren: './pages/create-basf-invoice/create-basf-invoice.module#CreateBasfInvoicePageModule' },
   { path: 'view-basf-invoice', loadChildren: './pages/view-basf-invoice/view-basf-invoice.module#ViewBasfInvoicePageModule' },
-  { path: 'basf-invoice-info', loadChildren: './pages/basf-invoice-info/basf-invoice-info.module#BasfInvoiceInfoPageModule' }
+  { path: 'basf-invoice-info', loadChildren: './pages/basf-invoice-info/basf-invoice-info.module#BasfInvoiceInfoPageModule' },
+  { path: 'basf-challan-po-where-used-report', loadChildren: './pages/basf-challan-po-where-used-report/basf-challan-po-where-used-report.module#BasfChallanPoWhereUsedReportPageModule' },
+  { path: 'close-challan-report', loadChildren: './pages/close-challan-report/close-challan-report.module#CloseChallanReportPageModule' },
+  { path: 'fg-stock-report', loadChildren: './pages/fg-stock-report/fg-stock-report.module#FgStockReportPageModule' },
+  { path: 'semi-stock-report', loadChildren: './pages/semi-stock-report/semi-stock-report.module#SemiStockReportPageModule' }
 ];
 
 @NgModule({

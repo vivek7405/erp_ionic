@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>BASF Invoice Details</ion-title>
+    <ion-title>Close Challan Report</ion-title>
     <ion-buttons slot="end">
       <ion-icon class="export-csv" name="archive" title="Export" (click)="export()"></ion-icon>
     </ion-buttons>
@@ -11,8 +11,7 @@
 </ion-header>
 
 <ion-content>
-  <ag-grid-angular *ngIf="basfInvoices" style="width: 100%; height: 100%;" class="ag-theme-balham"
-    [gridOptions]="gridOptions" [rowData]="basfInvoices" [columnDefs]="columnDefs"
-    [frameworkComponents]="frameworkComponents" [context]="context" (rowDoubleClicked)="showDetails($event)">
+  <ag-grid-angular *ngIf="closeChallanReportModelList" style="width: 100%; height: 100%;" class="ag-theme-balham"
+    [gridOptions]="gridOptions" [rowData]="closeChallanReportModelList" [columnDefs]="columnDefs" [context]="context">
   </ag-grid-angular>
 </ion-content>

@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+
+    <ion-title *ngIf="!isPO && !challanWhereUsedInVendorChallansList && !challanWhereUsedInBASFInvoicesList">BASF
+      Challan - Where Used
+    </ion-title>
+    <ion-title *ngIf="isPO && !challanWhereUsedInVendorChallansList && !challanWhereUsedInBASFInvoicesList">BASF PO -
+      Where Used
+    </ion-title>
+
+    <ion-title *ngIf="!isPO && !isInvoice && challanWhereUsedInVendorChallansList">BASF Challan -
+      {{challanWhereUsedInVendorChallansList[0].ChallanNo}}
+    </ion-title>
+
+    <ion-title *ngIf="!isPO && isInvoice && challanWhereUsedInBASFInvoicesList">BASF Challan -
+      {{challanWhereUsedInBASFInvoicesList[0].ChallanNo}}
+    </ion-title>
+
+    <ion-title *ngIf="isPO && challanWhereUsedInVendorChallansList">BASF PO -
+      {{challanWhereUsedInVendorChallansList[0].ChallanNo}}
+    </ion-title>
+
+    <ion-buttons slot="end" *ngIf="!isPO">
+      <ion-label>BASF Invoice</ion-label>
+      <ion-toggle [(ngModel)]="isInvoice" (click)="invoiceSwitched()"></ion-toggle>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ag-grid-angular *ngIf="!isInvoice && challanWhereUsedInVendorChallansList" style="width: 100%; height: 100%;"
+    class="ag-theme-balham" [gridOptions]="gridOptions" [rowData]="challanWhereUsedInVendorChallansList"
+    [columnDefs]="columnDefsVendorChallan" [context]="context">
+  </ag-grid-angular>
+
+  <ag-grid-angular *ngIf="isInvoice" style="width: 100%; height: 100%;" class="ag-theme-balham"
+    [gridOptions]="gridOptions" [rowData]="challanWhereUsedInBASFInvoicesList" [columnDefs]="columnDefsBASFInvoice"
+    [context]="context">
+  </ag-grid-angular>
+</ion-content>

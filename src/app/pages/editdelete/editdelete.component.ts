@@ -23,4 +23,8 @@ export class EditdeleteComponent implements OnInit {
   public editRowAg() {
     this.params.context.editRowAg(this.params.node.data);
   }
+
+  public reportRowAg() {
+    this.params.context.reportRowAg(this.params.node.data);
+  }
 }

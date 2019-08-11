@@ -16,6 +16,9 @@ import { ProductDetailModel } from 'src/app/models/ProductDetailModel';
 import { ProductMapping } from 'src/app/models/ProductMapping';
 import { ViewPODetailModel } from 'src/app/models/ViewPODetailModel';
 import { BASFInvoiceModel } from 'src/app/models/BASFInvoiceModel';
+import { BASFChallanPOWhereUsedModel } from 'src/app/models/BASFChallanPOWhereUsedModel';
+import { CloseChallanReportModel } from 'src/app/models/CloseChallanReportModel';
+import { FGAndSemiStockReportModel } from 'src/app/models/FGAndSemiStockReportModel';
 
 @Injectable({
   providedIn: 'root'
@@ -168,5 +171,29 @@ export class GeneralService extends CommonService {
 
   public getBASFInvoiceByBASFInvoiceId(vendorChallanNoModel: VendorChallanNoModel) {
     return this.http.post<BASFInvoiceModel>(environment.apiBaseUrl + 'general/GetBASFInvoiceByBASFInvoiceId', vendorChallanNoModel);
+  }
+
+  public getBASFChallanWhereUsedInVendorChallansReport(vendorChallanNoModel: VendorChallanNoModel) {
+    return this.http.post<BASFChallanPOWhereUsedModel[]>(environment.apiBaseUrl + 'general/GetBASFChallanWhereUsedInVendorChallansReport', vendorChallanNoModel);
+  }
+
+  public getBASFPOWhereUsedInVendorChallansReport(vendorChallanNoModel: VendorChallanNoModel) {
+    return this.http.post<BASFChallanPOWhereUsedModel[]>(environment.apiBaseUrl + 'general/GetBASFPOWhereUsedInVendorChallansReport', vendorChallanNoModel);
+  }
+
+  public getBASFChallanWhereUsedInBASFInvoicesReport(vendorChallanNoModel: VendorChallanNoModel) {
+    return this.http.post<BASFChallanPOWhereUsedModel[]>(environment.apiBaseUrl + 'general/GetBASFChallanWhereUsedInBASFInvoicesReport', vendorChallanNoModel);
+  }
+
+  public getCloseChallanReport() {
+    return this.http.get<CloseChallanReportModel[]>(environment.apiBaseUrl + 'general/GetCloseChallanReport');
+  }
+
+  public getFGStockReport() {
+    return this.http.get<FGAndSemiStockReportModel[]>(environment.apiBaseUrl + 'general/GetFGStockReport');
+  }
+
+  public getSemiStockReport() {
+    return this.http.get<FGAndSemiStockReportModel[]>(environment.apiBaseUrl + 'general/GetSemiStockReport');
   }
 }

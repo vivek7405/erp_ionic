@@ -4,6 +4,6 @@ export class PODetail {
     public POId: number;
     public PONo: string;
     public PODate: any;
-    public CreateDate: IonDatetime;
-    public EditDate: IonDatetime;
+    public CreateDate: any;
+    public EditDate: any;
 }

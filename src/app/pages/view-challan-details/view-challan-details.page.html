@@ -6,6 +6,7 @@
     <ion-title *ngIf="!isPO">BASF Jobwork Challan Details</ion-title>
     <ion-title *ngIf="isPO">BASF PO Details</ion-title>
     <ion-buttons slot="end">
+      <ion-icon class="export-csv" name="archive" title="Export" (click)="export()"></ion-icon>
       <ion-label>BASF PO</ion-label>
       <ion-toggle [(ngModel)]="isPO" (ionChange)="poToggle()"></ion-toggle>
     </ion-buttons>

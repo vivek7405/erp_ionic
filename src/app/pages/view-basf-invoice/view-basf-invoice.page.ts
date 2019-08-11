@@ -23,11 +23,11 @@ export class ViewBasfInvoicePage implements OnInit {
 
   ngOnInit() {
     this.columnDefs = [
-      { headerName: 'BASF Invoice No', field: 'BASFInvoiceNo' },
-      { headerName: 'BASF Invoice Date', field: 'BASFInvoiceDate' },
-      { headerName: 'Total Stock Out', field: 'outputQuantity' },
-      { headerName: 'Create Date', field: 'CreateDate' },
-      { headerName: 'Edit Date', field: 'EditDate' },
+      { headerName: 'BASF Invoice No', field: 'BASFInvoiceNo', colId: 'BASFInvoiceNo' },
+      { headerName: 'BASF Invoice Date', field: 'BASFInvoiceDate', colId: 'BASFInvoiceDate' },
+      { headerName: 'Total Stock Out', field: 'outputQuantity', colId: 'outputQuantity' },
+      { headerName: 'Create Date', field: 'CreateDate', colId: 'CreateDate' },
+      { headerName: 'Edit Date', field: 'EditDate', colId: 'EditDate' },
       { headerName: 'Actions', cellRenderer: 'delete' }
     ];
 
@@ -109,5 +109,13 @@ export class ViewBasfInvoicePage implements OnInit {
           }
         );
     }
+  }
+
+  public export() {
+    var params = {
+      columnKeys: ['BASFInvoiceNo', 'BASFInvoiceDate', 'outputQuantity', 'CreateDate', 'EditDate']
+    };
+
+    this.gridOptions.api.exportDataAsCsv(params);
   }
 }

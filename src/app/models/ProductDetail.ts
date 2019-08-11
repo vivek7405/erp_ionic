@@ -11,4 +11,6 @@ export class ProductDetail {
     public SplitRatio: number;
     public CreateDate: any;
     public EditDate: any;
+
+    public displayText: string;
 }

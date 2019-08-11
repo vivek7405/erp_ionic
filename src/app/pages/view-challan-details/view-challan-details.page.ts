@@ -32,18 +32,104 @@ export class ViewChallanDetailsPage implements OnInit {
 
   ngOnInit() {
     this.columnDefsChallan = [
-      { headerName: 'Challan No', field: 'ChallanDetail.ChallanNo' },
-      { headerName: 'Challan Date', field: 'ChallanDetail.ChallanDate' },
-      { headerName: 'Total Stock In', field: 'totalStockIn' },
-      { headerName: 'Create Date', field: 'ChallanDetail.CreateDate' },
-      { headerName: 'Edit Date', field: 'ChallanDetail.EditDate' },
+      { headerName: 'Challan No', field: 'ChallanDetail.ChallanNo', colId: 'ChallanNo' },
+      {
+        headerName: 'Challan Date', field: 'ChallanDetail.ChallanDate', colId: 'ChallanDate', filter: 'agDateColumnFilter',
+        filterParams: {
+          inRangeInclusive: true,
+          // provide comparator function
+          comparator: function (filterLocalDateAtMidnight, cellValue) {
+            debugger;
+            var dateAsString = cellValue;
+            if (dateAsString == null) return 0;
+
+            // In the example application, dates are stored as dd/mm/yyyy
+            // We create a Date object for comparison against the filter date
+            var dateParts = dateAsString.split("-");
+            var day = Number(dateParts[2]);
+            var month = Number(dateParts[1]) - 1;
+            var year = Number(dateParts[0]);
+            var cellDate = new Date(year, month, day);
+
+            // Now that both parameters are Date objects, we can compare
+            if (cellDate < filterLocalDateAtMidnight) {
+              return -1;
+            } else if (cellDate > filterLocalDateAtMidnight) {
+              return 1;
+            } else {
+              return 0;
+            }
+          }
+        }
+      },
+      { headerName: 'Total Stock In', field: 'totalStockIn', colId: 'ChallanStockIn' },
+      {
+        headerName: 'Create Date', field: 'ChallanDetail.CreateDate', colId: 'ChallanCreateDate', filter: 'agDateColumnFilter',
+        filterParams: {
+          inRangeInclusive: true,
+          // provide comparator function
+          comparator: function (filterLocalDateAtMidnight, cellValue) {
+            debugger;
+            var dateAsString = cellValue;
+            if (dateAsString == null) return 0;
+
+            // In the example application, dates are stored as dd/mm/yyyy
+            // We create a Date object for comparison against the filter date
+            var dateParts = dateAsString.split("-");
+            var day = Number(dateParts[2]);
+            var month = Number(dateParts[1]) - 1;
+            var year = Number(dateParts[0]);
+            var cellDate = new Date(year, month, day);
+
+            // Now that both parameters are Date objects, we can compare
+            if (cellDate < filterLocalDateAtMidnight) {
+              return -1;
+            } else if (cellDate > filterLocalDateAtMidnight) {
+              return 1;
+            } else {
+              return 0;
+            }
+          }
+        }
+      },
+      {
+        headerName: 'Edit Date', field: 'ChallanDetail.EditDate', colId: 'ChallanEditDate', filter: 'agDateColumnFilter',
+        filterParams: {
+          inRangeInclusive: true,
+          // provide comparator function
+          comparator: function (filterLocalDateAtMidnight, cellValue) {
+            debugger;
+            var dateAsString = cellValue;
+            if (dateAsString == null) return 0;
+
+            // In the example application, dates are stored as dd/mm/yyyy
+            // We create a Date object for comparison against the filter date
+            var dateParts = dateAsString.split("-");
+            var day = Number(dateParts[2]);
+            var month = Number(dateParts[1]) - 1;
+            var year = Number(dateParts[0]);
+            var cellDate = new Date(year, month, day);
+
+            // Now that both parameters are Date objects, we can compare
+            if (cellDate < filterLocalDateAtMidnight) {
+              return -1;
+            } else if (cellDate > filterLocalDateAtMidnight) {
+              return 1;
+            } else {
+              return 0;
+            }
+          }
+        }
+      },
       { headerName: 'Actions', cellRenderer: 'editdelete' }
     ];
 
     this.columnDefsPO = [
-      { headerName: 'PO No', field: 'PODetail.PONo' },
-      { headerName: 'PO Date', field: 'PODetail.PODate' },
-      { headerName: 'Total Stock In', field: 'totalStockIn' },
+      { headerName: 'PO No', field: 'PODetail.PONo', colId: 'PONo' },
+      { headerName: 'PO Date', field: 'PODetail.PODate', colId: 'PODate' },
+      { headerName: 'Total Stock In', field: 'totalStockIn', colId: 'POStockIn' },
+      { headerName: 'Create Date', field: 'PODetail.CreateDate', colId: 'POCreateDate' },
+      { headerName: 'Edit Date', field: 'PODetail.EditDate', colId: 'POEditDate' },
       { headerName: 'Actions', cellRenderer: 'editdelete' }
     ];
 
@@ -113,6 +199,8 @@ export class ViewChallanDetailsPage implements OnInit {
           this.poDetails.forEach(poDetail => {
             poDetail.totalStockIn = 0;
             poDetail.PODetail.PODate = poDetail.PODetail.PODate.toString().split('T')[0];
+            poDetail.PODetail.CreateDate = poDetail.PODetail.CreateDate.toString().split('T')[0];
+            poDetail.PODetail.EditDate = poDetail.PODetail.EditDate.toString().split('T')[0];
             poDetail.POProducts.forEach(poProduct => {
               poDetail.totalStockIn += poProduct.POProduct.InputQuantity;
             });
@@ -233,5 +321,35 @@ export class ViewChallanDetailsPage implements OnInit {
           );
       }
     }
+  }
+
+  public reportRowAg(rowdata) {
+    debugger;
+    let id = 0;
+    if (this.isPO)
+      id = rowdata.PODetail.POId;
+    else
+      id = rowdata.ChallanDetail.ChallanId;
+
+    this.router.navigate(['/basf-challan-po-where-used-report'], {
+      queryParams: {
+        challanId: id,
+        isPO: this.isPO
+      }
+    });
+  }
+
+  public export() {
+    var params = {
+      columnKeys: ['ChallanNo', 'ChallanDate', 'ChallanStockIn', 'ChallanCreateDate', 'ChallanEditDate']
+    };
+
+    if (this.isPO) {
+      params = {
+        columnKeys: ['PONo', 'PODate', 'POStockIn', 'POCreateDate', 'POEditDate']
+      };
+    }
+
+    this.gridOptions.api.exportDataAsCsv(params);
   }
 }

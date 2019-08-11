@@ -23,14 +23,14 @@ export class ViewProductDetailsPage implements OnInit {
 
   ngOnInit() {
     this.columnDefs = [
-      { headerName: 'Input Code', field: 'InputCode' },
-      { headerName: 'Input Material Description', field: 'InputMaterialDesc' },
-      { headerName: 'Output Code', field: 'OutputCode' },
-      { headerName: 'Output Material Description', field: 'OutputMaterialDesc' },
-      { headerName: 'Project Name', field: 'ProjectName' },
-      { headerName: 'Split Ratio', field: 'SplitRatio' },
-      { headerName: 'Create Date', field: 'CreateDate' },
-      { headerName: 'Edit Date', field: 'EditDate' },
+      { headerName: 'Input Code', field: 'InputCode', colId: 'InputCode' },
+      { headerName: 'Input Material Description', field: 'InputMaterialDesc', colId: 'InputMaterialDesc' },
+      { headerName: 'Output Code', field: 'OutputCode', colId: 'OutputCode' },
+      { headerName: 'Output Material Description', field: 'OutputMaterialDesc', colId: 'OutputMaterialDesc' },
+      { headerName: 'Project Name', field: 'ProjectName', colId: 'ProjectName' },
+      { headerName: 'Split Ratio', field: 'SplitRatio', colId: 'SplitRatio' },
+      { headerName: 'Create Date', field: 'CreateDate', colId: 'CreateDate' },
+      { headerName: 'Edit Date', field: 'EditDate', colId: 'EditDate' },
       { headerName: 'Actions', cellRenderer: 'editdeletemap', pinned: 'right' }
     ];
 
@@ -154,5 +154,15 @@ export class ViewProductDetailsPage implements OnInit {
       });
 
     await modal.present();
+  }
+
+  public export() {
+    debugger;
+
+    var params = {
+      columnKeys: ['InputCode', 'InputMaterialDesc', 'OutputCode', 'OutputMaterialDesc', 'ProjectName', 'SplitRatio', 'CreateDate', 'EditDate' ]
+    };    
+
+    this.gridOptions.api.exportDataAsCsv(params);
   }
 }

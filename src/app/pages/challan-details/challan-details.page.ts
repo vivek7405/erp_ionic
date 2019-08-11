@@ -41,6 +41,7 @@ export class ChallanDetailsPage implements OnInit {
             .subscribe(
               result => {
                 this.productDetails = result;
+                this.setDisplayTextForPO(this.productDetails);
 
                 this.generalService.getBASFPOByBASFPOId(vendorChallanNoModel)
                   .subscribe(
@@ -60,6 +61,7 @@ export class ChallanDetailsPage implements OnInit {
                         challanProd.EditDate = poProduct.POProduct.EditDate;
                         challanProd.InputQuantity = poProduct.POProduct.InputQuantity;
                         challanProd.ProductId = poProduct.POProduct.ProductId;
+                        challanProd.selectedProductDetail = this.productDetails.find(x => x.ProductId == challanProd.ProductId);
                         challanProd.CanDelete = poProduct.CanDelete;
 
                         this.challanProducts.push(challanProd);
@@ -79,6 +81,7 @@ export class ChallanDetailsPage implements OnInit {
             .subscribe(
               result => {
                 this.productDetails = result;
+                this.setDisplayTextForChallan(this.productDetails);
 
                 vendorChallanNoModel.VendorChallanNo = params.challanId;
                 this.generalService.getBASFChallanByBASFChallanId(vendorChallanNoModel)
@@ -93,6 +96,7 @@ export class ChallanDetailsPage implements OnInit {
                         challanProd.EditDate = challanProduct.ChallanProduct.EditDate;
                         challanProd.InputQuantity = challanProduct.ChallanProduct.InputQuantity;
                         challanProd.ProductId = challanProduct.ChallanProduct.ProductId;
+                        challanProd.selectedProductDetail = this.productDetails.find(x => x.ProductId == challanProd.ProductId);
                         challanProd.CanDelete = challanProduct.CanDelete;
 
                         this.challanProducts.push(challanProd);
@@ -114,6 +118,18 @@ export class ChallanDetailsPage implements OnInit {
 
         this.getAllProductDetails();
       }
+    });
+  }
+
+  private setDisplayTextForChallan(productDetails: ProductDetail[]) {
+    productDetails.forEach(productDetail => {
+      productDetail.displayText = productDetail.InputCode + " | " + productDetail.InputMaterialDesc;
+    });
+  }
+
+  private setDisplayTextForPO(productDetails: ProductDetail[]) {
+    productDetails.forEach(productDetail => {
+      productDetail.displayText = productDetail.OutputCode + " | " + productDetail.OutputMaterialDesc;
     });
   }
 
@@ -148,6 +164,7 @@ export class ChallanDetailsPage implements OnInit {
       .subscribe(
         result => {
           this.productDetails = result;
+          this.setDisplayTextForChallan(this.productDetails);
         },
         error => {
           alert('Something went wrong!');
@@ -160,6 +177,7 @@ export class ChallanDetailsPage implements OnInit {
       .subscribe(
         result => {
           this.productDetails = result;
+          this.setDisplayTextForPO(this.productDetails);
         },
         error => {
           alert('Something went wrong!');

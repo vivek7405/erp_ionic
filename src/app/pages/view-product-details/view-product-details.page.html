@@ -4,6 +4,9 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>View Product Details</ion-title>
+    <ion-buttons slot="end">
+      <ion-icon class="export-csv" name="archive" title="Export" (click)="export()"></ion-icon>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -30,8 +33,8 @@
     </ion-row>
   </ion-grid> -->
 
-  <ag-grid-angular *ngIf="productDetails && productDetails.length > 0" style="width: 100%; height: 100%;"
-    [gridOptions]="gridOptions" class="ag-theme-balham" [rowData]="productDetails" [columnDefs]="columnDefs"
+  <ag-grid-angular *ngIf="productDetails" style="width: 100%; height: 100%;" [gridOptions]="gridOptions"
+    class="ag-theme-balham" [rowData]="productDetails" [columnDefs]="columnDefs"
     [frameworkComponents]="frameworkComponents" [context]="context" (gridReady)="onGridReady($event)">
   </ag-grid-angular>
 </ion-content>

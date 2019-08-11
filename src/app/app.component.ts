@@ -27,7 +27,7 @@ export class AppComponent {
           title: 'View Product Details',
           url: '/view-product-details',
           icon: 'list'
-        },
+        }
       ]
     },
     {
@@ -42,7 +42,7 @@ export class AppComponent {
           title: 'BASF Challan/PO Details',
           url: '/view-challan-details',
           icon: 'list'
-        },
+        }
       ]
     },
     {
@@ -57,7 +57,7 @@ export class AppComponent {
           title: 'Vibrant NG/FG Challan Details',
           url: '/view-vendor-challan',
           icon: 'list'
-        },
+        }
       ]
     },
     {
@@ -72,7 +72,27 @@ export class AppComponent {
           title: 'BASF Invoice Details',
           url: '/view-basf-invoice',
           icon: 'list'
+        }
+      ]
+    },
+    {
+      title: 'Reports',
+      children: [
+        {
+          title: 'Close Challan Report',
+          url: '/close-challan-report',
+          icon: 'today'
         },
+        {
+          title: 'FG Stock Report',
+          url: '/fg-stock-report',
+          icon: 'today'
+        },
+        {
+          title: 'Semi Stock Report',
+          url: '/semi-stock-report',
+          icon: 'today'
+        }
       ]
     }
   ];
