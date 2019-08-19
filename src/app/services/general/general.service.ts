@@ -19,6 +19,7 @@ import { BASFInvoiceModel } from 'src/app/models/BASFInvoiceModel';
 import { BASFChallanPOWhereUsedModel } from 'src/app/models/BASFChallanPOWhereUsedModel';
 import { CloseChallanReportModel } from 'src/app/models/CloseChallanReportModel';
 import { FGAndSemiStockReportModel } from 'src/app/models/FGAndSemiStockReportModel';
+import { VendorChallanGridModel } from 'src/app/models/VendorChallanGridModel';
 
 @Injectable({
   providedIn: 'root'
@@ -99,6 +100,10 @@ export class GeneralService extends CommonService {
 
   public getVendorChallanByVendorChallanNo(vendorChallanNoModel: VendorChallanNoModel) {
     return this.http.post<VendorChallanModel>(environment.apiBaseUrl + 'general/GetVendorChallanByVendorChallanNo', vendorChallanNoModel);
+  }
+
+  public getVendorChallanGridByVendorChallanNo(vendorChallanNoModel: VendorChallanNoModel) {
+    return this.http.post<VendorChallanGridModel[]>(environment.apiBaseUrl + 'general/GetVendorChallanGridByVendorChallanNo', vendorChallanNoModel);
   }
 
   public printVendorChallanByVendorChallanNo(vendorChallanNoModel: VendorChallanNoModel) {

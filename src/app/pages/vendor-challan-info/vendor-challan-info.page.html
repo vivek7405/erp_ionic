@@ -5,13 +5,14 @@
     </ion-buttons>
     <ion-title>Vibrant Challan Info</ion-title>
     <ion-buttons slot="end">
+      <ion-icon class="export-csv" name="archive" title="Export" (click)="export()"></ion-icon>
       <ion-button fill="solid" color="primary" (click)="print()">Print</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <div id="content-div">
+  <!-- <div id="content-div">
     <ion-grid *ngIf="vendorChallan">
       <ion-row class="grid-border">
         <ion-col>
@@ -166,20 +167,11 @@
           </ion-col>
         </ion-row>
       </ng-container>
-    </ion-grid>
+    </ion-grid>    
+  </div> -->
 
-    <!-- <ion-grid>
-      <ion-row>
-        <ion-col>
-          <ion-row>
-            <ion-col>This is cell row 1</ion-col>
-          </ion-row>
-          <ion-row>
-            <ion-col>This is cell row 2</ion-col>
-          </ion-row>
-        </ion-col>
-        <ion-col>This cell is two rows "merged"</ion-col>
-      </ion-row>
-    </ion-grid> -->
-  </div>
+  <ag-grid-angular *ngIf="vendorChallanGrid" style="width: 100%; height: 100%;" class="ag-theme-balham"
+    [gridOptions]="gridOptions" [rowData]="vendorChallanGrid" [columnDefs]="columnDefs" [context]="context"
+    [suppressRowTransform]="true" (gridReady)="onGridReady($event)">
+  </ag-grid-angular>
 </ion-content>

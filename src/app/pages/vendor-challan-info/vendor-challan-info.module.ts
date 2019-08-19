@@ -6,6 +6,7 @@ import { IonicModule } from '@ionic/angular';
 import { Printer, PrintOptions } from '@ionic-native/printer/ngx';
 
 import { VendorChallanInfoPage } from './vendor-challan-info.page';
+import { AgGridModule } from 'ag-grid-angular';
 
 const routes: Routes = [
   {
@@ -19,7 +20,8 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    AgGridModule.withComponents([])
   ],
   declarations: [VendorChallanInfoPage],
   providers: [Printer]
