@@ -18,7 +18,10 @@ export class VendorChallanInfoPage implements OnInit {
   //public vendorChallan: VendorChallanModel;
   public vendorChallanGrid: VendorChallanGridModel[];
   public window: any;
+
   public vendorChallanNo: number;
+  public vendorChallanDate: any;
+  public totalOutStock: any;
 
   public gridOptions: any;
   public columnDefs: any;
@@ -81,6 +84,8 @@ export class VendorChallanInfoPage implements OnInit {
           let vendorChallanNoModel = new VendorChallanNoModel();
           vendorChallanNoModel.VendorChallanNo = result.vendorChallanNo;
           this.vendorChallanNo = result.vendorChallanNo;
+          this.vendorChallanDate = result.vendorChallanDate;
+          this.totalOutStock = result.totalOutStock;
 
           this.generalService.getVendorChallanGridByVendorChallanNo(vendorChallanNoModel)
             .subscribe(

@@ -116,7 +116,9 @@ export class ViewVendorChallanPage implements OnInit {
   public showDetails(event) {
     this.router.navigate(['/vendor-challan-info'], {
       queryParams: {
-        vendorChallanNo: event.data.VendorChallanNo
+        vendorChallanNo: event.data.VendorChallanNo,
+        vendorChallanDate: event.data.VendorChallanDate,
+        totalOutStock: event.data.outputQuantity
       }
     });
   }

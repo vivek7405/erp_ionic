@@ -16,9 +16,40 @@ export class ViewChallanDetailInfoPage implements OnInit {
   public poDetail: ViewPODetailModel;
   public isPO: boolean = false;
 
+  public gridOptions: any;
+  public columnDefsChallan: any;
+  public columnDefsPO: any;
+  public context: any;
+
   constructor(public activatedRoute: ActivatedRoute, public generalService: GeneralService, public toastCtrl: ToastController) { }
 
   ngOnInit() {
+    this.gridOptions = {
+      defaultColDef: {
+        sortable: true,
+        filter: true,
+        resizable: true
+      }
+    };
+
+    this.context = this;
+
+    this.columnDefsChallan = [
+      { headerName: 'Input Code', field: 'ProductDetail.InputCode', colId: 'InputCode' },
+      { headerName: 'Input Material Description', field: 'ProductDetail.InputMaterialDesc', colId: 'InputMaterialDesc' },
+      { headerName: 'Input Quantity', field: 'ChallanProduct.InputQuantity', colId: 'InputQuantity' },
+      { headerName: 'Split Ratio', field: 'ProductDetail.SplitRatio', colId: 'SplitRatio' },
+      { headerName: 'Remaining Quantity', field: 'RemainingQuantity', colId: 'RemainingQuantity' }
+    ];
+
+    this.columnDefsPO = [
+      { headerName: 'Input Code', field: 'ProductDetail.InputCode', colId: 'InputCode' },
+      { headerName: 'Input Material Description', field: 'ProductDetail.InputMaterialDesc', colId: 'InputMaterialDesc' },
+      { headerName: 'Input Quantity', field: 'POProduct.InputQuantity', colId: 'InputQuantity' },
+      { headerName: 'Split Ratio', field: 'ProductDetail.SplitRatio', colId: 'SplitRatio' },
+      { headerName: 'Remaining Quantity', field: 'RemainingQuantity', colId: 'RemainingQuantity' }
+    ];
+
     this.activatedRoute.queryParams.subscribe((result) => {
       debugger;
       let challanIdModel = new VendorChallanNoModel();
@@ -72,5 +103,11 @@ export class ViewChallanDetailInfoPage implements OnInit {
           this.generalService.toast(this.toastCtrl, 'Something went wrong while fetching details!');
         }
       );
+  }
+
+  public export() {
+    var params = {};
+
+    this.gridOptions.api.exportDataAsCsv(params);
   }
 }

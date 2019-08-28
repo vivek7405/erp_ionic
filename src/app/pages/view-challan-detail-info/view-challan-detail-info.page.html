@@ -3,13 +3,21 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title *ngIf="!isPO">BASF Jobwork Challan Info</ion-title>
-    <ion-title *ngIf="isPO">BASF PO Info</ion-title>
+    <ion-title *ngIf="!isPO">BASF Challan No: {{challanDetail.ChallanDetail.ChallanNo}} | Challan Date:
+      {{challanDetail.ChallanDetail.ChallanDate.toString().split('T')[0]}} | Total Stock In:
+      {{challanDetail.totalStockIn}}
+    </ion-title>
+    <ion-title *ngIf="isPO">BASF PO No: {{poDetail.PODetail.PONo}} | PO Date:
+      {{poDetail.PODetail.PODate.toString().split('T')[0]}} | Total Stock In: {{poDetail.totalStockIn}}
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-icon class="export-csv" name="archive" title="Export" (click)="export()"></ion-icon>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <div id="content-div">
+  <!-- <div id="content-div">
     <ion-grid *ngIf="!isPO && challanDetail">
       <ion-row class="grid-border">
         <ion-col>
@@ -77,5 +85,14 @@
         <ion-col class="grid-border">{{poProduct.RemainingQuantity}}</ion-col>
       </ion-row>
     </ion-grid>
-  </div>
+  </div> -->
+
+  <ag-grid-angular *ngIf="!isPO && challanDetail" style="width: 100%; height: 100%;" class="ag-theme-balham"
+    [gridOptions]="gridOptions" [rowData]="challanDetail.ChallanProducts" [columnDefs]="columnDefsChallan"
+    [context]="context">
+  </ag-grid-angular>
+
+  <ag-grid-angular *ngIf="isPO && poDetail" style="width: 100%; height: 100%;" class="ag-theme-balham"
+    [gridOptions]="gridOptions" [rowData]="poDetail.POProducts" [columnDefs]="columnDefsPO" [context]="context">
+  </ag-grid-angular>
 </ion-content>
