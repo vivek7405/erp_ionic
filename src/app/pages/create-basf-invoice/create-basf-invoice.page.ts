@@ -36,7 +36,7 @@ export class CreateBasfInvoicePage implements OnInit {
   }
 
   public getMainProductRemainingQuantity() {
-    this.generalService.getMainProductRemainingQuantityBASFInvoice()
+    this.generalService.GetMainProductFGQuantityBASFInvoice()
       .subscribe(
         result => {
           debugger;

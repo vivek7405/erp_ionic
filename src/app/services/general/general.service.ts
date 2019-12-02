@@ -162,6 +162,10 @@ export class GeneralService extends CommonService {
     return this.http.get<ProductQuantity[]>(environment.apiBaseUrl + 'general/GetMainProductRemainingQuantityBASFInvoice');
   }
 
+  public GetMainProductFGQuantityBASFInvoice() {
+    return this.http.get<ProductQuantity[]>(environment.apiBaseUrl + 'general/GetMainProductFGQuantityBASFInvoice');
+  }
+
   public addOrUpdateBASFInvoice(basfInvoice: BASFInvoiceModel) {
     return this.http.post<SuccessResponse>(environment.apiBaseUrl + 'general/AddOrUpdateBASFInvoice', basfInvoice);
   }
