@@ -139,6 +139,7 @@ export class CreateBasfInvoicePage implements OnInit {
   }
 
   public submit() {
+    debugger;
     // this.outStockCount = 0;
     // this.vendorChallan.OutStocks.forEach(outStock => {
     //   this.challanDeductionAndSave(outStock);
@@ -159,7 +160,7 @@ export class CreateBasfInvoicePage implements OnInit {
           .subscribe(
             result => {
               this.generalService.toast(this.toastCtrl, 'BASF Invoice saved successfully.');
-              this.generalService.getMainProductRemainingQuantityBASFInvoice()
+              this.generalService.GetMainProductFGQuantityBASFInvoice()
                 .subscribe(
                   result => {
                     debugger;
