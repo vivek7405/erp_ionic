@@ -30,7 +30,35 @@ export class BasfChallanPoWhereUsedReportPage implements OnInit {
       { headerName: 'Remaining Quantity', field: 'RemainingQuantity', colId: 'RemainingQuantity' },
       { headerName: 'Total Used', field: 'TotalUsed', colId: 'TotalUsed' },
       { headerName: 'Vendor Challan No', field: 'VendorChallanNo', colId: 'VendorChallanNo' },
-      { headerName: 'Vendor Challan Date', field: 'VendorChallanDate', colId: 'VendorChallanDate' },
+      {
+        headerName: 'Vendor Challan Date', field: 'VendorChallanDate', colId: 'VendorChallanDate', filter: 'agDateColumnFilter',
+        filterParams: {
+          inRangeInclusive: true,
+          // provide comparator function
+          comparator: function (filterLocalDateAtMidnight, cellValue) {
+            debugger;
+            var dateAsString = cellValue;
+            if (dateAsString == null) return 0;
+
+            // In the example application, dates are stored as dd/mm/yyyy
+            // We create a Date object for comparison against the filter date
+            var dateParts = dateAsString.split("-");
+            var day = Number(dateParts[2]);
+            var month = Number(dateParts[1]) - 1;
+            var year = Number(dateParts[0]);
+            var cellDate = new Date(year, month, day);
+
+            // Now that both parameters are Date objects, we can compare
+            if (cellDate < filterLocalDateAtMidnight) {
+              return -1;
+            } else if (cellDate > filterLocalDateAtMidnight) {
+              return 1;
+            } else {
+              return 0;
+            }
+          }
+        }
+      },
       { headerName: 'Out Quantity', field: 'VendorChallanOutQnt', colId: 'VendorChallanOutQnt' }
     ];
 
@@ -41,7 +69,35 @@ export class BasfChallanPoWhereUsedReportPage implements OnInit {
       { headerName: 'Remaining Quantity', field: 'RemainingQuantity', colId: 'RemainingQuantity' },
       { headerName: 'Total Used', field: 'TotalUsed', colId: 'TotalUsed' },
       { headerName: 'BASF Invoice No', field: 'VendorChallanNo', colId: 'VendorChallanNo' },
-      { headerName: 'BASF Invoice Date', field: 'VendorChallanDate', colId: 'VendorChallanDate' },
+      {
+        headerName: 'BASF Invoice Date', field: 'VendorChallanDate', colId: 'VendorChallanDate', filter: 'agDateColumnFilter',
+        filterParams: {
+          inRangeInclusive: true,
+          // provide comparator function
+          comparator: function (filterLocalDateAtMidnight, cellValue) {
+            debugger;
+            var dateAsString = cellValue;
+            if (dateAsString == null) return 0;
+
+            // In the example application, dates are stored as dd/mm/yyyy
+            // We create a Date object for comparison against the filter date
+            var dateParts = dateAsString.split("-");
+            var day = Number(dateParts[2]);
+            var month = Number(dateParts[1]) - 1;
+            var year = Number(dateParts[0]);
+            var cellDate = new Date(year, month, day);
+
+            // Now that both parameters are Date objects, we can compare
+            if (cellDate < filterLocalDateAtMidnight) {
+              return -1;
+            } else if (cellDate > filterLocalDateAtMidnight) {
+              return 1;
+            } else {
+              return 0;
+            }
+          }
+        }
+      },
       { headerName: 'Out Quantity', field: 'VendorChallanOutQnt', colId: 'VendorChallanOutQnt' }
     ];
 

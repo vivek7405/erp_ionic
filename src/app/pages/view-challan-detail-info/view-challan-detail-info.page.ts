@@ -43,9 +43,9 @@ export class ViewChallanDetailInfoPage implements OnInit {
     ];
 
     this.columnDefsPO = [
-      { headerName: 'Input Code', field: 'ProductDetail.InputCode', colId: 'InputCode' },
-      { headerName: 'Input Material Description', field: 'ProductDetail.InputMaterialDesc', colId: 'InputMaterialDesc' },
-      { headerName: 'Input Quantity', field: 'POProduct.InputQuantity', colId: 'InputQuantity' },
+      { headerName: 'Output Code', field: 'ProductDetail.OutputCode', colId: 'OutputCode' },
+      { headerName: 'Output Material Description', field: 'ProductDetail.OutputMaterialDesc', colId: 'OutputMaterialDesc' },
+      { headerName: 'Output Quantity', field: 'POProduct.InputQuantity', colId: 'OutputQuantity' },
       { headerName: 'Split Ratio', field: 'ProductDetail.SplitRatio', colId: 'SplitRatio' },
       { headerName: 'Remaining Quantity', field: 'RemainingQuantity', colId: 'RemainingQuantity' }
     ];

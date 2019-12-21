@@ -29,8 +29,64 @@ export class ViewProductDetailsPage implements OnInit {
       { headerName: 'Output Material Description', field: 'OutputMaterialDesc', colId: 'OutputMaterialDesc' },
       { headerName: 'Project Name', field: 'ProjectName', colId: 'ProjectName' },
       { headerName: 'Split Ratio', field: 'SplitRatio', colId: 'SplitRatio' },
-      { headerName: 'Create Date', field: 'CreateDate', colId: 'CreateDate' },
-      { headerName: 'Edit Date', field: 'EditDate', colId: 'EditDate' },
+      {
+        headerName: 'Create Date', field: 'CreateDate', colId: 'CreateDate', filter: 'agDateColumnFilter',
+        filterParams: {
+          inRangeInclusive: true,
+          // provide comparator function
+          comparator: function (filterLocalDateAtMidnight, cellValue) {
+            debugger;
+            var dateAsString = cellValue;
+            if (dateAsString == null) return 0;
+
+            // In the example application, dates are stored as dd/mm/yyyy
+            // We create a Date object for comparison against the filter date
+            var dateParts = dateAsString.split("-");
+            var day = Number(dateParts[2]);
+            var month = Number(dateParts[1]) - 1;
+            var year = Number(dateParts[0]);
+            var cellDate = new Date(year, month, day);
+
+            // Now that both parameters are Date objects, we can compare
+            if (cellDate < filterLocalDateAtMidnight) {
+              return -1;
+            } else if (cellDate > filterLocalDateAtMidnight) {
+              return 1;
+            } else {
+              return 0;
+            }
+          }
+        }
+      },
+      {
+        headerName: 'Edit Date', field: 'EditDate', colId: 'EditDate', filter: 'agDateColumnFilter',
+        filterParams: {
+          inRangeInclusive: true,
+          // provide comparator function
+          comparator: function (filterLocalDateAtMidnight, cellValue) {
+            debugger;
+            var dateAsString = cellValue;
+            if (dateAsString == null) return 0;
+
+            // In the example application, dates are stored as dd/mm/yyyy
+            // We create a Date object for comparison against the filter date
+            var dateParts = dateAsString.split("-");
+            var day = Number(dateParts[2]);
+            var month = Number(dateParts[1]) - 1;
+            var year = Number(dateParts[0]);
+            var cellDate = new Date(year, month, day);
+
+            // Now that both parameters are Date objects, we can compare
+            if (cellDate < filterLocalDateAtMidnight) {
+              return -1;
+            } else if (cellDate > filterLocalDateAtMidnight) {
+              return 1;
+            } else {
+              return 0;
+            }
+          }
+        }
+      },
       { headerName: 'Actions', cellRenderer: 'editdeletemap', pinned: 'right' }
     ];
 
@@ -160,8 +216,8 @@ export class ViewProductDetailsPage implements OnInit {
     debugger;
 
     var params = {
-      columnKeys: ['InputCode', 'InputMaterialDesc', 'OutputCode', 'OutputMaterialDesc', 'ProjectName', 'SplitRatio', 'CreateDate', 'EditDate' ]
-    };    
+      columnKeys: ['InputCode', 'InputMaterialDesc', 'OutputCode', 'OutputMaterialDesc', 'ProjectName', 'SplitRatio', 'CreateDate', 'EditDate']
+    };
 
     this.gridOptions.api.exportDataAsCsv(params);
   }

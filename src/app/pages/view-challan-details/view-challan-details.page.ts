@@ -126,10 +126,94 @@ export class ViewChallanDetailsPage implements OnInit {
 
     this.columnDefsPO = [
       { headerName: 'PO No', field: 'PODetail.PONo', colId: 'PONo' },
-      { headerName: 'PO Date', field: 'PODetail.PODate', colId: 'PODate' },
-      { headerName: 'Total Stock In', field: 'totalStockIn', colId: 'POStockIn' },
-      { headerName: 'Create Date', field: 'PODetail.CreateDate', colId: 'POCreateDate' },
-      { headerName: 'Edit Date', field: 'PODetail.EditDate', colId: 'POEditDate' },
+      {
+        headerName: 'PO Date', field: 'PODetail.PODate', colId: 'PODate', filter: 'agDateColumnFilter',
+        filterParams: {
+          inRangeInclusive: true,
+          // provide comparator function
+          comparator: function (filterLocalDateAtMidnight, cellValue) {
+            debugger;
+            var dateAsString = cellValue;
+            if (dateAsString == null) return 0;
+
+            // In the example application, dates are stored as dd/mm/yyyy
+            // We create a Date object for comparison against the filter date
+            var dateParts = dateAsString.split("-");
+            var day = Number(dateParts[2]);
+            var month = Number(dateParts[1]) - 1;
+            var year = Number(dateParts[0]);
+            var cellDate = new Date(year, month, day);
+
+            // Now that both parameters are Date objects, we can compare
+            if (cellDate < filterLocalDateAtMidnight) {
+              return -1;
+            } else if (cellDate > filterLocalDateAtMidnight) {
+              return 1;
+            } else {
+              return 0;
+            }
+          }
+        }
+      },
+      { headerName: 'Total Stock Out', field: 'totalStockIn', colId: 'POStockOut' },
+      {
+        headerName: 'Create Date', field: 'PODetail.CreateDate', colId: 'POCreateDate', filter: 'agDateColumnFilter',
+        filterParams: {
+          inRangeInclusive: true,
+          // provide comparator function
+          comparator: function (filterLocalDateAtMidnight, cellValue) {
+            debugger;
+            var dateAsString = cellValue;
+            if (dateAsString == null) return 0;
+
+            // In the example application, dates are stored as dd/mm/yyyy
+            // We create a Date object for comparison against the filter date
+            var dateParts = dateAsString.split("-");
+            var day = Number(dateParts[2]);
+            var month = Number(dateParts[1]) - 1;
+            var year = Number(dateParts[0]);
+            var cellDate = new Date(year, month, day);
+
+            // Now that both parameters are Date objects, we can compare
+            if (cellDate < filterLocalDateAtMidnight) {
+              return -1;
+            } else if (cellDate > filterLocalDateAtMidnight) {
+              return 1;
+            } else {
+              return 0;
+            }
+          }
+        }
+      },
+      {
+        headerName: 'Edit Date', field: 'PODetail.EditDate', colId: 'POEditDate', filter: 'agDateColumnFilter',
+        filterParams: {
+          inRangeInclusive: true,
+          // provide comparator function
+          comparator: function (filterLocalDateAtMidnight, cellValue) {
+            debugger;
+            var dateAsString = cellValue;
+            if (dateAsString == null) return 0;
+
+            // In the example application, dates are stored as dd/mm/yyyy
+            // We create a Date object for comparison against the filter date
+            var dateParts = dateAsString.split("-");
+            var day = Number(dateParts[2]);
+            var month = Number(dateParts[1]) - 1;
+            var year = Number(dateParts[0]);
+            var cellDate = new Date(year, month, day);
+
+            // Now that both parameters are Date objects, we can compare
+            if (cellDate < filterLocalDateAtMidnight) {
+              return -1;
+            } else if (cellDate > filterLocalDateAtMidnight) {
+              return 1;
+            } else {
+              return 0;
+            }
+          }
+        }
+      },
       { headerName: 'Actions', cellRenderer: 'editdelete' }
     ];
 
