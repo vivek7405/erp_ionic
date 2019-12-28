@@ -23,6 +23,7 @@ export class ViewBasfInvoicePage implements OnInit {
 
   ngOnInit() {
     this.columnDefs = [
+      { headerName: 'BASF Invoice Id', field: 'BASFInvoiceId', colId: 'BASFInvoiceId', hide: true },
       { headerName: 'BASF Invoice No', field: 'BASFInvoiceNo', colId: 'BASFInvoiceNo' },
       {
         headerName: 'BASF Invoice Date', field: 'BASFInvoiceDate', colId: 'BASFInvoiceDate', filter: 'agDateColumnFilter',
@@ -162,7 +163,10 @@ export class ViewBasfInvoicePage implements OnInit {
   public showDetails(event) {
     this.router.navigate(['/basf-invoice-info'], {
       queryParams: {
-        basfInvoiceId: event.data.BASFInvoiceId
+        basfInvoiceId: event.data.BASFInvoiceId,
+        basfInvoiceNo: event.data.BASFInvoiceNo,
+        basfInvoiceDate: event.data.BASFInvoiceDate,
+        totalOutStock: event.data.outputQuantity
       }
     });
   }

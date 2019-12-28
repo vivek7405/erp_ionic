@@ -20,6 +20,7 @@ export class VendorChallanInfoPage implements OnInit {
   public window: any;
 
   public vendorChallanNo: number;
+  public vendorChallanNumber: string;
   public vendorChallanDate: any;
   public totalOutStock: any;
 
@@ -77,6 +78,7 @@ export class VendorChallanInfoPage implements OnInit {
     this.context = this;
 
     this.window = this.windowRef.nativeWindow;
+
     this.activatedRoute.queryParams
       .subscribe(
         result => {
@@ -84,6 +86,7 @@ export class VendorChallanInfoPage implements OnInit {
           let vendorChallanNoModel = new VendorChallanNoModel();
           vendorChallanNoModel.VendorChallanNo = result.vendorChallanNo;
           this.vendorChallanNo = result.vendorChallanNo;
+          this.vendorChallanNumber = result.vendorChallanNumber;
           this.vendorChallanDate = result.vendorChallanDate;
           this.totalOutStock = result.totalOutStock;
 
@@ -164,7 +167,7 @@ export class VendorChallanInfoPage implements OnInit {
       .subscribe(
         result => {
           //this.sendPrintCommand(result);
-          this.generalService.downLoadFile(result, 'Vibrant Challan - ' + this.vendorChallanNo);
+          this.generalService.downLoadFile(result, 'Vibrant Challan - ' + this.vendorChallanNumber);
         },
         error => {
           alert('Some error occurred while printing.');
@@ -176,54 +179,5 @@ export class VendorChallanInfoPage implements OnInit {
     var params = {};
 
     this.gridOptions.api.exportDataAsCsv(params);
-  }
-
-  private sendPrintCommand(result) {
-    let options: PrintOptions = {
-      name: 'MyDocument',
-      printerId: 'printer007',
-      duplex: false,
-      landscape: false,
-      grayscale: true
-    }
-
-    const file = new Blob([result], { type: 'application/pdf' });
-    let fileObjectUrl = window.URL.createObjectURL(file);
-    this.printer.print(fileObjectUrl, options)
-      .then(
-        printResult => {
-          this.generalService.toast(this.toastCtrl, 'Document sent to printer for printing!');
-        },
-        error => {
-          this.generalService.toast(this.toastCtrl, 'There was some error printing the document.');
-        });
-
-    // this.printer.isAvailable()
-    //   .then(
-    //     available => {
-    //       if (available) {
-    //         let options: PrintOptions = {
-    //           name: 'MyDocument',
-    //           printerId: 'printer007',
-    //           duplex: false,
-    //           landscape: false,
-    //           grayscale: true
-    //         }
-
-    //         const file = new Blob([result], { type: 'application/pdf' });
-    //         let fileObjectUrl = window.URL.createObjectURL(file);
-    //         this.printer.print(fileObjectUrl, options)
-    //           .then(
-    //             printResult => {
-    //               this.generalService.toast(this.toastCtrl, 'Document sent to printer for printing!');
-    //             },
-    //             error => {
-    //               this.generalService.toast(this.toastCtrl, 'There was some error printing the document.');
-    //             });
-    //       }
-    //     },
-    //     error => {
-    //       this.generalService.toast(this.toastCtrl, 'Not able to find the printer!');
-    //     });
   }
 }

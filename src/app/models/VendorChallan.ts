@@ -5,4 +5,5 @@ export class VendorChallan {
     public VendorChallanDate: IonDatetime;
     public CreateDate: IonDatetime;
     public EditDate: IonDatetime;
+    public VendorChallanNumber: string;
 }

@@ -104,10 +104,14 @@ export class GeneralService extends CommonService {
 
   public getVendorChallanGridByVendorChallanNo(vendorChallanNoModel: VendorChallanNoModel) {
     return this.http.post<VendorChallanGridModel[]>(environment.apiBaseUrl + 'general/GetVendorChallanGridByVendorChallanNo', vendorChallanNoModel);
-  }
+  }  
 
   public printVendorChallanByVendorChallanNo(vendorChallanNoModel: VendorChallanNoModel) {
     return this.http.post(environment.apiBaseUrl + 'general/PrintVendorChallanByVendorChallanNo', vendorChallanNoModel, { responseType: 'arraybuffer' });
+  }
+
+  public getBASFInvoiceGridByBASFInvoiceId(vendorChallanNoModel: VendorChallanNoModel) {
+    return this.http.post<VendorChallanGridModel[]>(environment.apiBaseUrl + 'general/GetBASFInvoiceGridByBASFInvoiceId', vendorChallanNoModel);
   }
 
   public getBASFChallanByBASFChallanId(vendorChallanNoModel: VendorChallanNoModel) {

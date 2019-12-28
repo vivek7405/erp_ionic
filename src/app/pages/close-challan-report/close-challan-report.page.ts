@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CloseChallanReportModel } from 'src/app/models/CloseChallanReportModel';
 import { GeneralService } from 'src/app/services/general/general.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-close-challan-report',
@@ -12,11 +13,21 @@ export class CloseChallanReportPage implements OnInit {
   public gridOptions: any;
   public columnDefs: any;
   public context: any;
+  public gridApi: any;
+  public gridColumnApi: any;
 
-  constructor(public generalService: GeneralService) { }
+  constructor(public generalService: GeneralService, public router: Router) { }
+
+  onGridReady(params) {
+    this.gridApi = params.api;
+    this.gridColumnApi = params.columnApi;
+
+    this.gridApi.sizeColumnsToFit();
+  }
 
   ngOnInit() {
     this.columnDefs = [
+      { headerName: 'BASF Challan Id', field: 'ChallanId', colId: 'ChallanId', hide: true },
       { headerName: 'BASF Challan No', field: 'ChallanNo', colId: 'ChallanNo' },
       {
         headerName: 'BASF Challan Date', field: 'ChallanDate', colId: 'ChallanDate', filter: 'agDateColumnFilter',
@@ -50,9 +61,9 @@ export class CloseChallanReportPage implements OnInit {
       { headerName: 'Input Code', field: 'InputCode', colId: 'InputCode' },
       { headerName: 'Input Quantity', field: 'InputQuantity', colId: 'InputQuantity' },
       { headerName: 'Vibrant Challan Input Qty', field: 'OutputQuantity', colId: 'OutputQuantity' },
-      { headerName: 'Vendor Challan No', field: 'VendorChallanNo', colId: 'VendorChallanNo' },
+      { headerName: 'Vibrant Challan No', field: 'VendorChallanNo', colId: 'VendorChallanNo' },
       {
-        headerName: 'Vendor Challan Date', field: 'VendorChallanDate', colId: 'VendorChallanDate', filter: 'agDateColumnFilter',
+        headerName: 'Vibrant Challan Date', field: 'VendorChallanDate', colId: 'VendorChallanDate', filter: 'agDateColumnFilter',
         filterParams: {
           inRangeInclusive: true,
           // provide comparator function
@@ -110,6 +121,15 @@ export class CloseChallanReportPage implements OnInit {
           alert('Some error occurred while fetching details.');
         }
       );
+  }
+
+  public whereUsed(event) {
+    this.router.navigate(['/basf-challan-po-where-used-report'], {
+      queryParams: {
+        challanId: event.data.ChallanId,
+        isPO: false
+      }
+    });
   }
 
   public export() {

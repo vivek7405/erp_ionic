@@ -1,4 +1,5 @@
 export class CloseChallanReportModel {
+    public ChallanId: number;
     public ChallanNo: string;
     public ChallanDate: string;
     public InputCode: string;

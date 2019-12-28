@@ -3,8 +3,9 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>Vibrant Challan No: {{vendorChallanNo}} | Challan Date: {{vendorChallanDate}} | Total Stock Out:
-      {{totalOutStock}}</ion-title>
+    <ion-title>Vibrant Challan No: {{vendorChallanNumber}} | Challan Date: {{vendorChallanDate}} | Total Stock Out:
+      {{totalOutStock}}
+    </ion-title>
     <ion-buttons slot="end">
       <ion-icon class="export-csv" name="archive" title="Export" (click)="export()"></ion-icon>
       <ion-button fill="solid" color="primary" (click)="print()">Print</ion-button>

@@ -6,9 +6,10 @@ export class BASFChallanPOWhereUsedModel {
     public RemainingQuantity: string;
     public TotalUsed: string;
     public VendorChallanNo: string;
+    public OutputCode: string;
     public VendorChallanDate: string;
     public VendorChallanOutQnt: string;
-    public BASFInvoiceNo: string;
+    public BASFInvoiceNo: string;    
     public BASFInvoiceDate: string;
     public BASFInvoiceOutQnt: string;
 }

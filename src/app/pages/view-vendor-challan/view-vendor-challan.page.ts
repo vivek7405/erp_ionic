@@ -23,7 +23,8 @@ export class ViewVendorChallanPage implements OnInit {
 
   ngOnInit() {
     this.columnDefs = [
-      { headerName: 'Vibrant Challan No', field: 'VendorChallanNo', colId: 'VendorChallanNo' },
+      { headerName: 'Vibrant Challan No', field: 'VendorChallanNo', colId: 'VendorChallanNo', hide: true },
+      { headerName: 'Vibrant Challan Number', field: 'VendorChallanNumber', colId: 'VendorChallanNumber' },
       {
         headerName: 'Vibrant Challan Date', field: 'VendorChallanDate', colId: 'VendorChallanDate', filter: 'agDateColumnFilter',
         filterParams: {
@@ -201,6 +202,7 @@ export class ViewVendorChallanPage implements OnInit {
     this.router.navigate(['/vendor-challan-info'], {
       queryParams: {
         vendorChallanNo: event.data.VendorChallanNo,
+        vendorChallanNumber: event.data.VendorChallanNumber,
         vendorChallanDate: event.data.VendorChallanDate,
         totalOutStock: event.data.outputQuantity
       }
@@ -237,7 +239,7 @@ export class ViewVendorChallanPage implements OnInit {
 
   public export() {
     var params = {
-      columnKeys: ['VendorChallanNo', 'VendorChallanDate', 'outputQuantity', 'CreateDate', 'EditDate']
+      columnKeys: ['VendorChallanNumber', 'VendorChallanDate', 'outputQuantity', 'CreateDate', 'EditDate']
     };
 
     this.gridOptions.api.exportDataAsCsv(params);

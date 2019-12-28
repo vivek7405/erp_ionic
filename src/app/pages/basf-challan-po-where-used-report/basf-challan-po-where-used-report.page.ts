@@ -19,19 +19,30 @@ export class BasfChallanPoWhereUsedReportPage implements OnInit {
   public columnDefsBASFInvoice: any;
   public context: any;
   public challanId: any;
+  public gridApi: any;
+  public gridColumnApi: any;
 
   constructor(public activatedRoute: ActivatedRoute, public generalService: GeneralService) { }
+
+  onGridReady(params) {
+    this.gridApi = params.api;
+    this.gridColumnApi = params.columnApi;
+
+    this.gridApi.sizeColumnsToFit();
+  }
 
   ngOnInit() {
     this.columnDefsVendorChallan = [
       { headerName: 'Input Code', field: 'InputCode', colId: 'InputCode' },
       { headerName: 'Input Material Desc', field: 'InputMaterialDesc', colId: 'InputMaterialDesc' },
       { headerName: 'Input Quantity', field: 'InputQuantity', colId: 'InputQuantity' },
-      { headerName: 'Remaining Quantity', field: 'RemainingQuantity', colId: 'RemainingQuantity' },
       { headerName: 'Total Used', field: 'TotalUsed', colId: 'TotalUsed' },
-      { headerName: 'Vendor Challan No', field: 'VendorChallanNo', colId: 'VendorChallanNo' },
+      { headerName: 'Remaining Quantity', field: 'RemainingQuantity', colId: 'RemainingQuantity' },
+      { headerName: 'Vibrant Challan No', field: 'VendorChallanNo', colId: 'VendorChallanNo' },
+      { headerName: 'Output Code', field: 'OutputCode', colId: 'OutputCode' },
+      { headerName: 'Out Quantity', field: 'VendorChallanOutQnt', colId: 'VendorChallanOutQnt' },
       {
-        headerName: 'Vendor Challan Date', field: 'VendorChallanDate', colId: 'VendorChallanDate', filter: 'agDateColumnFilter',
+        headerName: 'Vibrant Challan Date', field: 'VendorChallanDate', colId: 'VendorChallanDate', filter: 'agDateColumnFilter',
         filterParams: {
           inRangeInclusive: true,
           // provide comparator function
@@ -58,17 +69,18 @@ export class BasfChallanPoWhereUsedReportPage implements OnInit {
             }
           }
         }
-      },
-      { headerName: 'Out Quantity', field: 'VendorChallanOutQnt', colId: 'VendorChallanOutQnt' }
+      }
     ];
 
     this.columnDefsBASFInvoice = [
       { headerName: 'Input Code', field: 'InputCode', colId: 'InputCode' },
       { headerName: 'Input Material Desc', field: 'InputMaterialDesc', colId: 'InputMaterialDesc' },
       { headerName: 'Input Quantity', field: 'InputQuantity', colId: 'InputQuantity' },
-      { headerName: 'Remaining Quantity', field: 'RemainingQuantity', colId: 'RemainingQuantity' },
       { headerName: 'Total Used', field: 'TotalUsed', colId: 'TotalUsed' },
-      { headerName: 'BASF Invoice No', field: 'VendorChallanNo', colId: 'VendorChallanNo' },
+      { headerName: 'Remaining Quantity', field: 'RemainingQuantity', colId: 'RemainingQuantity' },
+      { headerName: 'BASF Invoice No', field: 'BASFInvoiceNo', colId: 'VendorChallanNo' },
+      { headerName: 'Output Code', field: 'OutputCode', colId: 'OutputCode' },
+      { headerName: 'Out Quantity', field: 'BASFInvoiceOutQnt', colId: 'VendorChallanOutQnt' },
       {
         headerName: 'BASF Invoice Date', field: 'VendorChallanDate', colId: 'VendorChallanDate', filter: 'agDateColumnFilter',
         filterParams: {
@@ -97,8 +109,7 @@ export class BasfChallanPoWhereUsedReportPage implements OnInit {
             }
           }
         }
-      },
-      { headerName: 'Out Quantity', field: 'VendorChallanOutQnt', colId: 'VendorChallanOutQnt' }
+      }
     ];
 
     this.gridOptions = {
@@ -167,4 +178,11 @@ export class BasfChallanPoWhereUsedReportPage implements OnInit {
         );
     }
   }
+
+  public export() {
+    var params = {};
+
+    this.gridOptions.api.exportDataAsCsv(params);
+  }
+
 }

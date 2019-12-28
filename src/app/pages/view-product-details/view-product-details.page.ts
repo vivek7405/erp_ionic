@@ -18,6 +18,8 @@ export class ViewProductDetailsPage implements OnInit {
   public gridOptions: any;
   public frameworkComponents: any;
   public context: any;
+  public gridApi: any;
+  public gridColumnApi: any;
 
   constructor(public generalService: GeneralService, public toastCtrl: ToastController, public router: Router, private modalController: ModalController, private activatedRoute: ActivatedRoute) { }
 
@@ -112,14 +114,11 @@ export class ViewProductDetailsPage implements OnInit {
     //this.getAllProductDetails();
   }
 
-  public onGridReady(event) {
-    debugger;
-    // var allColumnIds = [];
-    // event.columnApi.getAllColumns().forEach(function (column) {
-    //   allColumnIds.push(column.colId);
-    // });
-    // event.columnApi.autoSizeColumns(allColumnIds);
-    // event.columnApi.autoSizeColumns(allColumnIds);
+  onGridReady(params) {
+    this.gridApi = params.api;
+    this.gridColumnApi = params.columnApi;
+
+    this.gridApi.sizeColumnsToFit();
   }
 
   public getAllProductDetails() {

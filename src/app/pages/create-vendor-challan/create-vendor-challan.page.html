@@ -18,6 +18,12 @@
     <ion-row>
       <ion-col>
         <ion-item>
+          <ion-label>Vibrant Challan No: </ion-label>
+          <ion-input [(ngModel)]="vendorChallan.VendorChallanNumber"></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item>
           <ion-label>Challan Date: </ion-label>
           <ion-datetime [(ngModel)]="vendorChallan.VendorChallanDate"></ion-datetime>
         </ion-item>

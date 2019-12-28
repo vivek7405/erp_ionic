@@ -3,12 +3,17 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>BASF Invoice Info</ion-title>
+    <ion-title>BASF Invoice No: {{basfInvoiceNo}} | Invoice Date: {{basfInvoiceDate}} | Total Stock Out:
+      {{totalOutStock}}
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-icon class="export-csv" name="archive" title="Export" (click)="export()"></ion-icon>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <div id="content-div">
+  <!-- <div id="content-div">
     <ion-grid *ngIf="basfInvoice">
       <ion-row class="grid-border">
         <ion-col>
@@ -83,20 +88,11 @@
           </ion-col>
         </ion-row>
       </ng-container>
-    </ion-grid>
+    </ion-grid>    
+  </div> -->
 
-    <!-- <ion-grid>
-          <ion-row>
-            <ion-col>
-              <ion-row>
-                <ion-col>This is cell row 1</ion-col>
-              </ion-row>
-              <ion-row>
-                <ion-col>This is cell row 2</ion-col>
-              </ion-row>
-            </ion-col>
-            <ion-col>This cell is two rows "merged"</ion-col>
-          </ion-row>
-        </ion-grid> -->
-  </div>
+  <ag-grid-angular *ngIf="vendorChallanGrid" style="width: 100%; height: 100%;" class="ag-theme-balham"
+    [gridOptions]="gridOptions" [rowData]="vendorChallanGrid" [columnDefs]="columnDefs" [context]="context"
+    [suppressRowTransform]="true" (gridReady)="onGridReady($event)">
+  </ag-grid-angular>
 </ion-content>
